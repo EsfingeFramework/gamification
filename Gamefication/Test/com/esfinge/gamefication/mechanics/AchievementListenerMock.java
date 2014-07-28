@@ -29,7 +29,7 @@ public class AchievementListenerMock implements AchievementListener {
 	}
 	
 
-	public void achievementRemove(Object user, Achievement removed) {
+	public void achievementRemoved(Object user, Achievement removed) {
 		 if (error){
 			 throw new RuntimeException();
 		 }

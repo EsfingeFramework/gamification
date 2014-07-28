@@ -45,7 +45,7 @@ public class GameMemoryStorage implements Game {
 		}else{
 			userAchiev.put(a.getName(), a);
 			for(AchievementListener listener:ac)
-				listener.achievementRemove(user, a);
+				listener.achievementRemoved(user, a);
 		}
 	}
 	

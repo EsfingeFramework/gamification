@@ -6,6 +6,6 @@ public interface AchievementListener{
 	
 	void achievementAdded(Object user, Achievement added); 
 	
-	void achievementRemove(Object user, Achievement removed);
+	void achievementRemoved(Object user, Achievement removed);
 
 }
