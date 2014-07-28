@@ -33,7 +33,7 @@ public class TestGame {
 		Achievement a = new Tropy("Golden");
 		game.addAchievement(user, a);
 		game.removeAchievement(user, a);
-		assertNotEquals(a, game.getAchievement(user, "Golden"));	
+		assertNull(game.getAchievement(user, "Golden"));	
 	}
 	
 	@Test
@@ -67,7 +67,7 @@ public class TestGame {
 		Achievement p = new Point(50, "point");
 		game.addAchievement(user, p);
 		game.removeAchievement(user, p);
-		assertNotEquals(1, game.getAchievements(user).size());	
+		assertEquals(0, game.getAchievements(user).size());	
 	}
 	
 	@Test
