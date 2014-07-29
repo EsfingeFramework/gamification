@@ -1,40 +1,43 @@
 package com.esfinge.gamefication.mechanics;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import org.junit.Before;
 import org.junit.Test;
+
 import com.esfinge.gamefication.achievement.Achievement;
 import com.esfinge.gamefication.achievement.Point;
 import com.esfinge.gamefication.achievement.Reward;
 import com.esfinge.gamefication.achievement.Tropy;
+import com.esfinge.gamefication.user.UserStorage;
 
 
 public class TestGame {
 	
 	private Game game;
-	private FakeUser user;
 	
 	@Before
 	public void initializeGame(){
 		
 		game = new GameMemoryStorage();
-	    user = new FakeUser("Jaspion");
+	    UserStorage.setUserID("Spider");
 	}
 	
 	@Test
 	public void addTropy() {
 		Achievement a = new Tropy("champion");
-		game.addAchievement(user, a);
-		assertEquals(1, game.getAchievements(user).size());	
-		assertEquals(a, game.getAchievement(user, "champion"));
+		game.addAchievement("Spider", a);
+		assertEquals(1, game.getAchievements("Spider").size());	
+		assertEquals(a, game.getAchievement("Spider", "champion"));
 	}
 	
 	@Test
 	public void removeTropy(){
 		Achievement a = new Tropy("Golden");
-		game.addAchievement(user, a);
-		game.removeAchievement(user, a);
-		assertNull(game.getAchievement(user, "Golden").getName());	
+		game.addAchievement("Spider", a);
+		game.removeAchievement("Spider", a);
+		assertNull(game.getAchievement("Spider", "Golden").getName());	
 		//getAchievements continua contendo 1 elemento ???
 	}
 	
@@ -42,46 +45,46 @@ public class TestGame {
 	public void addTwoTropy() {
 		Achievement a1 = new Tropy("champion");
 		Achievement a2 = new Tropy("champion");		
-		game.addAchievement(user, a1);
-		game.addAchievement(user, a2);		
-		assertEquals(1, game.getAchievements(user).size());
+		game.addAchievement("Spider", a1);
+		game.addAchievement("Spider", a2);		
+		assertEquals(1, game.getAchievements("Spider").size());
 	}
 	
 	@Test
 	public void addTropyDifferentUser(){
-		FakeUser user2 = new FakeUser("Jiraia");
+		UserStorage.setUserID("Duende");
 		Achievement a1 = new Tropy("champion");
 		Achievement a2 = new Tropy("champion");
-		game.addAchievement(user, a1);
-		game.addAchievement(user2, a2);
-		assertEquals(1, game.getAchievements(user).size());	
-		assertEquals(1, game.getAchievements(user2).size());	
+		game.addAchievement("Spider", a1);
+		game.addAchievement("Duende", a2);
+		assertEquals(1, game.getAchievements("Spider").size());	
+		assertEquals(1, game.getAchievements("Duende").size());	
 	}
 	
 	@Test
 	public void addPoint(){
 		Achievement p = new Point(10, "point");
-		game.addAchievement(user, p);
-		assertEquals(p, game.getAchievement(user, "point"));
-		assertEquals(10,((Point) game.getAchievement(user, "point")).getQuantity().intValue());
+		game.addAchievement("Spider", p);
+		assertEquals(p, game.getAchievement("Spider", "point"));
+		assertEquals(10,((Point) game.getAchievement("Spider", "point")).getQuantity().intValue());
 	}
 	
 	@Test
 	public void removePoint(){
 		Achievement p = new Point(50, "point");
-		game.addAchievement(user, p);
-		game.removeAchievement(user, p);	
-		assertEquals(0,((Point) game.getAchievement(user, "point")).getQuantity().intValue());
+		game.addAchievement("Spider", p);
+		game.removeAchievement("Spider", p);	
+		assertEquals(0,((Point) game.getAchievement("Spider", "point")).getQuantity().intValue());
 	}
 	
 	@Test
 	public void addTwoPoint() {
 		Achievement a1 = new Point(20, "point");
 		Achievement a2 = new Point(10, "point");		
-		game.addAchievement(user, a1);
-		game.addAchievement(user, a2);	
-		assertEquals(30,((Point) game.getAchievement(user, "point")).getQuantity().intValue());
-		assertEquals(1, game.getAchievements(user).size());
+		game.addAchievement("Spider", a1);
+		game.addAchievement("Spider", a2);	
+		assertEquals(30,((Point) game.getAchievement("Spider", "point")).getQuantity().intValue());
+		assertEquals(1, game.getAchievements("Spider").size());
 	}
 	
 	@Test
@@ -89,51 +92,61 @@ public class TestGame {
 		FakeUser user2 = new FakeUser("Jiraia");
 		Achievement a1 = new Point(10, "point");
 		Achievement a2 = new Point(20, "point");
-		game.addAchievement(user, a1);
+		game.addAchievement("Spider", a1);
 		game.addAchievement(user2, a2);
-		assertEquals(1, game.getAchievements(user).size());
+		assertEquals(1, game.getAchievements("Spider").size());
 		assertEquals(1, game.getAchievements(user2).size());
-		assertEquals(10,((Point) game.getAchievement(user, "point")).getQuantity().intValue());
+		assertEquals(10,((Point) game.getAchievement("Spider", "point")).getQuantity().intValue());
 		assertEquals(20,((Point) game.getAchievement(user2, "point")).getQuantity().intValue());
 	}
 	
 	@Test
 	public void addReward() {
-		Achievement a = new Reward("lunch");
-		game.addAchievement(user, a);
-		assertEquals(1, game.getAchievements(user).size());	
-		assertEquals(a, game.getAchievement(user, "lunch"));
+		Achievement a = new Reward("lunch",false);
+		game.addAchievement("Spider", a);
+		assertEquals(1, game.getAchievements("Spider").size());	
+		assertEquals(a, game.getAchievement("Spider", a.getName()));
+		assertEquals(false, ((Reward) game.getAchievement("Spider", a.getName())).isUsed()); 
 	}
 	
 	@Test
 	public void addTwoReward() {
-		Achievement a1 = new Reward("lunch");
-		Achievement a2 = new Reward("lunch");
-		game.addAchievement(user, a1);
-		game.addAchievement(user, a2);		
-		assertEquals(1, game.getAchievements(user).size());
+		Achievement a1 = new Reward("lunch",false);
+		Achievement a2 = new Reward("lunch",false);
+		game.addAchievement("Spider", a1);
+		game.addAchievement("Spider", a2);	
+		assertEquals(1, game.getAchievements("Spider").size());
 	}
 	
 	@Test
-	public void addRewardDifferentUser(){
-		FakeUser user2 = new FakeUser("Batman");
-		Achievement r1 = new Reward("worth Buying");
-		Achievement r2 = new Reward("lunch");
-		game.addAchievement(user, r1);
-		game.addAchievement(user2, r2);
-		assertEquals(1, game.getAchievements(user).size());	
-		assertEquals(1, game.getAchievements(user2).size());	
+	public void addRewardDifferentUser() {
+		UserStorage.setUserID("Duende");
+		Achievement r1 = new Reward("worth Buying",false);
+		Achievement r2 = new Reward("lunch",false);
+		game.addAchievement("Spider", r1);
+		game.addAchievement("Duende", r2);
+		assertEquals(1, game.getAchievements("Spider").size());	
+		assertEquals(1, game.getAchievements("Duende").size());
+	}
+	
+	@Test
+	public void usingReward() {
+		Achievement a = new Reward("lunch", false);
+		game.addAchievement("Spider", a);
+		game.removeAchievement("Spider", a);
+		assertEquals(true, ((Reward) game.getAchievement("Spider", a.getName())).isUsed());
+		
 	}
 	
 	@Test
 	public void addDifferentAchievement(){
 		Achievement a1 = new Point(2, "point");
 		Achievement a2 = new Tropy("Golden");
-		Achievement a3 = new Reward("lunch");
-		game.addAchievement(user, a1);
-		game.addAchievement(user, a2);
-		game.addAchievement(user, a3);
-		assertEquals(3, game.getAchievements(user).size());
+		Achievement a3 = new Reward("lunch",false);
+		game.addAchievement("Spider", a1);
+		game.addAchievement("Spider", a2);
+		game.addAchievement("Spider", a3);
+		assertEquals(3, game.getAchievements("Spider").size());
 	}
 	
 	@Test

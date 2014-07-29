@@ -1,8 +1,7 @@
 package com.esfinge.gamefication.proxy;
 
-import static org.junit.Assert.*;
-
-import java.util.Map;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 

@@ -24,12 +24,19 @@ public class Reward implements Achievement{
 		if(!a.getName().equals(getName()) || !(a instanceof Reward))
 			throw new RuntimeException("The achievement should be of the same type");
 	}catch (RuntimeException e) {
-			this.name += ((Reward)a).isUsed();
+			this.name = ((Reward)a).getName();
+			this.used = ((Reward)a).isUsed();
 		}
 
 	}
 	
 	public void removeAchievement(Achievement r) {
+		try{
+			if(!r.getName().equals(getName()) || r instanceof Reward)
+				throw new RuntimeException("The achievement should be of the same type");
+		}catch (RuntimeException e) {
+				this.used = ((Reward)r).isUsed() ? false : true;
+			}
 		
 	}
 	
