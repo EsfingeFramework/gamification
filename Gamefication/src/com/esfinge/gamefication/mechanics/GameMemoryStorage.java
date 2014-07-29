@@ -2,8 +2,9 @@ package com.esfinge.gamefication.mechanics;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import com.esfinge.gamefication.listener.*;
+
 import com.esfinge.gamefication.achievement.Achievement;
+import com.esfinge.gamefication.listener.AchievementListener;
 
 
 public class GameMemoryStorage implements Game {
@@ -74,10 +75,8 @@ public class GameMemoryStorage implements Game {
 	 */
 	@Override
 	public void addListener(AchievementListener listener){
-		
 		ac.add(listener);
 	}
-	
 	
 	private void notify(AchievementListener listener){
 		for(AchievementListener a : ac){

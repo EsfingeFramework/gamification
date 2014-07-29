@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import com.esfinge.gamefication.achievement.Achievement;
 import com.esfinge.gamefication.achievement.Point;
+import com.esfinge.gamefication.achievement.Rank;
 import com.esfinge.gamefication.achievement.Reward;
 import com.esfinge.gamefication.achievement.Tropy;
 import com.esfinge.gamefication.user.UserStorage;
@@ -22,6 +23,21 @@ public class TestGame {
 		
 		game = new GameMemoryStorage();
 	    UserStorage.setUserID("Spider");
+	}
+	
+	@Test
+	public void addRank () {
+		Achievement a = new Rank("Noob", "Level 1");
+		game.addAchievement("Spider", a);
+		assertEquals(1, game.getAchievements("Spider").size());		
+	}
+	
+	@Test
+	public void removeRank () {
+		Achievement a = new Rank("Noob", "Level 1");
+		game.addAchievement("Spider", a);
+		game.removeAchievement("Spider", a);
+		assertNull(game.getAchievement("Spider",a.getName()));
 	}
 	
 	@Test

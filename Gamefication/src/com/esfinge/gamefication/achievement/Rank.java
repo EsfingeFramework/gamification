@@ -20,12 +20,23 @@ public class Rank implements Achievement{
 	}
 
 	public void incrementAchievement(Achievement a) {
-		
-		
+		try{
+			if(!a.getName().equals(getName()) || !(a instanceof Rank))
+				throw new RuntimeException("The achievement should be of the same type");
+		}catch (RuntimeException e) {
+				this.name = ((Rank)a).getName();
+				this.level = ((Rank)a).getLevel();
+			}		
 	}
 	
 	public void removeAchievement(Achievement r) {
-		
+		try{
+			if(!r.getName().equals(getName()) || r instanceof Rank)
+				throw new RuntimeException("The achievement should be of the same type");
+		}catch (RuntimeException e) {
+				this.name = null;
+				this.level = null;
+			}
 	}
 	
 	public String toString() {

@@ -4,7 +4,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import com.esfinge.gamefication.achievement.Tropy;
-import com.esfinge.gamefication.annotation.PointsToUser;
 import com.esfinge.gamefication.annotation.TrophiesToUser;
 import com.esfinge.gamefication.mechanics.Game;
 import com.esfinge.gamefication.user.UserStorage;
