@@ -4,11 +4,11 @@ public class UserStorage {
 	
 	private static ThreadLocal<Object> user = new ThreadLocal<Object>();
 	
-	public static Object getUser(){
+	public static Object getUserID(){
 		return user.get();
 	}
 	
-	public static void setUser(Object u){
+	public static void setUserID(Object u){
 		user.set(u);
 	}
 }

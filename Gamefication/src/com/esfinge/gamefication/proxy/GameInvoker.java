@@ -1,13 +1,12 @@
 package com.esfinge.gamefication.proxy;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import com.esfinge.gamefication.achievement.Point;
-import com.esfinge.gamefication.achievement.Rank;
-import com.esfinge.gamefication.achievement.Reward;
+import com.esfinge.gamefication.annotation.GamificationProcessor;
 import com.esfinge.gamefication.annotation.PointsToUser;
-import com.esfinge.gamefication.annotation.RanksToUser;
-import com.esfinge.gamefication.annotation.RewardsToUser;
 import com.esfinge.gamefication.mechanics.Game;
+import com.esfinge.gamefication.processors.AchievementProcessor;
 import com.esfinge.gamefication.user.UserStorage;
 
 
@@ -34,33 +33,15 @@ public class GameInvoker {
 	public void registerAchievment(Object encapsulated, Method method, Object[] args)
 			throws Throwable {
 		
-		if(method.isAnnotationPresent(PointsToUser.class)){
-			PointsToUser point = method.getAnnotation(PointsToUser.class);	
-			Object user = UserStorage.getUser();
-			Point p = new Point(point.quantity(), point.name());
-			game.addAchievement(user, p);
-		}
-		
-		if(method.isAnnotationPresent(RanksToUser.class)){
-			RanksToUser rank = method.getAnnotation(RanksToUser.class);
-			Object user = UserStorage.getUser();
-			Rank r = new Rank(rank.name(), rank.level());
-			game.addAchievement(user, r);
-		}
-		
-		if(method.isAnnotationPresent(RewardsToUser.class)){
-			RewardsToUser rewards = method.getAnnotation(RewardsToUser.class);
-			Object user = UserStorage.getUser();
-			Reward re = new Reward(rewards.name());
-			game.addAchievement(user, re);
-	}
-		
-		if(method.isAnnotationPresent(RanksToUser.class)){
-			RanksToUser ranks = method.getAnnotation(RanksToUser.class);
-			Object user = UserStorage.getUser();
-			Rank rank = new Rank(ranks.name(), ranks.level());
-			game.addAchievement(user, rank);
-	
+		for(Annotation an : method.getAnnotations()){
+			Class<? extends Annotation> anType = an.annotationType();
+			if(anType.isAnnotationPresent(GamificationProcessor.class)){
+				GamificationProcessor gp = anType.getAnnotation(GamificationProcessor.class);
+				Class<? extends AchievementProcessor> c = gp.value();
+				AchievementProcessor ap = c.newInstance();
+				ap.receiveAnnotation(an);
+				ap.process(game, encapsulated, method, args);
+			}
 		}
 	
 	}

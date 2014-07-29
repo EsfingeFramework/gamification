@@ -77,6 +77,7 @@ public class TestGame {
 		game.addAchievement(user, a1);
 		game.addAchievement(user, a2);		
 		assertEquals(1, game.getAchievements(user).size());
+		assertEquals(new Integer(30), ((Point)game.getAchievement(user, "point")).getQuantity());
 	}
 	
 	@Test
