@@ -87,7 +87,7 @@ public class GameFileStorage implements Game {
 	 */
 	@Override
 	public void removeAchievement(Object user, Achievement a) {
-		
+
 		UserStorage.setUserID("Guerra");
 		String className = a.getClass().getName();
 		className = className.substring(className.lastIndexOf('.') + 1);
@@ -129,7 +129,62 @@ public class GameFileStorage implements Game {
 	 */
 	@Override
 	public Map<String, Achievement> getAchievements(Object user) {
-		return achievments.get(user);
+		UserStorage.setUserID("Guerra");
+		Properties prop;
+		Map<String, Achievement> achievements = new HashMap<String, Achievement>();
+		Achievement a;
+
+		try {
+			prop = getProp();
+
+			for (String key : prop.stringPropertyNames()) {
+				String userName = key.substring(0, key.indexOf("."));
+				String achievementType = key.substring(key.indexOf(".") + 1,
+						key.lastIndexOf('.'));
+				String achievementName = key
+						.substring(key.lastIndexOf(".") + 1);
+				String achievementValue = prop.getProperty(key);
+
+				if (UserStorage.getUserID().toString().equals(userName)) {
+					
+					if (achievementType.equals("Point")) {
+						a = new Point(Integer.parseInt(achievementValue), achievementName);
+						achievements.put(userName, a);
+					}
+					
+
+					if (achievementType.equals("Rank")) {
+						a = new Rank(achievementName, achievementValue);
+						achievements.put(userName, a);
+					}
+					
+
+					if (achievementType.equals("Reward")) {
+						a = new Reward(achievementName, Boolean.parseBoolean(achievementValue));
+						achievements.put(userName, a);
+					}
+					
+
+					if (achievementType.equals("Tropy")) {
+						a = new Tropy(achievementName);
+						achievements.put(userName, a);
+					}
+				}
+				
+				System.out.println(achievementType);
+				System.out.println(achievementName);
+
+			}
+
+			FileOutputStream file = new FileOutputStream(dir);
+			prop.store(file, null);
+			file.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return achievements;
 	}
 
 	/*
@@ -141,7 +196,6 @@ public class GameFileStorage implements Game {
 	 */
 	@Override
 	public void addListener(AchievementListener listener) {
-
 		ac.add(listener);
 	}
 
