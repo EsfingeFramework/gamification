@@ -47,4 +47,11 @@ public class Point implements Achievement{
 		return "Points Achieved - " + name + ": "+ quantity;
 	}
 	
+	@Override
+	public boolean equals(Object o) {
+		Point p = (Point)o;
+		return this.name == p.name && this.quantity == p.quantity;
+	}
+	
+	
 }
