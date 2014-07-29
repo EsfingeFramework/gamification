@@ -23,17 +23,16 @@ public class Tropy implements Achievement{
 		  if(!a.getName().equals(getName()) || !(a instanceof Tropy))
 				throw new RuntimeException("The achievement should be of the same type");
 	    } catch(RuntimeException e) {
-			this.name += ((Tropy)a).getName();
+			this.name = ((Tropy)a).getName();
 		}
 	}
 	
 	public void removeAchievement(Achievement r) {
 		try{	
-			  if(!r.getName().equals(getName()) || !(r instanceof Tropy))
+			  if(!r.getName().equals(getName()) || r instanceof Tropy)
 					throw new RuntimeException("The achievement should be of the same type");
 		    } catch(RuntimeException e) {
 		    	this.name = null;
-		    	setName(null);
 			}	
 	}
 

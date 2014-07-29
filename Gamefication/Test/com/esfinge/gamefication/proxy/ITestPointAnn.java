@@ -1,5 +1,6 @@
 package com.esfinge.gamefication.proxy;
 import com.esfinge.gamefication.annotation.PointsToUser;
+import com.esfinge.gamefication.annotation.RemovePoints;
 
 public interface ITestPointAnn {
 	
@@ -8,5 +9,8 @@ public interface ITestPointAnn {
     
     @PointsToUser(name = "GOLD", quantity = 500)
     public void doWrong();
+    
+    @RemovePoints(name = "GOLD", quantity = 500)
+    public void doRemoveSomething();
 
 }
