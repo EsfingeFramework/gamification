@@ -26,18 +26,37 @@ public class TestGame {
 	}
 	
 	@Test
-	public void addRank () {
+	public void addRank() {
 		Achievement a = new Rank("Noob", "Level 1");
 		game.addAchievement("Spider", a);
 		assertEquals(1, game.getAchievements("Spider").size());		
 	}
 	
 	@Test
-	public void removeRank () {
+	public void removeRank() {
 		Achievement a = new Rank("Noob", "Level 1");
 		game.addAchievement("Spider", a);
 		game.removeAchievement("Spider", a);
 		assertNull(game.getAchievement("Spider",a.getName()));
+	}
+	
+	@Test
+	public void addTwoRank() {
+		Achievement a = new Rank("Noob", "Level 1");
+		Achievement a1 = new Rank("Noob", "Level 1");
+		game.addAchievement("Spider", a);
+		game.addAchievement("Spider", a1);
+		assertEquals(1, game.getAchievements("Spider").size());	
+	}
+	
+	@Test
+	public void addRankDifferentUser(){
+		UserStorage.setUserID("Duende");
+		Achievement a = new Rank("Noob", "Level 1");
+		game.addAchievement("Spider", a);
+		game.addAchievement("Duende", a);
+		assertEquals(1, game.getAchievements("Spider").size());	
+		assertEquals(1, game.getAchievements("Duende").size());	
 	}
 	
 	@Test
@@ -65,6 +84,7 @@ public class TestGame {
 		game.addAchievement("Spider", a2);		
 		assertEquals(1, game.getAchievements("Spider").size());
 	}
+	
 	
 	@Test
 	public void addTropyDifferentUser(){
