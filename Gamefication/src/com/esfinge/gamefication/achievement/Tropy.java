@@ -29,11 +29,10 @@ public class Tropy implements Achievement{
 	
 	public void removeAchievement(Achievement r) {
 		try{	
-			  if(!r.getName().equals(getName()) || !(r instanceof Tropy))
+			  if(!r.getName().equals(getName()) || r instanceof Tropy)
 					throw new RuntimeException("The achievement should be of the same type");
 		    } catch(RuntimeException e) {
 		    	this.name = null;
-		    	setName(null);
 			}	
 	}
 

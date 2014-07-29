@@ -46,5 +46,20 @@ public class TestDynamicProxy {
 			assertEquals(new Integer(1000), ((Point) ach).getQuantity());
 		}
 	}
+	
+	@Test
+	public void testRemovePoints() {
+		UserStorage.setUserID("Spider");
+		ITestPointAnn p = new TestPointAnnotation();
+		p = (ITestPointAnn) GameProxy.createProxy(p);
+		GameMemoryStorage gs = new GameMemoryStorage();
+		GameInvoker gi = GameInvoker.getInstance();
+		gi.setGame(gs);
+		p.doSomething();
+		p.doRemoveSomething();
+
+		Achievement ach = gs.getAchievement("Spider", "GOLD");
+		assertEquals(new Integer(500), ((Point) ach).getQuantity());
+	}
 
 }

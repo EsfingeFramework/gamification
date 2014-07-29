@@ -25,6 +25,7 @@ public class TestGame {
 	public void addTropy() {
 		Achievement a = new Tropy("champion");
 		game.addAchievement(user, a);
+		assertEquals(1, game.getAchievements(user).size());	
 		assertEquals(a, game.getAchievement(user, "champion"));
 	}
 	
@@ -33,8 +34,8 @@ public class TestGame {
 		Achievement a = new Tropy("Golden");
 		game.addAchievement(user, a);
 		game.removeAchievement(user, a);
-		System.out.println(game.getAchievements(user));
-		assertNull((Tropy) game.getAchievement(user, "Golden"));	
+		assertNull(game.getAchievement(user, "Golden").getName());	
+		//getAchievements continua contendo 1 elemento ???
 	}
 	
 	@Test
@@ -54,6 +55,7 @@ public class TestGame {
 		game.addAchievement(user, a1);
 		game.addAchievement(user2, a2);
 		assertEquals(1, game.getAchievements(user).size());	
+		assertEquals(1, game.getAchievements(user2).size());	
 	}
 	
 	@Test
@@ -68,7 +70,7 @@ public class TestGame {
 	public void removePoint(){
 		Achievement p = new Point(50, "point");
 		game.addAchievement(user, p);
-		game.removeAchievement(user, p);		
+		game.removeAchievement(user, p);	
 		assertEquals(0,((Point) game.getAchievement(user, "point")).getQuantity().intValue());
 	}
 	
@@ -99,6 +101,7 @@ public class TestGame {
 	public void addReward() {
 		Achievement a = new Reward("lunch");
 		game.addAchievement(user, a);
+		assertEquals(1, game.getAchievements(user).size());	
 		assertEquals(a, game.getAchievement(user, "lunch"));
 	}
 	
@@ -119,6 +122,7 @@ public class TestGame {
 		game.addAchievement(user, r1);
 		game.addAchievement(user2, r2);
 		assertEquals(1, game.getAchievements(user).size());	
+		assertEquals(1, game.getAchievements(user2).size());	
 	}
 	
 	@Test
