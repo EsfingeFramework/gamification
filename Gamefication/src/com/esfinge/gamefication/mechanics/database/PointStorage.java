@@ -69,4 +69,5 @@ public class PointStorage {
 		stmt.setInt(1, p.getQuantity());
 		stmt.execute();
 	}
+	
 }

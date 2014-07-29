@@ -41,4 +41,8 @@ public class FakeUser {
 		return true;
 	}
 
+	public String toString() {
+		return login;
+	}
+	
 }

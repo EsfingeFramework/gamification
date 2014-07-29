@@ -59,7 +59,16 @@ public class GameDatabaseStorage implements Game {
 
 	@Override
 	public void removeAchievement(Object user, Achievement a) {
-		// TODO Auto-generated method stub
+		PointStorage ps = new PointStorage(connection);
+		Point p = null;
+		try {
+			p = ps.select(user, a.getName());
+			p.removeAchievement(a);
+			ps.update(user, p);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 

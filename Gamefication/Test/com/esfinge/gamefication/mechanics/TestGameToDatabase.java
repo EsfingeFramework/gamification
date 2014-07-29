@@ -67,6 +67,36 @@ public class TestGameToDatabase {
 		assertEquals(20,((Point) game.getAchievement(user2, "point")).getQuantity().intValue());
 	}
 	
+	@Test
+	public void removePoint(){
+		Achievement p = new Point(50, "point");
+		game.addAchievement("Spider", p);
+		game.removeAchievement("Spider", p);	
+		assertEquals(0,((Point) game.getAchievement("Spider", "point")).getQuantity().intValue());
+	}
+	
+	@Test
+	public void decreasePoint(){
+		Achievement p = new Point(50, "point");
+		Achievement r = new Point(30, "point");
+		game.addAchievement("Spider", p);
+		game.removeAchievement("Spider", r);	
+		assertEquals(20,((Point) game.getAchievement("Spider", "point")).getQuantity().intValue());
+	}
+	
+	@Test
+	public void removePointDifferentUser(){
+		FakeUser user2 = new FakeUser("Jiraia");
+		Achievement a1 = new Point(10, "point");
+		Achievement a2 = new Point(20, "point");
+		game.addAchievement("Spider", a1);
+		game.addAchievement(user2, a2);
+		game.removeAchievement(user2, a1);
+		assertEquals(1, game.getAchievements("Spider").size());
+		assertEquals(1, game.getAchievements(user2).size());
+		assertEquals(10,((Point) game.getAchievement("Spider", "point")).getQuantity().intValue());
+		assertEquals(10,((Point) game.getAchievement(user2, "point")).getQuantity().intValue());
+	}
 	
 }
 
