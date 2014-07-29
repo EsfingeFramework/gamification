@@ -33,7 +33,8 @@ public class TestGame {
 		Achievement a = new Tropy("Golden");
 		game.addAchievement(user, a);
 		game.removeAchievement(user, a);
-		assertNull(game.getAchievement(user, "Golden"));	
+		System.out.println(game.getAchievements(user));
+		assertNull((Tropy) game.getAchievement(user, "Golden"));	
 	}
 	
 	@Test
@@ -60,14 +61,15 @@ public class TestGame {
 		Achievement p = new Point(10, "point");
 		game.addAchievement(user, p);
 		assertEquals(p, game.getAchievement(user, "point"));
+		assertEquals(10,((Point) game.getAchievement(user, "point")).getQuantity().intValue());
 	}
 	
 	@Test
 	public void removePoint(){
 		Achievement p = new Point(50, "point");
 		game.addAchievement(user, p);
-		game.removeAchievement(user, p);
-		assertEquals(0, game.getAchievements(user).size());	
+		game.removeAchievement(user, p);		
+		assertEquals(0,((Point) game.getAchievement(user, "point")).getQuantity().intValue());
 	}
 	
 	@Test
@@ -76,7 +78,7 @@ public class TestGame {
 		Achievement a2 = new Point(10, "point");		
 		game.addAchievement(user, a1);
 		game.addAchievement(user, a2);		
-		assertEquals(1, game.getAchievements(user).size());
+		assertEquals(30,((Point) game.getAchievement(user, "point")).getQuantity().intValue());
 	}
 	
 	@Test
@@ -86,7 +88,10 @@ public class TestGame {
 		Achievement a2 = new Point(20, "point");
 		game.addAchievement(user, a1);
 		game.addAchievement(user2, a2);
-		assertEquals(1, game.getAchievements(user).size());	
+		assertEquals(1, game.getAchievements(user).size());
+		assertEquals(1, game.getAchievements(user2).size());
+		assertEquals(10,((Point) game.getAchievement(user, "point")).getQuantity().intValue());
+		assertEquals(20,((Point) game.getAchievement(user2, "point")).getQuantity().intValue());
 	}
 	
 	@Test

@@ -5,6 +5,10 @@ public class Tropy implements Achievement{
 	private String name;
 	
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public Tropy(String name) {
 		super();
 		this.name = name;
@@ -21,15 +25,18 @@ public class Tropy implements Achievement{
 	    } catch(RuntimeException e) {
 			this.name += ((Tropy)a).getName();
 		}
-		
 	}
 	
 	public void removeAchievement(Achievement r) {
-		
-		  
-		
+		try{	
+			  if(!r.getName().equals(getName()) || !(r instanceof Tropy))
+					throw new RuntimeException("The achievement should be of the same type");
+		    } catch(RuntimeException e) {
+		    	this.name = null;
+		    	setName(null);
+			}	
 	}
-	
+
 	public String toString() {
 		return "Tropy Achieved - " + name;
 	}
