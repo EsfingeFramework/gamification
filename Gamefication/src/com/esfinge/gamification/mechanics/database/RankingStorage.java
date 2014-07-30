@@ -8,8 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.esfinge.gamification.achievement.Achievement;
-import com.esfinge.gamification.achievement.Point;
-import com.esfinge.gamification.achievement.Rank;
+import com.esfinge.gamification.achievement.Ranking;
 
 public class RankingStorage {
 
@@ -19,7 +18,7 @@ public class RankingStorage {
 		connection = c;
 	}
 	
-	public void insert (Object user, Rank r) throws SQLException{
+	public void insert (Object user, Ranking r) throws SQLException{
 		PreparedStatement stmt;
 		
 		stmt = connection
@@ -31,7 +30,7 @@ public class RankingStorage {
 		stmt.execute();
 	}
 	
-	public Rank select(Object user, String name) throws SQLException {
+	public Ranking select(Object user, String name) throws SQLException {
 		PreparedStatement stmt;
 		stmt = connection
 				.prepareStatement("select * from gamification.ranking"
@@ -41,7 +40,7 @@ public class RankingStorage {
 		ResultSet rs = stmt.executeQuery();
 		if (rs.next()) {
 			String level = rs.getString("level");
-			Rank r = new Rank(name, level);
+			Ranking r = new Ranking(name, level);
 			return r;
 		}
 		return null;
@@ -58,14 +57,14 @@ public class RankingStorage {
 		while(rs.next()){
 			String name = rs.getString("name");
 			String level = rs.getString("level");
-			Rank r = new Rank(name, level);
+			Ranking r = new Ranking(name, level);
 			map.put(r.getName(), r);
 		}
 		
 		return map;
 	}
 	
-	public void update(Object user, Rank r) throws SQLException {
+	public void update(Object user, Ranking r) throws SQLException {
 		PreparedStatement stmt;
 		stmt = connection
 				.prepareStatement("update gamification.ranking "
