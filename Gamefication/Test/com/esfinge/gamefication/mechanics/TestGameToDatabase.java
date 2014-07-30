@@ -15,6 +15,7 @@ import org.junit.Test;
 import com.esfinge.gamification.achievement.Achievement;
 import com.esfinge.gamification.achievement.Point;
 import com.esfinge.gamification.achievement.Ranking;
+import com.esfinge.gamification.achievement.Reward;
 import com.esfinge.gamification.mechanics.Game;
 import com.esfinge.gamification.mechanics.GameDatabaseStorage;
 
@@ -48,15 +49,18 @@ public class TestGameToDatabase {
 	public void addRanking(){
 		Achievement r = new Ranking("mago", "master");
 		game.addAchievement(user, r);
-		assertEquals(r, game.getAchievement("mago", "master"));
+		assertEquals(r, game.getAchievement(user, "mago"));
 	}
 	
 	@Test
 	public void addTwoRank() {
-		Achievement r1 = new Ranking("mago", "master");
-		Achievement r2 = new Ranking("mago2", "noob");		
+		Achievement r1 = new Ranking("mago", "noob");
+		Achievement r2 = new Ranking("mago", "master");		
 		game.addAchievement("Spider", r1);
 		game.addAchievement("Spider", r2);	
+		assertEquals(r2, (Reward) game.getAchievement("Spider", "mago"));
+		assertEquals(1, game.getAchievements("Spider").size());
+		
 	}
 	
 	@Test
@@ -66,6 +70,10 @@ public class TestGameToDatabase {
 		Achievement r2 = new Ranking("mago2", "noob");
 		game.addAchievement("Spider", r1);
 		game.addAchievement(user2, r2);
+		assertEquals(1, game.getAchievements("Spider").size());
+		assertEquals(1, game.getAchievements(user2).size());
+		assertEquals(r1, (Reward) game.getAchievement("Spider", "mago"));
+		assertEquals(r2, (Reward) game.getAchievement(user2, "mago2"));
 	}
 	
 	@Test
@@ -73,8 +81,8 @@ public class TestGameToDatabase {
 		Achievement r = new Ranking("mago", "master");
 		game.addAchievement("Spider", r);
 		game.removeAchievement("Spider", r);	
+		assertEquals(null, (Reward) game.getAchievement("Spider", "mago"));
 	}
-	
 	
 	@Test
 	public void removeRankDifferentUser(){
@@ -84,6 +92,11 @@ public class TestGameToDatabase {
 		game.addAchievement("Spider", r1);
 		game.addAchievement(user2, r2);
 		game.removeAchievement(user2, r1);
+		assertEquals(1, game.getAchievements("Spider").size());
+		assertEquals(0, game.getAchievements(user2).size());
+		assertEquals(r1, (Reward) game.getAchievement("Spider", "mago"));
+		assertEquals(null, (Reward) game.getAchievement(user2, "mago2"));
+		
 	}
 	
 	@Test
