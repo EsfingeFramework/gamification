@@ -8,18 +8,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.esfinge.gamification.achievement.Achievement;
-import com.esfinge.gamification.achievement.Point;
 import com.esfinge.gamification.achievement.Trophy;
 
-public class TrophyStorage {
+public class TrophyStorage implements Storage{
 	private Connection connection;
 
 	public TrophyStorage(Connection c) {
 		connection = c;
 	}
 
-	public void insert(Object user, Trophy t) throws SQLException {
-
+	public void insert(Object user, Achievement a) throws SQLException {
+		Trophy t = (Trophy)a;
 		PreparedStatement stmt;
 		stmt = connection
 				.prepareStatement("insert into gamification.trophy "
@@ -60,6 +59,18 @@ public class TrophyStorage {
 		}
 		
 		return map;
+	}
+
+	@Override
+	public void delete(Object user, Achievement p) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(Object user, Achievement p) throws SQLException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

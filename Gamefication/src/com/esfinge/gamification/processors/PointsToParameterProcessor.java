@@ -7,9 +7,7 @@ import java.lang.reflect.Method;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import com.esfinge.gamification.achievement.Point;
-import com.esfinge.gamification.annotation.Named;
 import com.esfinge.gamification.annotation.PointsToParam;
-import com.esfinge.gamification.annotation.PointsToUser;
 import com.esfinge.gamification.mechanics.Game;
 import com.esfinge.gamification.utils.ReflectionUtils;
 

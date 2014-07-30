@@ -1,7 +1,6 @@
 package com.esfinge.gamefication.proxy;
 
 import com.esfinge.gamification.annotation.Named;
-import com.esfinge.gamification.annotation.PointsToParam;
 
 public class TestPointAnnotation implements ITestPointAnn{
 	
@@ -19,6 +18,10 @@ public class TestPointAnnotation implements ITestPointAnn{
 	}
 
 	public void niceComment(@Named("comment") Comment c) {
+	}
+
+	public void doRemoveWrong() {
+		throw new RuntimeException();
 	}
 }
 

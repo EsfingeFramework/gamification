@@ -149,7 +149,7 @@ public class GameFileStorage extends Game {
 					}
 					
 
-					if (achievementType.equals("Ranking")) {
+					if (achievementType.equals("Rank")) {
 						a = new Ranking(achievementName, achievementValue);
 						achievements.put(userName, a);
 					}
