@@ -21,16 +21,31 @@ public class GameDatabaseStorage implements Game {
 		try {
 			
 			DatabaseMetaData dbmd = connection.getMetaData();
-			ResultSet rs = dbmd.getSchemas(null, "GAMEFICATION");
+			ResultSet rs = dbmd.getSchemas(null, "GAMIFICATION");
 			boolean found = false;
 			while(rs.next()) {
-				if (rs.getString(1).compareToIgnoreCase("gamefication") == 0) {
+				if (rs.getString(1).compareToIgnoreCase("gamification") == 0) {
 					found = true;
 				}
 			}
 			if (!found) {
 				Statement s = connection.createStatement();
-				s.execute("create table gamefication.points (userid varchar(255) not null, name varchar(255) not null, 	points integer not null, primary key (userid,name))");
+				s.execute("create table gamification.users"
+						+ "(userid varchar(255) not null,"
+						+ "primary key (userid))");
+				s.execute("create table gamification.points "
+						+ "(userid varchar(255) not null,"
+						+ " name varchar(255) not null, 	"
+						+ "points integer not null, "
+						+ "primary key (userid,name)"
+						+ "foreign key(userid) references users(userid))");
+				s.execute("create table gamification.ranking "
+						+ "(userid varchar(255) not null,"
+						+ " name varchar(255) not null, 	"
+						+ " level varchar(255) not null, "
+						+ "primary key (userid,name)"
+						+ "foreign key(userid) references users(userid))");
+				
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
