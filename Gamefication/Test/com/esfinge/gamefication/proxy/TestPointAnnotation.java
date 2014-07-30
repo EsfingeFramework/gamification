@@ -1,7 +1,7 @@
 package com.esfinge.gamefication.proxy;
 
-import com.esfinge.gamefication.annotation.Named;
-import com.esfinge.gamefication.annotation.PointsToParam;
+import com.esfinge.gamification.annotation.Named;
+import com.esfinge.gamification.annotation.PointsToParam;
 
 public class TestPointAnnotation implements ITestPointAnn{
 	

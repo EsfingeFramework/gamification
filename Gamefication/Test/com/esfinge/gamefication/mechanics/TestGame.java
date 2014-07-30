@@ -6,12 +6,14 @@ import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.esfinge.gamefication.achievement.Achievement;
-import com.esfinge.gamefication.achievement.Point;
-import com.esfinge.gamefication.achievement.Rank;
-import com.esfinge.gamefication.achievement.Reward;
-import com.esfinge.gamefication.achievement.Tropy;
-import com.esfinge.gamefication.user.UserStorage;
+import com.esfinge.gamification.achievement.Achievement;
+import com.esfinge.gamification.achievement.Point;
+import com.esfinge.gamification.achievement.Rank;
+import com.esfinge.gamification.achievement.Reward;
+import com.esfinge.gamification.achievement.Trophy;
+import com.esfinge.gamification.mechanics.Game;
+import com.esfinge.gamification.mechanics.GameMemoryStorage;
+import com.esfinge.gamification.user.UserStorage;
 
 
 public class TestGame {
@@ -61,7 +63,7 @@ public class TestGame {
 	
 	@Test
 	public void addTropy() {
-		Achievement a = new Tropy("champion");
+		Achievement a = new Trophy("champion");
 		game.addAchievement("Spider", a);
 		assertEquals(1, game.getAchievements("Spider").size());	
 		assertEquals(a, game.getAchievement("Spider", "champion"));
@@ -69,7 +71,7 @@ public class TestGame {
 	
 	@Test
 	public void removeTropy(){
-		Achievement a = new Tropy("Golden");
+		Achievement a = new Trophy("Golden");
 		game.addAchievement("Spider", a);
 		game.removeAchievement("Spider", a);
 		assertNull(game.getAchievement("Spider", "Golden").getName());	
@@ -78,8 +80,8 @@ public class TestGame {
 	
 	@Test
 	public void addTwoTropy() {
-		Achievement a1 = new Tropy("champion");
-		Achievement a2 = new Tropy("champion");		
+		Achievement a1 = new Trophy("champion");
+		Achievement a2 = new Trophy("champion");		
 		game.addAchievement("Spider", a1);
 		game.addAchievement("Spider", a2);		
 		assertEquals(1, game.getAchievements("Spider").size());
@@ -89,8 +91,8 @@ public class TestGame {
 	@Test
 	public void addTropyDifferentUser(){
 		UserStorage.setUserID("Duende");
-		Achievement a1 = new Tropy("champion");
-		Achievement a2 = new Tropy("champion");
+		Achievement a1 = new Trophy("champion");
+		Achievement a2 = new Trophy("champion");
 		game.addAchievement("Spider", a1);
 		game.addAchievement("Duende", a2);
 		assertEquals(1, game.getAchievements("Spider").size());	
@@ -177,7 +179,7 @@ public class TestGame {
 	@Test
 	public void addDifferentAchievement(){
 		Achievement a1 = new Point(2, "point");
-		Achievement a2 = new Tropy("Golden");
+		Achievement a2 = new Trophy("Golden");
 		Achievement a3 = new Reward("lunch",false);
 		game.addAchievement("Spider", a1);
 		game.addAchievement("Spider", a2);

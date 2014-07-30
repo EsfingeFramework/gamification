@@ -1,8 +1,8 @@
 package com.esfinge.gamefication.proxy;
-import com.esfinge.gamefication.annotation.Named;
-import com.esfinge.gamefication.annotation.PointsToParam;
-import com.esfinge.gamefication.annotation.PointsToUser;
-import com.esfinge.gamefication.annotation.RemovePoints;
+import com.esfinge.gamification.annotation.Named;
+import com.esfinge.gamification.annotation.PointsToParam;
+import com.esfinge.gamification.annotation.PointsToUser;
+import com.esfinge.gamification.annotation.RemovePoints;
 
 public interface ITestPointAnn {
 	

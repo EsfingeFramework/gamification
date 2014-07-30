@@ -11,10 +11,12 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.esfinge.gamefication.achievement.Achievement;
-import com.esfinge.gamefication.achievement.Point;
-import com.esfinge.gamefication.achievement.Reward;
-import com.esfinge.gamefication.achievement.Tropy;
+import com.esfinge.gamification.achievement.Achievement;
+import com.esfinge.gamification.achievement.Point;
+import com.esfinge.gamification.achievement.Reward;
+import com.esfinge.gamification.achievement.Trophy;
+import com.esfinge.gamification.mechanics.Game;
+import com.esfinge.gamification.mechanics.GameDatabaseStorage;
 
 
 public class TestGameToDatabase {

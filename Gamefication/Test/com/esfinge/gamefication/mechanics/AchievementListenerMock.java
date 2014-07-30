@@ -1,8 +1,8 @@
 package com.esfinge.gamefication.mechanics;
 import org.junit.Assert;
 
-import com.esfinge.gamefication.achievement.Achievement;
-import com.esfinge.gamefication.listener.AchievementListener;
+import com.esfinge.gamification.achievement.Achievement;
+import com.esfinge.gamification.listener.AchievementListener;
 
 public class AchievementListenerMock implements AchievementListener {
 	

@@ -6,11 +6,13 @@ import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.esfinge.gamefication.achievement.Achievement;
-import com.esfinge.gamefication.achievement.Point;
 import com.esfinge.gamefication.mechanics.FakeUser;
-import com.esfinge.gamefication.mechanics.GameMemoryStorage;
-import com.esfinge.gamefication.user.UserStorage;
+import com.esfinge.gamification.achievement.Achievement;
+import com.esfinge.gamification.achievement.Point;
+import com.esfinge.gamification.mechanics.GameMemoryStorage;
+import com.esfinge.gamification.proxy.GameInvoker;
+import com.esfinge.gamification.proxy.GameProxy;
+import com.esfinge.gamification.user.UserStorage;
 
 public class TestDynamicProxy {
 	

@@ -3,11 +3,14 @@ package com.esfinge.gamefication.mechanics;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.esfinge.gamefication.achievement.Achievement;
-import com.esfinge.gamefication.achievement.Point;
-import com.esfinge.gamefication.achievement.Rank;
-import com.esfinge.gamefication.achievement.Reward;
-import com.esfinge.gamefication.achievement.Tropy;
+import com.esfinge.gamification.achievement.Achievement;
+import com.esfinge.gamification.achievement.Point;
+import com.esfinge.gamification.achievement.Rank;
+import com.esfinge.gamification.achievement.Reward;
+import com.esfinge.gamification.achievement.Trophy;
+import com.esfinge.gamification.mechanics.Game;
+import com.esfinge.gamification.mechanics.GameFileStorage;
+import com.esfinge.gamification.mechanics.GameMemoryStorage;
 
 
 public class TestGameFileStorage {
@@ -39,7 +42,7 @@ public class TestGameFileStorage {
 		Achievement rw = new Reward("cupom");
 		gameFile.addAchievement(user, rw);
 		
-		Achievement tr = new Tropy("Gold");
+		Achievement tr = new Trophy("Gold");
 		gameFile.addAchievement(user, tr);
 	}
 	
