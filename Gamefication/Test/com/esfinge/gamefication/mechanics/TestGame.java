@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import com.esfinge.gamification.achievement.Achievement;
 import com.esfinge.gamification.achievement.Point;
-import com.esfinge.gamification.achievement.Rank;
+import com.esfinge.gamification.achievement.Ranking;
 import com.esfinge.gamification.achievement.Reward;
 import com.esfinge.gamification.achievement.Trophy;
 import com.esfinge.gamification.mechanics.Game;
@@ -29,14 +29,14 @@ public class TestGame {
 	
 	@Test
 	public void addRank() {
-		Achievement a = new Rank("Noob", "Level 1");
+		Achievement a = new Ranking("Noob", "Level 1");
 		game.addAchievement("Spider", a);
 		assertEquals(1, game.getAchievements("Spider").size());		
 	}
 	
 	@Test
 	public void removeRank() {
-		Achievement a = new Rank("Noob", "Level 1");
+		Achievement a = new Ranking("Noob", "Level 1");
 		game.addAchievement("Spider", a);
 		game.removeAchievement("Spider", a);
 		assertNull(game.getAchievement("Spider",a.getName()));
@@ -44,8 +44,8 @@ public class TestGame {
 	
 	@Test
 	public void addTwoRank() {
-		Achievement a = new Rank("Noob", "Level 1");
-		Achievement a1 = new Rank("Noob", "Level 1");
+		Achievement a = new Ranking("Noob", "Level 1");
+		Achievement a1 = new Ranking("Noob", "Level 1");
 		game.addAchievement("Spider", a);
 		game.addAchievement("Spider", a1);
 		assertEquals(1, game.getAchievements("Spider").size());	
@@ -54,7 +54,7 @@ public class TestGame {
 	@Test
 	public void addRankDifferentUser(){
 		UserStorage.setUserID("Duende");
-		Achievement a = new Rank("Noob", "Level 1");
+		Achievement a = new Ranking("Noob", "Level 1");
 		game.addAchievement("Spider", a);
 		game.addAchievement("Duende", a);
 		assertEquals(1, game.getAchievements("Spider").size());	

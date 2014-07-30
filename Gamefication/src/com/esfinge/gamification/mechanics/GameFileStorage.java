@@ -11,7 +11,7 @@ import java.util.Properties;
 
 import com.esfinge.gamification.achievement.Achievement;
 import com.esfinge.gamification.achievement.Point;
-import com.esfinge.gamification.achievement.Rank;
+import com.esfinge.gamification.achievement.Ranking;
 import com.esfinge.gamification.achievement.Reward;
 import com.esfinge.gamification.achievement.Trophy;
 import com.esfinge.gamification.listener.AchievementListener;
@@ -58,8 +58,8 @@ public class GameFileStorage extends Game {
 			if (a instanceof Point) {
 				prop.setProperty(key, ((Point) a).getQuantity().toString());
 			}
-			if (a instanceof Rank) {
-				prop.setProperty(key, ((Rank) a).getLevel().toString());
+			if (a instanceof Ranking) {
+				prop.setProperty(key, ((Ranking) a).getLevel().toString());
 			}
 			if (a instanceof Reward) {
 				prop.setProperty(key,
@@ -154,7 +154,7 @@ public class GameFileStorage extends Game {
 					
 
 					if (achievementType.equals("Rank")) {
-						a = new Rank(achievementName, achievementValue);
+						a = new Ranking(achievementName, achievementValue);
 						achievements.put(userName, a);
 					}
 					

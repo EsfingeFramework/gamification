@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import com.esfinge.gamification.achievement.Achievement;
 import com.esfinge.gamification.achievement.Point;
-import com.esfinge.gamification.achievement.Rank;
+import com.esfinge.gamification.achievement.Ranking;
 import com.esfinge.gamification.achievement.Reward;
 import com.esfinge.gamification.achievement.Trophy;
 import com.esfinge.gamification.mechanics.Game;
@@ -36,7 +36,7 @@ public class TestGameFileStorage {
 		Achievement n = new Point(500, "placar");
 		gameFile.addAchievement(user, n);
 		
-		Achievement r = new Rank("reputacao", "platinum");
+		Achievement r = new Ranking("reputacao", "platinum");
 		gameFile.addAchievement(user, r);
 		
 		Achievement rw = new Reward("cupom");

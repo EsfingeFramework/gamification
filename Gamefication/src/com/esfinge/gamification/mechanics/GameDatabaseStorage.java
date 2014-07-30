@@ -2,8 +2,6 @@ package com.esfinge.gamification.mechanics;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -11,7 +9,6 @@ import java.util.Map;
 
 import com.esfinge.gamification.achievement.Achievement;
 import com.esfinge.gamification.achievement.Point;
-import com.esfinge.gamification.listener.AchievementListener;
 import com.esfinge.gamification.mechanics.database.PointStorage;
 
 public class GameDatabaseStorage extends Game {

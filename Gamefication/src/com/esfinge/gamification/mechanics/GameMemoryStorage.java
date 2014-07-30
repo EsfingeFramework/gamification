@@ -1,11 +1,9 @@
 package com.esfinge.gamification.mechanics;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.esfinge.gamification.achievement.Achievement;
-import com.esfinge.gamification.listener.AchievementListener;
 
 public class GameMemoryStorage extends Game {
 

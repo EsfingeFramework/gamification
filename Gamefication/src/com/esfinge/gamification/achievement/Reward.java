@@ -40,7 +40,7 @@ public class Reward implements Achievement{
 			if(!r.getName().equals(getName()) || r instanceof Reward)
 				throw new RuntimeException("The achievement should be of the same type");
 		}catch (RuntimeException e) {
-				this.used = ((Reward)r).isUsed() ? false : true;
+				this.used = true;
 			}
 		
 	}

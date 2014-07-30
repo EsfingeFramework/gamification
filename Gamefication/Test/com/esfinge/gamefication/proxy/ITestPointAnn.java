@@ -12,9 +12,11 @@ public interface ITestPointAnn {
     @PointsToUser(name = "GOLD", quantity = 500)
     public void doWrong();
     
+    @RemovePoints(name="GOLD", quantity = 2000)
+    public void doRemoveWrong();
+    
     @RemovePoints(name = "GOLD", quantity = 500)
     public void doRemoveSomething();
-    
     
     @PointsToParam(name = "SILVER", quantity = 100, param="owner")
     public void niceComment(String comment, @Named("owner") String owner);
