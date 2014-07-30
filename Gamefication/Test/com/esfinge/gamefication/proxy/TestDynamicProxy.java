@@ -3,23 +3,32 @@ package com.esfinge.gamefication.proxy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.esfinge.gamefication.achievement.Achievement;
 import com.esfinge.gamefication.achievement.Point;
+import com.esfinge.gamefication.mechanics.FakeUser;
 import com.esfinge.gamefication.mechanics.GameMemoryStorage;
 import com.esfinge.gamefication.user.UserStorage;
 
 public class TestDynamicProxy {
+	
+	GameMemoryStorage gs;
+	ITestPointAnn p;
+	
+	@Before
+	public void setupGame(){
+		UserStorage.setUserID("Spider");
+		p = (ITestPointAnn) GameProxy.createProxy(new TestPointAnnotation());
+		gs = new GameMemoryStorage();
+		GameInvoker gi = GameInvoker.getInstance();
+		gi.setGame(gs);
+	}
+	
 
 	@Test
 	public void testAddPoints() {
-		UserStorage.setUserID("Spider");
-		ITestPointAnn p = new TestPointAnnotation();
-		p = (ITestPointAnn) GameProxy.createProxy(p);
-		GameMemoryStorage gs = new GameMemoryStorage();
-		GameInvoker gi = GameInvoker.getInstance();
-		gi.setGame(gs);
 		p.doSomething();
 		p.doSomething();
 		p.doSomething();
@@ -30,12 +39,6 @@ public class TestDynamicProxy {
 	
 	@Test
 	public void testInvocationWithException() {
-		UserStorage.setUserID("Spider");
-		ITestPointAnn p = new TestPointAnnotation();
-		p = (ITestPointAnn) GameProxy.createProxy(p);
-		GameMemoryStorage gs = new GameMemoryStorage();
-		GameInvoker gi = GameInvoker.getInstance();
-		gi.setGame(gs);
 		p.doSomething();
 		try {
 			p.doWrong();
@@ -48,17 +51,26 @@ public class TestDynamicProxy {
 	
 	@Test
 	public void testRemovePoints() {
-		UserStorage.setUserID("Spider");
-		ITestPointAnn p = new TestPointAnnotation();
-		p = (ITestPointAnn) GameProxy.createProxy(p);
-		GameMemoryStorage gs = new GameMemoryStorage();
-		GameInvoker gi = GameInvoker.getInstance();
-		gi.setGame(gs);
 		p.doSomething();
 		p.doRemoveSomething();
 
 		Achievement ach = gs.getAchievement("Spider", "GOLD");
 		assertEquals(new Integer(500), ((Point) ach).getQuantity());
 	}
+	
+	@Test
+	public void addPointsToParam(){
+		p.niceComment("OK! Thank you!", "Thor");
+		Achievement ach = gs.getAchievement("Thor", "SILVER");
+		assertEquals(new Integer(100), ((Point) ach).getQuantity());
+	}
+	
+	@Test
+	public void addPointsToParamProperty(){
+		p.niceComment(new Comment(new FakeUser("Thor"), "OK! Thank you!"));
+		Achievement ach = gs.getAchievement("Thor", "SILVER");
+		assertEquals(new Integer(300), ((Point) ach).getQuantity());
+	}
+	
 
 }
