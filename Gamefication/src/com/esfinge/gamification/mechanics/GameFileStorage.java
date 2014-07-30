@@ -19,18 +19,14 @@ import com.esfinge.gamification.user.UserStorage;
 
 public class GameFileStorage extends Game {
 
-	private String key;
+	private String key;	
+	private Properties props;
+	private static File dir = null;
 	private Map<Object, Map<String, Achievement>> achievments = new HashMap<>();
 	private ArrayList<AchievementListener> ac = new ArrayList<>();
-	static File dir = new File(
-			"C:/Users/Aluno/Documents/GitHub/gamification/Gamefication/properties/achievements.properties");
-
-	public static Properties getProp() throws IOException {
-		Properties props = new Properties();
-		FileInputStream file = new FileInputStream(dir);
-		props.load(file);
-		file.close();
-		return props;
+	
+	public GameFileStorage() {
+		this.dir = new File("C:/Users/Aluno/Documents/GitHub/gamification/Gamefication/properties/achievements.properties");		  
 	}
 
 	/*
@@ -43,38 +39,36 @@ public class GameFileStorage extends Game {
 	@Override
 	public void insertAchievement(Object user, Achievement a) {
 
-		UserStorage.setUserID("Guerra");
 		String className = a.getClass().getName();
 		className = className.substring(className.lastIndexOf('.') + 1);
 
-		key = UserStorage.getUserID().toString() + "." + className + "."
-				+ a.getName();
+		key = user.toString() + "." + className + "." + a.getName();
 
 		try {
-
-			Properties prop = getProp();
-			FileOutputStream file = new FileOutputStream(dir);
-
+			props = new Properties();
+			FileInputStream inputFile = new FileInputStream(dir);
+			props.load(inputFile);
+					
 			if (a instanceof Point) {
-				prop.setProperty(key, ((Point) a).getQuantity().toString());
+				props.setProperty(key, ((Point) a).getQuantity().toString());
 			}
 			if (a instanceof Ranking) {
-				prop.setProperty(key, ((Ranking) a).getLevel().toString());
+				props.setProperty(key, ((Ranking) a).getLevel().toString());
 			}
 			if (a instanceof Reward) {
-				prop.setProperty(key,
+				props.setProperty(key,
 						((Boolean) ((Reward) a).isUsed()).toString());
 			}
 			if (a instanceof Trophy) {
-				prop.setProperty(key, "");
+				props.setProperty(key, "");
 			}
 
-			prop.store(file, null);
-			file.close();
+			FileOutputStream outputFile = new FileOutputStream(dir);
+			props.store(outputFile, null);
+			outputFile.close();
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException("Achievement '"+key+"' could not be written into file properly."+e);
 		}
 	}
 
@@ -88,23 +82,25 @@ public class GameFileStorage extends Game {
 	@Override
 	public void deleteAchievement(Object user, Achievement a) {
 
-		UserStorage.setUserID("Guerra");
 		String className = a.getClass().getName();
 		className = className.substring(className.lastIndexOf('.') + 1);
 
-		key = UserStorage.getUserID().toString() + "." + className + "."
+		key = user.toString() + "." + className + "."
 				+ a.getName();
 
 		try {
-			Properties prop = getProp();
-			prop.remove(key);
-			FileOutputStream file = new FileOutputStream(dir);
-			prop.store(file, null);
-			file.close();
+			props = new Properties();
+			FileInputStream inputFile = new FileInputStream(dir);
+			props.load(inputFile);
+			
+			props.remove(key);
+			
+			FileOutputStream outputFile = new FileOutputStream(dir);
+			props.store(outputFile, null);
+			outputFile.close();
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException("Achievement '"+key+"' could not be deleted from file properly."+e);
 		}
 	}
 
@@ -129,13 +125,13 @@ public class GameFileStorage extends Game {
 	 */
 	@Override
 	public Map<String, Achievement> getAchievements(Object user) {
-		UserStorage.setUserID("Guerra");
+		
 		Properties prop;
 		Map<String, Achievement> achievements = new HashMap<String, Achievement>();
 		Achievement a;
 
 		try {
-			prop = getProp();
+			prop = new Properties();
 
 			for (String key : prop.stringPropertyNames()) {
 				String userName = key.substring(0, key.indexOf("."));
@@ -145,7 +141,7 @@ public class GameFileStorage extends Game {
 						.substring(key.lastIndexOf(".") + 1);
 				String achievementValue = prop.getProperty(key);
 
-				if (UserStorage.getUserID().toString().equals(userName)) {
+				if (user.toString().equals(userName)) {
 					
 					if (achievementType.equals("Point")) {
 						a = new Point(Integer.parseInt(achievementValue), achievementName);
@@ -165,7 +161,7 @@ public class GameFileStorage extends Game {
 					}
 					
 
-					if (achievementType.equals("Tropy")) {
+					if (achievementType.equals("Trophy")) {
 						a = new Trophy(achievementName);
 						achievements.put(userName, a);
 					}

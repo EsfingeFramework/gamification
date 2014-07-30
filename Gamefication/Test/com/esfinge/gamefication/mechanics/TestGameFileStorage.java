@@ -1,5 +1,7 @@
 package com.esfinge.gamefication.mechanics;
 
+import junit.framework.Assert;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,7 +30,7 @@ public class TestGameFileStorage {
 	    
 	}
 
-	@Test
+	/*@Test
 	public void addPointProperties(){
 		Achievement p = new Point(200, "moedas");
 		gameFile.addAchievement(user, p);
@@ -43,20 +45,21 @@ public class TestGameFileStorage {
 		gameFile.addAchievement(user, rw);
 		
 		Achievement tr = new Trophy("Gold");
-		gameFile.addAchievement(user, tr);
-	}
+		gameFile.addAchievement(user, tr);		
 	
-	/*@Test
-	public void removePointFile(){
-		Achievement p = new Point(200, "moedas");
-		gameFile.removeAchievement(user, p);
 	}*/
 	
 	@Test
+	public void removePointFile(){
+		Achievement p = new Point(200, "moedas");
+		gameFile.removeAchievement(user, p);
+	}
+	
+	/*@Test
 	public void getAchievements() {
 		gameFile.getAchievements(user);
 		
-	}
+	}*/
 	
 }
 
