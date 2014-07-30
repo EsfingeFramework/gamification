@@ -21,7 +21,8 @@ public class PointStorage {
 
 		PreparedStatement stmt;
 		stmt = connection
-				.prepareStatement("insert into gamification.points (userid, name, points) values (?,?,?)");
+				.prepareStatement("insert into gamification.points "
+						+ "(userid, name, points) values (?,?,?)");
 		stmt.setString(1, user.toString());
 		stmt.setString(2, p.getName());
 		stmt.setInt(3, p.getQuantity());
@@ -31,7 +32,8 @@ public class PointStorage {
 	public Point select(Object user, String name) throws SQLException {
 		PreparedStatement stmt;
 		stmt = connection
-				.prepareStatement("select * from gamification.points where userid=? and name = ?");
+				.prepareStatement("select * from gamification.points "
+						+ "where userid=? and name = ?");
 		stmt.setString(1, user.toString());
 		stmt.setString(2, name);
 		ResultSet rs = stmt.executeQuery();
@@ -47,7 +49,8 @@ public class PointStorage {
 		Map<String, Achievement> map = new HashMap<String, Achievement>();
 		PreparedStatement stmt;
 		stmt = connection
-				.prepareStatement("select * from gamification.points where userid=?");
+				.prepareStatement("select * from gamification.points "
+						+ "where userid=?");
 		stmt.setString(1, user.toString());
 		ResultSet rs = stmt.executeQuery();
 		while(rs.next()){
@@ -63,7 +66,8 @@ public class PointStorage {
 	public void update(Object user, Point p) throws SQLException {
 		PreparedStatement stmt;
 		stmt = connection
-				.prepareStatement("update gamification.points set points = ? where userid=? and name=?");
+				.prepareStatement("update gamification.points "
+						+ "set points = ? where userid=? and name=?");
 		stmt.setString(2, user.toString());
 		stmt.setString(3, p.getName());
 		stmt.setInt(1, p.getQuantity());
