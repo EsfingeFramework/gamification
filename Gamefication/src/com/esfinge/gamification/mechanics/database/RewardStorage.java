@@ -8,18 +8,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.esfinge.gamification.achievement.Achievement;
-import com.esfinge.gamification.achievement.Point;
 import com.esfinge.gamification.achievement.Reward;
 
-public class RewardStorage {
+public class RewardStorage implements Storage {
 	private Connection connection;
 
 	public RewardStorage(Connection c) {
 		connection = c;
 	}
 
-	public void insert(Object user, Reward r) throws SQLException {
-
+	public void insert(Object user, Achievement a) throws SQLException {
+		Reward r = (Reward)a;
 		PreparedStatement stmt;
 		stmt = connection
 				.prepareStatement("insert into gamification.reward "
@@ -64,7 +63,8 @@ public class RewardStorage {
 		return map;
 	}
 
-	public void update(Object user, Reward r) throws SQLException {
+	public void update(Object user, Achievement a) throws SQLException {
+		Reward r = (Reward)a;
 		PreparedStatement stmt;
 		stmt = connection
 				.prepareStatement("update gamification.reward "
@@ -73,5 +73,17 @@ public class RewardStorage {
 		stmt.setString(3, r.getName());
 		stmt.setBoolean(1, r.isUsed());
 		stmt.execute();
+	}
+
+	@Override
+	public void delete(Object user, Achievement p) throws SQLException {
+		PreparedStatement stmt;
+		stmt = connection
+				.prepareStatement("delete from gamification.reward "
+						+ "where userid=? and name = ?");
+		stmt.setString(1, user.toString());
+		stmt.setString(2, p.getName());
+		stmt.execute();
+		
 	}
 }
