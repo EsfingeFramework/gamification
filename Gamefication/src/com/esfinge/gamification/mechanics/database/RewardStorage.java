@@ -8,39 +8,39 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.esfinge.gamification.achievement.Achievement;
-import com.esfinge.gamification.achievement.Ranking;
+import com.esfinge.gamification.achievement.Point;
+import com.esfinge.gamification.achievement.Reward;
 
-public class RankingStorage {
-
+public class RewardStorage {
 	private Connection connection;
-	
-	public RankingStorage(Connection c){
+
+	public RewardStorage(Connection c) {
 		connection = c;
 	}
-	
-	public void insert (Object user, Ranking r) throws SQLException{
+
+	public void insert(Object user, Reward r) throws SQLException {
+
 		PreparedStatement stmt;
-		
 		stmt = connection
-				.prepareStatement("insert into gamification.ranking"
-						+ " (userid, name, level) values (?,?,?)");
-		stmt.setString(1,user.toString());
-		stmt.setString(2,r.getName());
-		stmt.setString(3, r.getLevel());
+				.prepareStatement("insert into gamification.reward "
+						+ "(userid, name, used) values (?,?,?)");
+		stmt.setString(1, user.toString());
+		stmt.setString(2, r.getName());
+		stmt.setBoolean(3, r.isUsed());
 		stmt.execute();
 	}
-	
-	public Ranking select(Object user, String name) throws SQLException {
+
+	public Reward select(Object user, String name) throws SQLException {
 		PreparedStatement stmt;
 		stmt = connection
-				.prepareStatement("select * from gamification.ranking"
-						+ " where userid=? and name = ?");
+				.prepareStatement("select * from gamification.reward "
+						+ "where userid=? and name = ?");
 		stmt.setString(1, user.toString());
 		stmt.setString(2, name);
 		ResultSet rs = stmt.executeQuery();
 		if (rs.next()) {
-			String level = rs.getString("level");
-			Ranking r = new Ranking(name, level);
+			boolean u = rs.getBoolean("used");
+			Reward r = new Reward(name, u);
 			return r;
 		}
 		return null;
@@ -50,28 +50,28 @@ public class RankingStorage {
 		Map<String, Achievement> map = new HashMap<String, Achievement>();
 		PreparedStatement stmt;
 		stmt = connection
-				.prepareStatement("select * from gamification.ranking "
+				.prepareStatement("select * from gamification.reward "
 						+ "where userid=?");
 		stmt.setString(1, user.toString());
 		ResultSet rs = stmt.executeQuery();
 		while(rs.next()){
 			String name = rs.getString("name");
-			String level = rs.getString("level");
-			Ranking r = new Ranking(name, level);
+			boolean u = rs.getBoolean("used");
+			Reward r = new Reward(name,u);
 			map.put(r.getName(), r);
 		}
 		
 		return map;
 	}
-	
-	public void update(Object user, Ranking r) throws SQLException {
+
+	public void update(Object user, Reward r) throws SQLException {
 		PreparedStatement stmt;
 		stmt = connection
-				.prepareStatement("update gamification.ranking "
-						+ "set level = ? where userid=? and name=?");
+				.prepareStatement("update gamification.reward "
+						+ "set used = ? where userid=? and name=?");
 		stmt.setString(2, user.toString());
 		stmt.setString(3, r.getName());
-		stmt.setString(1, r.getLevel());
+		stmt.setBoolean(1, r.isUsed());
 		stmt.execute();
 	}
 }

@@ -2,22 +2,22 @@ package com.esfinge.gamification.mechanics;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Map;
 
 import com.esfinge.gamification.achievement.Achievement;
-import com.esfinge.gamification.achievement.Point;
-import com.esfinge.gamification.listener.AchievementListener;
 import com.esfinge.gamification.mechanics.database.PointStorage;
+import com.esfinge.gamification.mechanics.database.Storage;
+import com.esfinge.gamification.mechanics.database.StorageFactory;
 
 public class GameDatabaseStorage extends Game {
 	private Connection connection;
+	private StorageFactory factory;
 	public GameDatabaseStorage(Connection c)  {
 		connection = c;
+		factory = new StorageFactory(c);
 		try {
 			
 			DatabaseMetaData dbmd = connection.getMetaData();
@@ -33,29 +33,25 @@ public class GameDatabaseStorage extends Game {
 				s.execute("create table gamification.users"
 						+ "(userid varchar(255) not null,"
 						+ "primary key (userid))");
-				s.execute("create table gamification.points "
+				s.execute("create table gamification.points"
 						+ "(userid varchar(255) not null,"
-						+ " name varchar(255) not null, 	"
+						+ " name varchar(255) not null, "
 						+ "points integer not null, "
-						+ "primary key (userid,name)"
-						+ "foreign key(userid) references users(userid))");
+						+ "primary key (userid,name))");
 				s.execute("create table gamification.ranking "
 						+ "(userid varchar(255) not null,"
-						+ " name varchar(255) not null, 	"
+						+ " name varchar(255) not null, "
 						+ " level varchar(255) not null, "
-						+ "primary key (userid,name)"
-						+ "foreign key(userid) references users(userid))");
+						+ "primary key (userid,name))");
 				s.execute("create table gamification.reward "
 						+ "(userid varchar(255) not null,"
 						+ " name varchar(255) not null, "
 						+ " used boolean not null, "
-						+ "primary key (userid,name)"
-						+ "foreign key(userid) references users(userid))");
+						+ "primary key (userid,name))");
 				s.execute("create table gamification.trophy "
 						+ "(userid varchar(255) not null,"
 						+ " name varchar(255) not null, "
-						+ "primary key (userid,name)"
-						+ "foreign key(userid) references users(userid))");
+						+ "primary key (userid,name))");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -65,12 +61,11 @@ public class GameDatabaseStorage extends Game {
 	
 	@Override
 	public void insertAchievement(Object user, Achievement a) {
-		// TODO Auto-generated method stub
-		PointStorage ps = new PointStorage(connection);
+		Storage ps = factory.storageFor(a);
 		try {
-			Point p = (Point)this.getAchievement(user, a.getName());
+			Achievement p = this.getAchievement(user, a.getName());
 			if (p == null){
-				ps.insert(user, (Point)a);
+				ps.insert(user, a);
 			}else{
 				p.incrementAchievement(a);
 				ps.update(user, p);
@@ -84,8 +79,8 @@ public class GameDatabaseStorage extends Game {
 
 	@Override
 	public void deleteAchievement(Object user, Achievement a) {
-		PointStorage ps = new PointStorage(connection);
-		Point p = null;
+		Storage ps = factory.storageFor(a);
+		Achievement p = null;
 		try {
 			p = ps.select(user, a.getName());
 			p.removeAchievement(a);
@@ -100,8 +95,8 @@ public class GameDatabaseStorage extends Game {
 	@Override
 	public Achievement getAchievement(Object user, String achievName) {
 		
-		Point p = null;
-		PointStorage ps = new PointStorage(connection);
+		Achievement p = null;
+		Storage ps = new PointStorage(connection);
 		try {
 			p = ps.select(user, achievName);
 		
@@ -114,7 +109,7 @@ public class GameDatabaseStorage extends Game {
 
 	@Override
 	public Map<String, Achievement> getAchievements(Object user) {
-		PointStorage ps = new PointStorage(connection);
+		Storage ps = new PointStorage(connection);
 		try {
 			return ps.select(user);
 		} catch (SQLException e) {
