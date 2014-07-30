@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import com.esfinge.gamification.achievement.Achievement;
 import com.esfinge.gamification.achievement.Point;
+import com.esfinge.gamification.achievement.Rank;
 import com.esfinge.gamification.achievement.Reward;
 import com.esfinge.gamification.achievement.Trophy;
 import com.esfinge.gamification.mechanics.Game;
@@ -37,7 +38,52 @@ public class TestGameToDatabase {
 		Statement s = connection.createStatement();
 		s.execute("truncate table gamification.users");
 		s.execute("truncate table gamification.points");
+		s.execute("truncate table gamification.ranking");
+		s.execute("truncate table gamification.reward");
+		s.execute("truncate table gamification.trophy");
 	    user = "Jaspion";
+	}
+	
+	@Test
+	public void addRanking(){
+		Achievement r = new Rank("mago", "master");
+		game.addAchievement(user, r);
+		assertEquals(r, game.getAchievement("mago", "master"));
+	}
+	
+	@Test
+	public void addTwoRank() {
+		Achievement r1 = new Rank("mago", "master");
+		Achievement r2 = new Rank("mago2", "noob");		
+		game.addAchievement("Spider", r1);
+		game.addAchievement("Spider", r2);	
+	}
+	
+	@Test
+	public void addRankDifferentUser(){
+		FakeUser user2 = new FakeUser("Jiraia");
+		Achievement r1 = new Rank("mago", "master");
+		Achievement r2 = new Rank("mago2", "noob");
+		game.addAchievement("Spider", r1);
+		game.addAchievement(user2, r2);
+	}
+	
+	@Test
+	public void removeRank(){
+		Achievement r = new Rank("mago", "master");
+		game.addAchievement("Spider", r);
+		game.removeAchievement("Spider", r);	
+	}
+	
+	
+	@Test
+	public void removeRankDifferentUser(){
+		FakeUser user2 = new FakeUser("Jiraia");
+		Achievement r1 = new Rank("mago", "master");
+		Achievement r2 = new Rank("mago2", "noob");
+		game.addAchievement("Spider", r1);
+		game.addAchievement(user2, r2);
+		game.removeAchievement(user2, r1);
 	}
 	
 	@Test
