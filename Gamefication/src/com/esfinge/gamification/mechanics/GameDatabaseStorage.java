@@ -14,7 +14,7 @@ import com.esfinge.gamification.achievement.Point;
 import com.esfinge.gamification.listener.AchievementListener;
 import com.esfinge.gamification.mechanics.database.PointStorage;
 
-public class GameDatabaseStorage implements Game {
+public class GameDatabaseStorage extends Game {
 	private Connection connection;
 	public GameDatabaseStorage(Connection c)  {
 		connection = c;
@@ -39,7 +39,7 @@ public class GameDatabaseStorage implements Game {
 	}
 	
 	@Override
-	public void addAchievement(Object user, Achievement a) {
+	public void insertAchievement(Object user, Achievement a) {
 		// TODO Auto-generated method stub
 		PointStorage ps = new PointStorage(connection);
 		try {
@@ -58,7 +58,7 @@ public class GameDatabaseStorage implements Game {
 	}
 
 	@Override
-	public void removeAchievement(Object user, Achievement a) {
+	public void deleteAchievement(Object user, Achievement a) {
 		PointStorage ps = new PointStorage(connection);
 		Point p = null;
 		try {
@@ -97,12 +97,6 @@ public class GameDatabaseStorage implements Game {
 			e.printStackTrace();
 		}
 		return null;
-	}
-
-	@Override
-	public void addListener(AchievementListener listener) {
-		// TODO Auto-generated method stub
-
 	}
 
 }
