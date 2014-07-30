@@ -17,7 +17,7 @@ import com.esfinge.gamification.achievement.Trophy;
 import com.esfinge.gamification.listener.AchievementListener;
 import com.esfinge.gamification.user.UserStorage;
 
-public class GameFileStorage implements Game {
+public class GameFileStorage extends Game {
 
 	private String key;
 	private Map<Object, Map<String, Achievement>> achievments = new HashMap<>();
@@ -41,7 +41,7 @@ public class GameFileStorage implements Game {
 	 * com.esfinge.gamefication.achievement.Achievement)
 	 */
 	@Override
-	public void addAchievement(Object user, Achievement a) {
+	public void insertAchievement(Object user, Achievement a) {
 
 		UserStorage.setUserID("Guerra");
 		String className = a.getClass().getName();
@@ -86,7 +86,7 @@ public class GameFileStorage implements Game {
 	 * , com.esfinge.gamefication.achievement.Achievement)
 	 */
 	@Override
-	public void removeAchievement(Object user, Achievement a) {
+	public void deleteAchievement(Object user, Achievement a) {
 
 		UserStorage.setUserID("Guerra");
 		String className = a.getClass().getName();
