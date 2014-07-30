@@ -3,7 +3,7 @@ package com.esfinge.gamification.processors;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
-import com.esfinge.gamification.achievement.Rank;
+import com.esfinge.gamification.achievement.Ranking;
 import com.esfinge.gamification.annotation.RankingsToUser;
 import com.esfinge.gamification.mechanics.Game;
 import com.esfinge.gamification.user.UserStorage;
@@ -24,7 +24,7 @@ public class RankingsToUserProcessor implements AchievementProcessor {
 	public void process(Game game, Object encapsulated, Method method,
 			Object[] args) {		
 		Object user = UserStorage.getUserID();
-		Rank r = new Rank(name, level);
+		Ranking r = new Ranking(name, level);
 		game.addAchievement(user, r);
 	}
 
