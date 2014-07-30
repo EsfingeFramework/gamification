@@ -35,7 +35,8 @@ public class TestGameToDatabase {
 	public void initializeGame() throws Exception{
 		game = new GameDatabaseStorage(connection);
 		Statement s = connection.createStatement();
-		s.execute("truncate table gamefication.points");
+		s.execute("truncate table gamification.users");
+		s.execute("truncate table gamification.points");
 	    user = "Jaspion";
 	}
 	
