@@ -7,6 +7,10 @@ public class FakeUser {
 	private String login;
 
 	
+	public String getLogin() {
+		return login;
+	}
+
 	public void setLogin(String login) {
 		this.login = login;
 	}
@@ -41,4 +45,8 @@ public class FakeUser {
 		return true;
 	}
 
+	public String toString() {
+		return login;
+	}
+	
 }
