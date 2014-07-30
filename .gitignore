@@ -1,0 +1,4 @@
+Gamefication/bin/com/esfinge/gamification/mechanics/GameFileStorage.class
+Gamefication/bin/com/esfinge/gamification/mechanics/GameDatabaseStorage.class
+*.class
+Gamefication/src/com/esfinge/gamification/mechanics/GameDatabaseStorage.java

@@ -1,0 +1,65 @@
+package com.esfinge.gamification.mechanics.database;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.esfinge.gamification.achievement.Achievement;
+import com.esfinge.gamification.achievement.Point;
+import com.esfinge.gamification.achievement.Trophy;
+
+public class TrophyStorage {
+	private Connection connection;
+
+	public TrophyStorage(Connection c) {
+		connection = c;
+	}
+
+	public void insert(Object user, Trophy t) throws SQLException {
+
+		PreparedStatement stmt;
+		stmt = connection
+				.prepareStatement("insert into gamification.trophy "
+						+ "(userid, name) values (?,?)");
+		stmt.setString(1, user.toString());
+		stmt.setString(2, t.getName());
+	
+		stmt.execute();
+	}
+
+	public Trophy select(Object user, String name) throws SQLException {
+		PreparedStatement stmt;
+		stmt = connection
+				.prepareStatement("select * from gamification.trophy "
+						+ "where userid=? and name = ?");
+		stmt.setString(1, user.toString());
+		stmt.setString(2, name);
+		ResultSet rs = stmt.executeQuery();
+		if (rs.next()) {
+			Trophy t = new Trophy(name);
+			return t;
+		}
+		return null;
+	}
+	
+	public Map<String, Achievement> select(Object user) throws SQLException{
+		Map<String, Achievement> map = new HashMap<String, Achievement>();
+		PreparedStatement stmt;
+		stmt = connection
+				.prepareStatement("select * from gamification.trophy "
+						+ "where userid=?");
+		stmt.setString(1, user.toString());
+		ResultSet rs = stmt.executeQuery();
+		while(rs.next()){
+			String name = rs.getString("name");
+			Trophy t = new Trophy(name);
+			map.put(t.getName(), t);
+		}
+		
+		return map;
+	}
+
+}
