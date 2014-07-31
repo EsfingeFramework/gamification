@@ -1,7 +1,6 @@
 package com.esfinge.gamefication.mechanics;
 
-import junit.framework.Assert;
-
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,15 +16,14 @@ import com.esfinge.gamification.mechanics.GameMemoryStorage;
 
 public class TestGameFileStorage {
 	
-	private Game game;
-	private FakeUser user;
+
+	private FakeUser user, user2;
 	private Game gameFile;
 		
 	@Before
 	public void initializeGame(){
-		
-		game = new GameMemoryStorage();
-	    user = new FakeUser("Jiraia");
+	    user = new FakeUser("Megazord");
+	    user2 = new FakeUser("Jiraia");
 	    gameFile = new GameFileStorage();
 	    
 	}
@@ -34,37 +32,46 @@ public class TestGameFileStorage {
 	public void addPointProperties(){
 		Achievement p = new Point(200, "moedas");
 		gameFile.addAchievement(user, p);
+		gameFile.addAchievement(user2, p);
 		
 		Achievement n = new Point(500, "placar");
 		gameFile.addAchievement(user, n);
+		gameFile.addAchievement(user2, n);
 		
 		Achievement r = new Ranking("reputacao", "platinum");
 		gameFile.addAchievement(user, r);
+		gameFile.addAchievement(user2, r);
 		
 		Achievement rw = new Reward("cupom");
 		gameFile.addAchievement(user, rw);
+		gameFile.addAchievement(user2, rw);
 		
 		Achievement tr = new Trophy("Gold");
 		gameFile.addAchievement(user, tr);		
+		
+		Achievement r2 = new Ranking("Gold Trophy", "xxx");
+		gameFile.addAchievement(user2, r2);		
 	
 	}
 	
-	/*@Test
+	
+	@Test
+	public void getAchievementsProperties() {
+		gameFile.getAchievements(user2);
+		
+	}
+		
+	@Test
+	public void getAchievementProperties() {
+		gameFile.getAchievement(user2, "placar");
+	}
+	
+	@After
 	public void removePointFile(){
 		Achievement p = new Point(200, "moedas");
 		gameFile.removeAchievement(user, p);
 	}
-	*/
 	
-	/*@Test
-	public void getAchievements() {
-		gameFile.getAchievements(user);
-		
-	}*/
-		
-	/*@Test
-	public void getAchievementProperties() {
-		gameFile.getAchievement(user, "placar");
-	}*/
+	
 }
 

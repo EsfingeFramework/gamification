@@ -7,20 +7,34 @@ import com.esfinge.gamification.achievement.Reward;
 import com.esfinge.gamification.achievement.Trophy;
 
 public class AchievementFactory {
-	public static Achievement createAchievement(Achievement a) {
-		if (a instanceof Point) {
-			a = new Point(((Point) a).getQuantity(), a.getName());
+	public static Achievement createAchievement(String type, String name, String param) {
+		Achievement a = null;
+		
+		if (type.equals(getClassName(Point.class.getName()))) {
+			a = new Point(Integer.parseInt(param), name);
 		}
-		else if (a instanceof Ranking) {
-			a = new Ranking(a.getName(), ((Ranking) a).getLevel());
+		else if (type.equals(getClassName(Ranking.class.getName()))) {
+			a = new Ranking(name, param);
 		}
-		else if (a instanceof Reward) {
-			a = new Reward(a.getName(), ((Reward) a).isUsed());
+		else if (type.equals(getClassName(Reward.class.getName()))) {
+			a = new Reward(name, Boolean.parseBoolean(param));
 		}
-		else if (a instanceof Trophy) {
-			a = new Trophy(a.getName());
+		else if (type.equals(getClassName(Trophy.class.getName()))) {
+			a = new Trophy(name);
+		}
+		else {
+			throw new RuntimeException ("This achievement type'"+type+"' does not exist.");
 		}
 		
 		return a;
 	}
+	
+	public static String getClassName(String name) {
+		String className = name.substring(name.lastIndexOf(".") + 1);
+		
+		return className;
+	}
+	
+
+
 }

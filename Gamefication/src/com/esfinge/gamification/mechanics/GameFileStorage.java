@@ -14,14 +14,14 @@ import com.esfinge.gamification.achievement.Point;
 import com.esfinge.gamification.achievement.Ranking;
 import com.esfinge.gamification.achievement.Reward;
 import com.esfinge.gamification.achievement.Trophy;
+import com.esfinge.gamification.factory.AchievementFactory;
 import com.esfinge.gamification.listener.AchievementListener;
 
 public class GameFileStorage extends Game {
-
+	
 	private String key;	
 	private Properties props;
 	private static File dir = null;
-	private Map<Object, Map<String, Achievement>> achievments = new HashMap<>();
 	private ArrayList<AchievementListener> ac = new ArrayList<>();
 	private static String delim = "|";
 	
@@ -38,7 +38,6 @@ public class GameFileStorage extends Game {
 	 */
 	@Override
 	public void insertAchievement(Object user, Achievement a) {
-
 		String className = a.getClass().getName();
 		className = className.substring(className.lastIndexOf(".") + 1);
 
@@ -48,6 +47,8 @@ public class GameFileStorage extends Game {
 			props = new Properties();
 			FileInputStream inputFile = new FileInputStream(dir);
 			props.load(inputFile);
+			
+			// createAchievement(String achievementType, String achievementName, String param)
 					
 			if (a instanceof Point) {
 				props.setProperty(key, ((Point) a).getQuantity().toString());
@@ -81,7 +82,6 @@ public class GameFileStorage extends Game {
 	 */
 	@Override
 	public void deleteAchievement(Object user, Achievement a) {
-
 		String className = a.getClass().getName();
 		className = className.substring(className.lastIndexOf(".") + 1);
 
@@ -129,31 +129,15 @@ public class GameFileStorage extends Game {
 						.substring(key.lastIndexOf(delim) + 1);
 				String achievementValue = prop.getProperty(key);
 
-				if (user.toString().equals(userName)) {
+				if (user.toString().equals(userName) && achievementName.equals(achievName)) {
 					
-					if (achievementType.equals("Point")) {
-						a = new Point(Integer.parseInt(achievementValue), achievementName);
-					}
-					else if (achievementType.equals("Rank")) {
-						a = new Ranking(achievementName, achievementValue);
-					}
-					else if (achievementType.equals("Reward")) {
-						a = new Reward(achievementName, Boolean.parseBoolean(achievementValue));
-					}
-					else if (achievementType.equals("Trophy")) {
-						a = new Trophy(achievementName);
-					}
+					a = AchievementFactory.createAchievement(achievementType, achievementName, achievementValue);
 				}
-				
-				System.out.println(achievementType);
-				System.out.println(achievementName);
-
 			}
 
 			FileOutputStream file = new FileOutputStream(dir);
 			prop.store(file, null);
-			file.close();
-			
+			file.close();			
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -171,12 +155,10 @@ public class GameFileStorage extends Game {
 	 */
 	@Override
 	public Map<String, Achievement> getAchievements(Object user) {
-		
 		Properties prop;
-		Map<String, Achievement> achievments = new HashMap<String, Achievement>();
+		Map<String, Achievement> achievements = new HashMap<String, Achievement>();
 		Achievement a;
-		
-
+	
 		try {
 			prop = new Properties();
 			FileInputStream inputFile = new FileInputStream(dir);
@@ -192,27 +174,9 @@ public class GameFileStorage extends Game {
 
 				if (user.toString().equals(userName)) {
 					
-					if (achievementType.equals("Point")) {
-						a = new Point(Integer.parseInt(achievementValue), achievementName);
-						achievments.put(userName, a);
-					}
-					else if (achievementType.equals("Rank")) {
-						a = new Ranking(achievementName, achievementValue);
-						achievments.put(userName, a);
-					}
-					else if (achievementType.equals("Reward")) {
-						a = new Reward(achievementName, Boolean.parseBoolean(achievementValue));
-						achievments.put(userName, a);
-					}
-					else if (achievementType.equals("Trophy")) {
-						a = new Trophy(achievementName);
-						achievments.put(userName, a);
-					}
+					a = AchievementFactory.createAchievement(achievementType, achievementName, achievementValue);
+					achievements.put(a.getName(), a);
 				}
-				
-				System.out.println(achievementType);
-				System.out.println(achievementName);
-
 			}
 
 			FileOutputStream file = new FileOutputStream(dir);
@@ -223,7 +187,7 @@ public class GameFileStorage extends Game {
 			e.printStackTrace();
 		}
 
-		return achievments;
+		return achievements;
 	}
 
 	/*
@@ -241,7 +205,6 @@ public class GameFileStorage extends Game {
 	private void notify(AchievementListener listener) {
 		for (AchievementListener a : ac) {
 			a.achievementAdded(a, null);
-
 		}
 	}
 }
