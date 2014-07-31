@@ -28,14 +28,14 @@ public class TestGame {
 	}
 	
 	@Test
-	public void addRank() {
+	public void addRankinkg() {
 		Achievement a = new Ranking("Noob", "Level 1");
 		game.addAchievement("Spider", a);
 		assertEquals(1, game.getAchievements("Spider").size());		
 	}
 	
 	@Test
-	public void removeRank() {
+	public void removeRankinkg() {
 		Achievement a = new Ranking("Noob", "Level 1");
 		game.addAchievement("Spider", a);
 		game.removeAchievement("Spider", a);
@@ -43,7 +43,7 @@ public class TestGame {
 	}
 	
 	@Test
-	public void addTwoRank() {
+	public void addTwoRankinkg() {
 		Achievement a = new Ranking("Noob", "Level 1");
 		Achievement a1 = new Ranking("Noob", "Level 1");
 		game.addAchievement("Spider", a);
@@ -52,7 +52,7 @@ public class TestGame {
 	}
 	
 	@Test
-	public void addRankDifferentUser(){
+	public void addRankingDifferentUser(){
 		UserStorage.setUserID("Duende");
 		Achievement a = new Ranking("Noob", "Level 1");
 		game.addAchievement("Spider", a);
@@ -61,8 +61,15 @@ public class TestGame {
 		assertEquals(1, game.getAchievements("Duende").size());	
 	}
 	
+	@Test(expected = RuntimeException.class)
+	public void launchExceptionRanking() {
+		Achievement a1 = new Ranking("Noob","Level 1");
+		Achievement a2 = new Ranking("Master", "Level 999");
+		a1.incrementAchievement(a2);
+	}
+	
 	@Test
-	public void addTropy() {
+	public void addTrophy() {
 		Achievement a = new Trophy("champion");
 		game.addAchievement("Spider", a);
 		assertEquals(1, game.getAchievements("Spider").size());	
@@ -70,7 +77,7 @@ public class TestGame {
 	}
 	
 	@Test
-	public void removeTropy(){
+	public void removeTrophy(){
 		Achievement a = new Trophy("Golden");
 		game.addAchievement("Spider", a);
 		game.removeAchievement("Spider", a);
@@ -79,7 +86,7 @@ public class TestGame {
 	}
 	
 	@Test
-	public void addTwoTropy() {
+	public void addTwoTrophy() {
 		Achievement a1 = new Trophy("champion");
 		Achievement a2 = new Trophy("champion");		
 		game.addAchievement("Spider", a1);
@@ -87,9 +94,8 @@ public class TestGame {
 		assertEquals(1, game.getAchievements("Spider").size());
 	}
 	
-	
 	@Test
-	public void addTropyDifferentUser(){
+	public void addTrophyDifferentUser(){
 		UserStorage.setUserID("Duende");
 		Achievement a1 = new Trophy("champion");
 		Achievement a2 = new Trophy("champion");
@@ -97,6 +103,13 @@ public class TestGame {
 		game.addAchievement("Duende", a2);
 		assertEquals(1, game.getAchievements("Spider").size());	
 		assertEquals(1, game.getAchievements("Duende").size());	
+	}
+	
+	@Test(expected = RuntimeException.class)
+	public void launchExceptionTrophy() {
+		Achievement a1 = new Trophy("Champs");
+		Achievement a2 = new Trophy("Loser");
+		a1.incrementAchievement(a2);
 	}
 	
 	@Test
@@ -183,6 +196,12 @@ public class TestGame {
 		assertEquals(true, ((Reward) game.getAchievement("Spider", a.getName())).isUsed());
 	}
 	
+	@Test(expected = RuntimeException.class)
+	public void launchExceptionReward() {
+		Achievement a1 = new Reward("lunch");
+		Achievement a2 = new Reward("coffee");
+		a1.incrementAchievement(a2);
+	}
 	
 	@Test
 	public void addDifferentAchievement(){
