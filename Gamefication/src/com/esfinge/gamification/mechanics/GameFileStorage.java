@@ -15,7 +15,6 @@ import com.esfinge.gamification.achievement.Ranking;
 import com.esfinge.gamification.achievement.Reward;
 import com.esfinge.gamification.achievement.Trophy;
 import com.esfinge.gamification.listener.AchievementListener;
-import com.esfinge.gamification.user.UserStorage;
 
 public class GameFileStorage extends Game {
 
@@ -119,11 +118,13 @@ public class GameFileStorage extends Game {
 		try {
 			
 			prop = new Properties();
+			FileInputStream inputFile = new FileInputStream(dir);
+			prop.load(inputFile);
 
 			for (String key : prop.stringPropertyNames()) {
 				String userName = key.substring(0, key.indexOf(delim));
 				String achievementType = key.substring(key.indexOf(delim) + 1,
-						key.lastIndexOf('.'));
+						key.lastIndexOf(delim));
 				String achievementName = key
 						.substring(key.lastIndexOf(delim) + 1);
 				String achievementValue = prop.getProperty(key);
@@ -184,6 +185,8 @@ public class GameFileStorage extends Game {
 
 		try {
 			prop = new Properties();
+			FileInputStream inputFile = new FileInputStream(dir);
+			prop.load(inputFile);
 
 			for (String key : prop.stringPropertyNames()) {
 				String userName = key.substring(0, key.indexOf(delim));
