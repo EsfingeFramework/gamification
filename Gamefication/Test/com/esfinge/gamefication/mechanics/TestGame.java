@@ -105,13 +105,6 @@ public class TestGame {
 		assertEquals(1, game.getAchievements("Duende").size());	
 	}
 	
-	@Test(expected = RuntimeException.class)
-	public void launchExceptionTrophy() {
-		Achievement a1 = new Trophy("Champs");
-		Achievement a2 = new Trophy("Loser");
-		a1.incrementAchievement(a2);
-	}
-	
 	@Test
 	public void addPoint(){
 		Achievement p = new Point(10, "point");

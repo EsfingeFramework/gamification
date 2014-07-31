@@ -63,7 +63,13 @@ public class TrophyStorage implements Storage{
 
 	@Override
 	public void delete(Object user, Achievement p) throws SQLException {
-		// TODO Auto-generated method stub
+		PreparedStatement stmt;
+		stmt = connection
+				.prepareStatement("delete from gamification.trophy "
+						+ "where userid=? and name = ?");
+		stmt.setString(1, user.toString());
+		stmt.setString(2, p.getName());
+		stmt.execute();
 		
 	}
 
