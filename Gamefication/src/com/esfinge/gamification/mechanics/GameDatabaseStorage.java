@@ -6,8 +6,10 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.collections.MapUtils;
 import org.reflections.Reflections;
 
 import com.esfinge.gamification.achievement.Achievement;
@@ -88,7 +90,7 @@ public class GameDatabaseStorage extends Game {
 		try {
 			p = ps.select(user, a.getName());
 			p.removeAchievement(a);
-			ps.update(user, p);
+			ps.delete(user, p);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -116,40 +118,30 @@ public class GameDatabaseStorage extends Game {
 				throw new RuntimeException("Database error", e);
 			}
 		}
-		
-		
-		Achievement p = null;
-		Storage ps = new PointStorage(connection);
-		try {
-			p = ps.select(user, achievName);
-			if (p == null){
-				ps = new RankingStorage(connection);
-				p = ps.select(user, achievName);
-			}
-		
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return p;
+		return null;
 	}
 
 	@Override
 	public Map<String, Achievement> getAchievements(Object user) {
-		Storage ps = new PointStorage(connection);
-		try {
-			return ps.select(user);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		Map<String, Achievement> achievements = new HashMap<String, Achievement>();
+		Reflections r = new Reflections("com.esfinge.gamification.mechanics.database");
+		for(Class c:r.getSubTypesOf(Storage.class)) {
+			Storage s;
+			try {
+				Constructor m = c.getConstructor(Connection.class);
+				s = (Storage)m.newInstance(connection);
+			} catch (Exception e) {
+				throw new RuntimeException("Error creating an instance of " + c.getName() + ". A constructor receiving a Connection must be available.", e);
+			}
+			try {
+				Map<String, Achievement> a = s.select(user);
+				MapUtils.putAll(achievements, a.entrySet().toArray());
+				
+			} catch (SQLException e) {
+				throw new RuntimeException("Database error", e);
+			}
 		}
-		return null;
+		return achievements;
 	}
 	
-	public static void main(String[] args) {
-		Reflections r = new Reflections("com.esfinge.gamification.mechanics.database");
-		for(Class c:r.getSubTypesOf(Storage.class))
-			System.out.println(c.getName());
-	}
-
 }

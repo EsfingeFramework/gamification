@@ -29,7 +29,6 @@ public class Ranking implements Achievement{
 	public void removeAchievement(Achievement r) {
 			if(!(r.getName().equals(getName()) && r instanceof Ranking))
 				throw new RuntimeException("The achievement should be of the same type");
-			this.name = null;
 			this.level = null;
 	}
 	
