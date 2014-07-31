@@ -30,7 +30,7 @@ public class TestGameFileStorage {
 	    
 	}
 
-	/*@Test
+	@Test
 	public void addPointProperties(){
 		Achievement p = new Point(200, "moedas");
 		gameFile.addAchievement(user, p);
@@ -47,13 +47,13 @@ public class TestGameFileStorage {
 		Achievement tr = new Trophy("Gold");
 		gameFile.addAchievement(user, tr);		
 	
-	}*/
+	}
 	
-	@Test
+	/*@Test
 	public void removePointFile(){
 		Achievement p = new Point(200, "moedas");
 		gameFile.removeAchievement(user, p);
-	}
+	}*/
 	
 	/*@Test
 	public void getAchievements() {

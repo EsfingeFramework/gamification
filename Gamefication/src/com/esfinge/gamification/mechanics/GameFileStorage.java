@@ -24,6 +24,7 @@ public class GameFileStorage extends Game {
 	private static File dir = null;
 	private Map<Object, Map<String, Achievement>> achievments = new HashMap<>();
 	private ArrayList<AchievementListener> ac = new ArrayList<>();
+	private static String delim = "|";
 	
 	public GameFileStorage() {
 		this.dir = new File("C:/Users/Aluno/Documents/GitHub/gamification/Gamefication/properties/achievements.properties");		  
@@ -40,9 +41,9 @@ public class GameFileStorage extends Game {
 	public void insertAchievement(Object user, Achievement a) {
 
 		String className = a.getClass().getName();
-		className = className.substring(className.lastIndexOf('.') + 1);
+		className = className.substring(className.lastIndexOf(".") + 1);
 
-		key = user.toString() + "." + className + "." + a.getName();
+		key = user.toString() + delim + className + delim + a.getName();
 
 		try {
 			props = new Properties();
@@ -83,9 +84,9 @@ public class GameFileStorage extends Game {
 	public void deleteAchievement(Object user, Achievement a) {
 
 		String className = a.getClass().getName();
-		className = className.substring(className.lastIndexOf('.') + 1);
+		className = className.substring(className.lastIndexOf(".") + 1);
 
-		key = user.toString() + "." + className + "."
+		key = user.toString() + delim + className + delim
 				+ a.getName();
 
 		try {
@@ -113,8 +114,58 @@ public class GameFileStorage extends Game {
 	 */
 	@Override
 	public Achievement getAchievement(Object user, String achievName) {
+		Properties prop;
+		Achievement a = null;
+		try {
+			
+			prop = new Properties();
 
-		return achievments.get(user).get(achievName);
+			for (String key : prop.stringPropertyNames()) {
+				String userName = key.substring(0, key.indexOf(delim));
+				String achievementType = key.substring(key.indexOf(delim) + 1,
+						key.lastIndexOf('.'));
+				String achievementName = key
+						.substring(key.lastIndexOf(delim) + 1);
+				String achievementValue = prop.getProperty(key);
+
+				if (user.toString().equals(userName)) {
+					
+					if (achievementType.equals("Point")) {
+						a = new Point(Integer.parseInt(achievementValue), achievementName);
+					}
+					
+
+					if (achievementType.equals("Rank")) {
+						a = new Ranking(achievementName, achievementValue);
+					}
+					
+
+					if (achievementType.equals("Reward")) {
+						a = new Reward(achievementName, Boolean.parseBoolean(achievementValue));
+					}
+					
+
+					if (achievementType.equals("Trophy")) {
+						a = new Trophy(achievementName);
+					}
+				}
+				
+				System.out.println(achievementType);
+				System.out.println(achievementName);
+
+			}
+
+			FileOutputStream file = new FileOutputStream(dir);
+			prop.store(file, null);
+			file.close();
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return a;
 	}
 
 	/*
@@ -127,43 +178,44 @@ public class GameFileStorage extends Game {
 	public Map<String, Achievement> getAchievements(Object user) {
 		
 		Properties prop;
-		Map<String, Achievement> achievements = new HashMap<String, Achievement>();
+		Map<String, Achievement> achievments = new HashMap<String, Achievement>();
 		Achievement a;
+		
 
 		try {
 			prop = new Properties();
 
 			for (String key : prop.stringPropertyNames()) {
-				String userName = key.substring(0, key.indexOf("."));
-				String achievementType = key.substring(key.indexOf(".") + 1,
-						key.lastIndexOf('.'));
+				String userName = key.substring(0, key.indexOf(delim));
+				String achievementType = key.substring(key.indexOf(delim) + 1,
+						key.lastIndexOf(delim));
 				String achievementName = key
-						.substring(key.lastIndexOf(".") + 1);
+						.substring(key.lastIndexOf(delim) + 1);
 				String achievementValue = prop.getProperty(key);
 
 				if (user.toString().equals(userName)) {
 					
 					if (achievementType.equals("Point")) {
 						a = new Point(Integer.parseInt(achievementValue), achievementName);
-						achievements.put(userName, a);
+						achievments.put(userName, a);
 					}
 					
 
 					if (achievementType.equals("Rank")) {
 						a = new Ranking(achievementName, achievementValue);
-						achievements.put(userName, a);
+						achievments.put(userName, a);
 					}
 					
 
 					if (achievementType.equals("Reward")) {
 						a = new Reward(achievementName, Boolean.parseBoolean(achievementValue));
-						achievements.put(userName, a);
+						achievments.put(userName, a);
 					}
 					
 
 					if (achievementType.equals("Trophy")) {
 						a = new Trophy(achievementName);
-						achievements.put(userName, a);
+						achievments.put(userName, a);
 					}
 				}
 				
@@ -180,7 +232,7 @@ public class GameFileStorage extends Game {
 			e.printStackTrace();
 		}
 
-		return achievements;
+		return achievments;
 	}
 
 	/*
