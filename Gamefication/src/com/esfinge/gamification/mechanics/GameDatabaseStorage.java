@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.esfinge.gamification.achievement.Achievement;
 import com.esfinge.gamification.mechanics.database.PointStorage;
+import com.esfinge.gamification.mechanics.database.RankingStorage;
 import com.esfinge.gamification.mechanics.database.Storage;
 import com.esfinge.gamification.mechanics.database.StorageFactory;
 
@@ -99,6 +100,10 @@ public class GameDatabaseStorage extends Game {
 		Storage ps = new PointStorage(connection);
 		try {
 			p = ps.select(user, achievName);
+			if (p == null){
+				ps = new RankingStorage(connection);
+				p = ps.select(user, achievName);
+			}
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
