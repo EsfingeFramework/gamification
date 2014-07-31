@@ -138,6 +138,14 @@ public class TestGame {
 		assertEquals(20,((Point) game.getAchievement(user2, "point")).getQuantity().intValue());
 	}
 	
+	
+	@Test(expected = RuntimeException.class)
+	public void launchExceptionPoint() {
+		Achievement a1 = new Point(1, "happy");
+		Achievement a2 = new Point(1, "hungry");
+		a1.incrementAchievement(a2);
+	}
+	
 	@Test
 	public void addReward() {
 		Achievement a = new Reward("lunch",false);
@@ -173,8 +181,8 @@ public class TestGame {
 		game.addAchievement("Spider", a);
 		game.removeAchievement("Spider", a);
 		assertEquals(true, ((Reward) game.getAchievement("Spider", a.getName())).isUsed());
-		
 	}
+	
 	
 	@Test
 	public void addDifferentAchievement(){

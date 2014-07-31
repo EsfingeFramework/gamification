@@ -18,21 +18,15 @@ public class Trophy implements Achievement{
 	}
 	
 	public void incrementAchievement(Achievement a) {
-	   try{	
-		  if(!a.getName().equals(getName()) || !(a instanceof Trophy))
+		  if(!(a.getName().equals(getName()) && a instanceof Trophy))
 				throw new RuntimeException("The achievement should be of the same type");
-	    } catch(RuntimeException e) {
-			this.name = ((Trophy)a).getName();
-		}
+		  this.name = ((Trophy)a).getName();
 	}
 	
 	public void removeAchievement(Achievement r) {
-		try{	
-			  if(!r.getName().equals(getName()) || r instanceof Trophy)
-					throw new RuntimeException("The achievement should be of the same type");
-		    } catch(RuntimeException e) {
-		    	this.name = null;
-			}	
+		if(!(r.getName().equals(getName()) && r instanceof Trophy))
+			throw new RuntimeException("The achievement should be of the same type");
+		this.name = null;
 	}
 
 	public String toString() {
