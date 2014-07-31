@@ -1,11 +1,14 @@
 package com.esfinge.gamification.mechanics;
 
+import java.lang.reflect.Constructor;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Map;
+
+import org.reflections.Reflections;
 
 import com.esfinge.gamification.achievement.Achievement;
 import com.esfinge.gamification.mechanics.database.PointStorage;
@@ -96,6 +99,25 @@ public class GameDatabaseStorage extends Game {
 	@Override
 	public Achievement getAchievement(Object user, String achievName) {
 		
+		Reflections r = new Reflections("com.esfinge.gamification.mechanics.database");
+		for(Class c:r.getSubTypesOf(Storage.class)) {
+			Storage s;
+			try {
+				Constructor m = c.getConstructor(Connection.class);
+				s = (Storage)m.newInstance(connection);
+			} catch (Exception e) {
+				throw new RuntimeException("Error creating an instance of " + c.getName() + ". A constructor receiving a Connection must be available.", e);
+			}
+			try {
+				Achievement a = s.select(user, achievName);
+				if (a != null)
+					return a;
+			} catch (SQLException e) {
+				throw new RuntimeException("Database error", e);
+			}
+		}
+		
+		
 		Achievement p = null;
 		Storage ps = new PointStorage(connection);
 		try {
@@ -122,6 +144,12 @@ public class GameDatabaseStorage extends Game {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static void main(String[] args) {
+		Reflections r = new Reflections("com.esfinge.gamification.mechanics.database");
+		for(Class c:r.getSubTypesOf(Storage.class))
+			System.out.println(c.getName());
 	}
 
 }

@@ -49,4 +49,11 @@ public class Ranking implements Achievement{
 		return this.name == r.name && this.level == r.level;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Ranking))
+			return false;
+		Ranking r = (Ranking)o;
+		return this.name.equals(r.name) && this.level.equals(r.level);
+	}
 }
