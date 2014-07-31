@@ -25,12 +25,12 @@ public class TestGameFileStorage {
 	public void initializeGame(){
 		
 		game = new GameMemoryStorage();
-	    user = new FakeUser("Jaspion");
+	    user = new FakeUser("Jiraia");
 	    gameFile = new GameFileStorage();
 	    
 	}
 
-	/*@Test
+	@Test
 	public void addPointProperties(){
 		Achievement p = new Point(200, "moedas");
 		gameFile.addAchievement(user, p);
@@ -47,7 +47,7 @@ public class TestGameFileStorage {
 		Achievement tr = new Trophy("Gold");
 		gameFile.addAchievement(user, tr);		
 	
-	}*/
+	}
 	
 	/*@Test
 	public void removePointFile(){
@@ -62,9 +62,9 @@ public class TestGameFileStorage {
 		
 	}*/
 		
-	@Test
+	/*@Test
 	public void getAchievementProperties() {
 		gameFile.getAchievement(user, "placar");
-	}
+	}*/
 }
 

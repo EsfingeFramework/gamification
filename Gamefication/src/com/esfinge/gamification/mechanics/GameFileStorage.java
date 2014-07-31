@@ -52,14 +52,14 @@ public class GameFileStorage extends Game {
 			if (a instanceof Point) {
 				props.setProperty(key, ((Point) a).getQuantity().toString());
 			}
-			if (a instanceof Ranking) {
+			else if (a instanceof Ranking) {
 				props.setProperty(key, ((Ranking) a).getLevel().toString());
 			}
-			if (a instanceof Reward) {
+			else if (a instanceof Reward) {
 				props.setProperty(key,
 						((Boolean) ((Reward) a).isUsed()).toString());
 			}
-			if (a instanceof Trophy) {
+			else if (a instanceof Trophy) {
 				props.setProperty(key, "");
 			}
 
@@ -134,19 +134,13 @@ public class GameFileStorage extends Game {
 					if (achievementType.equals("Point")) {
 						a = new Point(Integer.parseInt(achievementValue), achievementName);
 					}
-					
-
-					if (achievementType.equals("Rank")) {
+					else if (achievementType.equals("Rank")) {
 						a = new Ranking(achievementName, achievementValue);
 					}
-					
-
-					if (achievementType.equals("Reward")) {
+					else if (achievementType.equals("Reward")) {
 						a = new Reward(achievementName, Boolean.parseBoolean(achievementValue));
 					}
-					
-
-					if (achievementType.equals("Trophy")) {
+					else if (achievementType.equals("Trophy")) {
 						a = new Trophy(achievementName);
 					}
 				}
@@ -202,21 +196,15 @@ public class GameFileStorage extends Game {
 						a = new Point(Integer.parseInt(achievementValue), achievementName);
 						achievments.put(userName, a);
 					}
-					
-
-					if (achievementType.equals("Rank")) {
+					else if (achievementType.equals("Rank")) {
 						a = new Ranking(achievementName, achievementValue);
 						achievments.put(userName, a);
 					}
-					
-
-					if (achievementType.equals("Reward")) {
+					else if (achievementType.equals("Reward")) {
 						a = new Reward(achievementName, Boolean.parseBoolean(achievementValue));
 						achievments.put(userName, a);
 					}
-					
-
-					if (achievementType.equals("Trophy")) {
+					else if (achievementType.equals("Trophy")) {
 						a = new Trophy(achievementName);
 						achievments.put(userName, a);
 					}

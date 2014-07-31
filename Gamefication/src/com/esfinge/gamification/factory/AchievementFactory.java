@@ -11,13 +11,13 @@ public class AchievementFactory {
 		if (a instanceof Point) {
 			a = new Point(((Point) a).getQuantity(), a.getName());
 		}
-		if (a instanceof Ranking) {
+		else if (a instanceof Ranking) {
 			a = new Ranking(a.getName(), ((Ranking) a).getLevel());
 		}
-		if (a instanceof Reward) {
+		else if (a instanceof Reward) {
 			a = new Reward(a.getName(), ((Reward) a).isUsed());
 		}
-		if (a instanceof Trophy) {
+		else if (a instanceof Trophy) {
 			a = new Trophy(a.getName());
 		}
 		
