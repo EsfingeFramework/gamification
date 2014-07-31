@@ -42,12 +42,6 @@ public class Ranking implements Achievement{
 	public String toString() {
 		return "Ranking Achieved - " + name + ": "+ level;
 	}
-	
-	@Override
-	public boolean equals(Object o) {
-		Ranking r = (Ranking)o;
-		return this.name == r.name && this.level == r.level;
-	}
 
 	@Override
 	public boolean equals(Object o) {
