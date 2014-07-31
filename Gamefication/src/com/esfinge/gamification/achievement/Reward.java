@@ -26,7 +26,6 @@ public class Reward implements Achievement{
 	public void incrementAchievement(Achievement a) {
 		if(!(a.getName().equals(getName()) && a instanceof Reward))
 			throw new RuntimeException("The achievement should be of the same type");
-		this.name = ((Reward)a).getName();
 		this.used = ((Reward)a).isUsed();
 	}
 	
@@ -40,5 +39,13 @@ public class Reward implements Achievement{
 		return "Reward Achieved - " + name + ": "+ used;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if(!(o instanceof Reward))
+			return false;
+		Reward r = (Reward)o;
+		return this.name.equals(r.name) && this.used == r.used;
+	}
+	
 }
 

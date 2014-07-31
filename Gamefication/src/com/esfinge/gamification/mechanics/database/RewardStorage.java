@@ -77,13 +77,14 @@ public class RewardStorage implements Storage {
 
 	@Override
 	public void delete(Object user, Achievement p) throws SQLException {
-		PreparedStatement stmt;
-		stmt = connection
-				.prepareStatement("delete from gamification.reward "
-						+ "where userid=? and name = ?");
-		stmt.setString(1, user.toString());
-		stmt.setString(2, p.getName());
-		stmt.execute();
+		this.update(user, p);
+//		PreparedStatement stmt;
+//		stmt = connection
+//				.prepareStatement("delete from gamification.reward "
+//						+ "where userid=? and name = ?");
+//		stmt.setString(1, user.toString());
+//		stmt.setString(2, p.getName());
+//		stmt.execute();
 		
 	}
 }
