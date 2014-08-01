@@ -23,8 +23,8 @@ public class GameFileStorage extends Game {
 	private ArrayList<AchievementListener> ac = new ArrayList<>();
 	private static String delim = "|";
 	
-	public GameFileStorage() {
-		this.dir = new File("./properties/achievements.properties");		  
+	public GameFileStorage(String fileName) {
+		this.dir = new File(fileName);		  
 	}
 
 	/*

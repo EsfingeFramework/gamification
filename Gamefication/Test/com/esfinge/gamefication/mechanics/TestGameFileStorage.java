@@ -18,7 +18,7 @@ import com.esfinge.gamification.mechanics.GameFileStorage;
 
 public class TestGameFileStorage {
 	
-
+	private static final String fileName = "./properties/achievements.properties";
 	private FakeUser user;
 	private Game gameFile;
 		
@@ -26,15 +26,15 @@ public class TestGameFileStorage {
 	public void initializeGame() throws IOException{
 	    
 	    Properties props = new Properties();
-		FileInputStream inputFile = new FileInputStream("./properties/achievements.properties");
+		FileInputStream inputFile = new FileInputStream(fileName);
 		props.load(inputFile);
 		props.clear();
-		FileOutputStream outputFile = new FileOutputStream("./properties/achievements.properties");
+		FileOutputStream outputFile = new FileOutputStream(fileName);
 		props.store(outputFile, null);
 		outputFile.close();
 		
 		user = new FakeUser("Megazord");
-	    gameFile = new GameFileStorage(); 
+	    gameFile = new GameFileStorage(fileName); 
 	}
 
 
