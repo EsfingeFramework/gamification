@@ -39,7 +39,7 @@ public class TestGame {
 		Achievement a = new Ranking("Noob", "Level 1");
 		game.addAchievement("Spider", a);
 		game.removeAchievement("Spider", a);
-		assertNull(((Ranking)game.getAchievement("Spider",a.getName())).getLevel());
+		assertNull(((Ranking)game.getAchievement("Spider",a.getName())));
 	}
 	
 	@Test
@@ -81,8 +81,7 @@ public class TestGame {
 		Achievement a = new Trophy("Golden");
 		game.addAchievement("Spider", a);
 		game.removeAchievement("Spider", a);
-		assertNull(game.getAchievement("Spider", "Golden").getName());	
-		//getAchievements continua contendo 1 elemento ???
+		assertNull(game.getAchievement("Spider", "Golden"));	
 	}
 	
 	@Test
@@ -118,7 +117,16 @@ public class TestGame {
 		Achievement p = new Point(50, "point");
 		game.addAchievement("Spider", p);
 		game.removeAchievement("Spider", p);	
-		assertEquals(0,((Point) game.getAchievement("Spider", "point")).getQuantity().intValue());
+		assertNull(game.getAchievement("Spider", "point"));
+	}
+	
+	@Test
+	public void updatePoint(){
+		Achievement p = new Point(50, "point");
+		Achievement p2 = new Point(30, "point");
+		game.addAchievement("Spider", p);
+		game.removeAchievement("Spider", p2);	
+		assertEquals(20, ((Point)game.getAchievement("Spider", "point")).getQuantity().intValue());
 	}
 	
 	@Test

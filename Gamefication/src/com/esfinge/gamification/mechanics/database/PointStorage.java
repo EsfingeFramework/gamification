@@ -106,17 +106,13 @@ public class PointStorage implements Storage {
 	@Override
 	public void delete(Object user, Achievement a) throws SQLException {
 		Point p = (Point) a;
-		if (p.getQuantity() > 0)
-			this.update(user, a);
-		else {
-			PreparedStatement stmt;
-			stmt = connection
-					.prepareStatement("delete from gamification.points "
-							+ "where userid=? and name=?");
-			stmt.setString(1, user.toString());
-			stmt.setString(2, p.getName());
-			stmt.execute();
-		}
+
+		PreparedStatement stmt;
+		stmt = connection.prepareStatement("delete from gamification.points "
+				+ "where userid=? and name=?");
+		stmt.setString(1, user.toString());
+		stmt.setString(2, p.getName());
+		stmt.execute();
 	}
 
 }

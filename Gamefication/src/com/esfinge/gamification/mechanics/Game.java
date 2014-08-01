@@ -8,10 +8,12 @@ import com.esfinge.gamification.listener.AchievementListener;
 
 public abstract class Game {
 
-	 public abstract void doAddAchievement(Object user, Achievement a);
+	 public abstract void insertAchievement(Object user, Achievement a);
 	
-	 public abstract void doRemoveAchievement(Object user, Achievement a);
+	 public abstract void deleteAchievement(Object user, Achievement a);
 	
+	 public abstract void updateAchievement(Object user, Achievement a);
+	 
 	 public abstract Achievement getAchievement(Object user, String
 	 achievName);
 	
@@ -28,7 +30,13 @@ public abstract class Game {
 	 * com.esfinge.gamefication.achievement.Achievement)
 	 */
 	public void addAchievement(Object user, Achievement a) {
-		doAddAchievement(user, a);
+		Achievement p = this.getAchievement(user, a.getName());
+		if (p == null){
+			this.insertAchievement(user, a);
+		}else{
+			p.incrementAchievement(a);
+			this.updateAchievement(user, p);
+		}
 		notifyAdded(user, a);
 	}
 
@@ -40,7 +48,11 @@ public abstract class Game {
 	 * , com.esfinge.gamefication.achievement.Achievement)
 	 */
 	public void removeAchievement(Object user, Achievement a) {
-		doRemoveAchievement(user, a);
+		Achievement p = this.getAchievement(user, a.getName());
+		if (p.removeAchievement(a))
+			this.deleteAchievement(user, p);
+		else
+			this.updateAchievement(user, p);
 		notifyRemoved(user, a);
 	}
 

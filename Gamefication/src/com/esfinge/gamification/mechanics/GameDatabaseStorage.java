@@ -21,15 +21,16 @@ import com.esfinge.gamification.mechanics.database.StorageFactory;
 public class GameDatabaseStorage extends Game {
 	private Connection connection;
 	private StorageFactory factory;
-	public GameDatabaseStorage(Connection c)  {
+
+	public GameDatabaseStorage(Connection c) {
 		connection = c;
 		factory = new StorageFactory(c);
 		try {
-			
+
 			DatabaseMetaData dbmd = connection.getMetaData();
 			ResultSet rs = dbmd.getSchemas(null, "GAMIFICATION");
 			boolean found = false;
-			while(rs.next()) {
+			while (rs.next()) {
 				if (rs.getString(1).compareToIgnoreCase("gamification") == 0) {
 					found = true;
 				}
@@ -64,19 +65,12 @@ public class GameDatabaseStorage extends Game {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
-	public void doAddAchievement(Object user, Achievement a) {
+	public void insertAchievement(Object user, Achievement a) {
 		Storage ps = factory.storageFor(a);
 		try {
-			Achievement p = this.getAchievement(user, a.getName());
-			if (p == null){
-				ps.insert(user, a);
-			}else{
-				p.incrementAchievement(a);
-				ps.update(user, p);
-			}
-			
+			ps.insert(user, a);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -84,13 +78,10 @@ public class GameDatabaseStorage extends Game {
 	}
 
 	@Override
-	public void doRemoveAchievement(Object user, Achievement a) {
+	public void deleteAchievement(Object user, Achievement a) {
 		Storage ps = factory.storageFor(a);
-		Achievement p = null;
 		try {
-			p = ps.select(user, a.getName());
-			p.removeAchievement(a);
-			ps.delete(user, p);
+				ps.delete(user, a);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -100,15 +91,20 @@ public class GameDatabaseStorage extends Game {
 
 	@Override
 	public Achievement getAchievement(Object user, String achievName) {
-		
-		Reflections r = new Reflections("com.esfinge.gamification.mechanics.database");
-		for(Class c:r.getSubTypesOf(Storage.class)) {
+
+		Reflections r = new Reflections(
+				"com.esfinge.gamification.mechanics.database");
+		for (Class c : r.getSubTypesOf(Storage.class)) {
 			Storage s;
 			try {
 				Constructor m = c.getConstructor(Connection.class);
-				s = (Storage)m.newInstance(connection);
+				s = (Storage) m.newInstance(connection);
 			} catch (Exception e) {
-				throw new RuntimeException("Error creating an instance of " + c.getName() + ". A constructor receiving a Connection must be available.", e);
+				throw new RuntimeException(
+						"Error creating an instance of "
+								+ c.getName()
+								+ ". A constructor receiving a Connection must be available.",
+						e);
 			}
 			try {
 				Achievement a = s.select(user, achievName);
@@ -124,24 +120,41 @@ public class GameDatabaseStorage extends Game {
 	@Override
 	public Map<String, Achievement> getAchievements(Object user) {
 		Map<String, Achievement> achievements = new HashMap<String, Achievement>();
-		Reflections r = new Reflections("com.esfinge.gamification.mechanics.database");
-		for(Class c:r.getSubTypesOf(Storage.class)) {
+		Reflections r = new Reflections(
+				"com.esfinge.gamification.mechanics.database");
+		for (Class c : r.getSubTypesOf(Storage.class)) {
 			Storage s;
 			try {
 				Constructor m = c.getConstructor(Connection.class);
-				s = (Storage)m.newInstance(connection);
+				s = (Storage) m.newInstance(connection);
 			} catch (Exception e) {
-				throw new RuntimeException("Error creating an instance of " + c.getName() + ". A constructor receiving a Connection must be available.", e);
+				throw new RuntimeException(
+						"Error creating an instance of "
+								+ c.getName()
+								+ ". A constructor receiving a Connection must be available.",
+						e);
 			}
 			try {
 				Map<String, Achievement> a = s.select(user);
 				MapUtils.putAll(achievements, a.entrySet().toArray());
-				
+
 			} catch (SQLException e) {
 				throw new RuntimeException("Database error", e);
 			}
 		}
 		return achievements;
 	}
-	
+
+	@Override
+	public void updateAchievement(Object user, Achievement a) {
+		Storage ps = factory.storageFor(a);
+		try {
+			ps.update(user, a);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
 }

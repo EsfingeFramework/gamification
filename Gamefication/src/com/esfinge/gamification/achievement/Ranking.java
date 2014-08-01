@@ -26,10 +26,11 @@ public class Ranking implements Achievement{
 			this.level = ((Ranking)a).getLevel();
 	}
 	
-	public void removeAchievement(Achievement r) {
+	public boolean removeAchievement(Achievement r) {
 			if(!(r.getName().equals(getName()) && r instanceof Ranking))
 				throw new RuntimeException("The achievement should be of the same type");
 			this.level = null;
+			return true;
 	}
 	
 	public String toString() {

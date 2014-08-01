@@ -29,10 +29,11 @@ public class Point implements Achievement{
 			this.quantity += ((Point)a).getQuantity();
 	}
 	
-	public void removeAchievement(Achievement r) {
+	public boolean removeAchievement(Achievement r) {
 			if(!(r.getName().equals(getName()) && r instanceof Point))
 				throw new RuntimeException("The achievement should be of the same type");
 			this.quantity -= ((Point)r).getQuantity();
+			return this.quantity <=0;
 	}
 	
 	

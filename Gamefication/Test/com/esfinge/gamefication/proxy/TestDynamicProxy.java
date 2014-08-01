@@ -112,8 +112,8 @@ public class TestDynamicProxy {
 		r.doSomething();
 		r.doRemoveSomething();
 		Achievement ach = gs.getAchievement("Spider", "Noob");
-		assertEquals(1, gs.getAchievements("Spider").size());
-		assertNull(((Ranking) ach).getLevel());
+		assertNull(ach);
+		assertEquals(0, gs.getAchievements("Spider").size());
 	}
 	
 	@Test
@@ -182,8 +182,8 @@ public class TestDynamicProxy {
 		t.doSomething();
 		t.doRemoveSomething();
 		Achievement ach = gs.getAchievement("Spider", "champion");
-		assertEquals(1, gs.getAchievements("Spider").size());
-		assertNull(((Trophy) ach).getName());
+		assertNull(ach);
+		assertEquals(0, gs.getAchievements("Spider").size());
 	}
 	
 

@@ -17,16 +17,12 @@ public class GameMemoryStorage extends Game {
 	 * com.esfinge.gamefication.achievement.Achievement)
 	 */
 	@Override
-	public void doAddAchievement(Object user, Achievement a) {
+	public void insertAchievement(Object user, Achievement a) {
 		if (!achievments.containsKey(user)) {
 			achievments.put(user, new HashMap<String, Achievement>());
 		}
 		Map<String, Achievement> userAchiev = achievments.get(user);
-		if (userAchiev.containsKey(a.getName())) {
-			userAchiev.get(a.getName()).incrementAchievement(a);
-		} else {
-			userAchiev.put(a.getName(), a);
-		}
+		userAchiev.put(a.getName(), a);
 	}
 
 	/*
@@ -37,16 +33,14 @@ public class GameMemoryStorage extends Game {
 	 * , com.esfinge.gamefication.achievement.Achievement)
 	 */
 	@Override
-	public void doRemoveAchievement(Object user, Achievement a) {
+	public void deleteAchievement(Object user, Achievement a) {
 
 		if (!achievments.containsKey(user)) {
 			achievments.put(user, new HashMap<String, Achievement>());
 		}
 		Map<String, Achievement> userAchiev = achievments.get(user);
 		if (userAchiev.containsKey(a.getName())) {
-			userAchiev.get(a.getName()).removeAchievement(a);
-		} else {
-			userAchiev.put(a.getName(), a);
+				userAchiev.remove(a.getName());
 		}
 	}
 
@@ -59,7 +53,9 @@ public class GameMemoryStorage extends Game {
 	 */
 	@Override
 	public Achievement getAchievement(Object user, String achievName) {
-
+		if (!achievments.containsKey(user)) {
+			achievments.put(user, new HashMap<String, Achievement>());
+		}
 		return achievments.get(user).get(achievName);
 	}
 
@@ -72,6 +68,12 @@ public class GameMemoryStorage extends Game {
 	@Override
 	public Map<String, Achievement> getAchievements(Object user) {
 		return achievments.get(user);
+	}
+
+	@Override
+	public void updateAchievement(Object user, Achievement a) {
+		insertAchievement(user, a);
+		
 	}
 
 }

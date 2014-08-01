@@ -9,6 +9,6 @@ public interface Achievement {
     
 	public void incrementAchievement(Achievement a);
 
-	public void removeAchievement(Achievement r);
+	public boolean removeAchievement(Achievement r);
 
 }

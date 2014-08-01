@@ -20,7 +20,8 @@ public class Trophy implements Achievement{
 	public void incrementAchievement(Achievement a) {
 	}
 	
-	public void removeAchievement(Achievement r) {
+	public boolean removeAchievement(Achievement r) {
+		return true;
 	}
 
 	public String toString() {

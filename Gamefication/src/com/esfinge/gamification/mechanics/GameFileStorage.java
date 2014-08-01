@@ -37,7 +37,7 @@ public class GameFileStorage extends Game {
 	 * com.esfinge.gamefication.achievement.Achievement)
 	 */
 	@Override
-	public void doAddAchievement(Object user, Achievement a) {
+	public void insertAchievement(Object user, Achievement a) {
 		String className = a.getClass().getName();
 		className = className.substring(className.lastIndexOf(".") + 1);
 
@@ -81,7 +81,7 @@ public class GameFileStorage extends Game {
 	 * , com.esfinge.gamefication.achievement.Achievement)
 	 */
 	@Override
-	public void doRemoveAchievement(Object user, Achievement a) {
+	public void deleteAchievement(Object user, Achievement a) {
 		String className = a.getClass().getName();
 		className = className.substring(className.lastIndexOf(".") + 1);
 
@@ -206,5 +206,11 @@ public class GameFileStorage extends Game {
 		for (AchievementListener a : ac) {
 			a.achievementAdded(a, null);
 		}
+	}
+
+	@Override
+	public void updateAchievement(Object user, Achievement a) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -75,7 +75,6 @@ public class TrophyStorage implements Storage{
 
 	@Override
 	public void update(Object user, Achievement p) throws SQLException {
-		// TODO Auto-generated method stub
 		
 	}
 

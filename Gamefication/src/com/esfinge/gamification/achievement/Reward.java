@@ -29,10 +29,11 @@ public class Reward implements Achievement{
 		this.used = ((Reward)a).isUsed();
 	}
 	
-	public void removeAchievement(Achievement r) {
+	public boolean removeAchievement(Achievement r) {
 			if(!(r.getName().equals(getName()) && r instanceof Reward))
 				throw new RuntimeException("The achievement should be of the same type");
 			this.used = true;
+			return false;
 	}
 	
 	public String toString() {
