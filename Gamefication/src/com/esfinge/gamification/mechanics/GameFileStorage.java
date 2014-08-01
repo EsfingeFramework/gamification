@@ -1,5 +1,4 @@
 package com.esfinge.gamification.mechanics;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -8,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
 import com.esfinge.gamification.achievement.Achievement;
 import com.esfinge.gamification.achievement.Point;
 import com.esfinge.gamification.achievement.Ranking;
@@ -26,7 +24,7 @@ public class GameFileStorage extends Game {
 	private static String delim = "|";
 	
 	public GameFileStorage() {
-		this.dir = new File("C:/Users/Aluno/Documents/GitHub/gamification/Gamefication/properties/achievements.properties");		  
+		this.dir = new File("./properties/achievements.properties");		  
 	}
 
 	/*
@@ -47,8 +45,6 @@ public class GameFileStorage extends Game {
 			props = new Properties();
 			FileInputStream inputFile = new FileInputStream(dir);
 			props.load(inputFile);
-			
-			// createAchievement(String achievementType, String achievementName, String param)
 					
 			if (a instanceof Point) {
 				props.setProperty(key, ((Point) a).getQuantity().toString());
@@ -86,6 +82,7 @@ public class GameFileStorage extends Game {
 		className = className.substring(className.lastIndexOf(".") + 1);
 
 		key = user.toString() + delim + className + delim
+				
 				+ a.getName();
 
 		try {
@@ -210,7 +207,7 @@ public class GameFileStorage extends Game {
 
 	@Override
 	public void updateAchievement(Object user, Achievement a) {
-		// TODO Auto-generated method stub
+		this.insertAchievement(user, a);
 		
 	}
 }
