@@ -39,7 +39,7 @@ public class TestGame {
 		Achievement a = new Ranking("Noob", "Level 1");
 		game.addAchievement("Spider", a);
 		game.removeAchievement("Spider", a);
-		assertNull(game.getAchievement("Spider",a.getName()));
+		assertNull(((Ranking)game.getAchievement("Spider",a.getName())).getLevel());
 	}
 	
 	@Test
