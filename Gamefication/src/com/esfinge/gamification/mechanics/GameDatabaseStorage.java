@@ -66,7 +66,7 @@ public class GameDatabaseStorage extends Game {
 	}
 	
 	@Override
-	public void insertAchievement(Object user, Achievement a) {
+	public void doAddAchievement(Object user, Achievement a) {
 		Storage ps = factory.storageFor(a);
 		try {
 			Achievement p = this.getAchievement(user, a.getName());
@@ -84,7 +84,7 @@ public class GameDatabaseStorage extends Game {
 	}
 
 	@Override
-	public void deleteAchievement(Object user, Achievement a) {
+	public void doRemoveAchievement(Object user, Achievement a) {
 		Storage ps = factory.storageFor(a);
 		Achievement p = null;
 		try {

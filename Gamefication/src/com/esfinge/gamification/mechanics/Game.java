@@ -8,9 +8,9 @@ import com.esfinge.gamification.listener.AchievementListener;
 
 public abstract class Game {
 
-	 public abstract void insertAchievement(Object user, Achievement a);
+	 public abstract void doAddAchievement(Object user, Achievement a);
 	
-	 public abstract void deleteAchievement(Object user, Achievement a);
+	 public abstract void doRemoveAchievement(Object user, Achievement a);
 	
 	 public abstract Achievement getAchievement(Object user, String
 	 achievName);
@@ -28,7 +28,7 @@ public abstract class Game {
 	 * com.esfinge.gamefication.achievement.Achievement)
 	 */
 	public void addAchievement(Object user, Achievement a) {
-		insertAchievement(user, a);
+		doAddAchievement(user, a);
 		notifyAdded(user, a);
 	}
 
@@ -40,7 +40,7 @@ public abstract class Game {
 	 * , com.esfinge.gamefication.achievement.Achievement)
 	 */
 	public void removeAchievement(Object user, Achievement a) {
-		deleteAchievement(user, a);
+		doRemoveAchievement(user, a);
 		notifyRemoved(user, a);
 	}
 
