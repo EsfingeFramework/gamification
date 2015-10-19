@@ -1,0 +1,47 @@
+package com.esfinge.gamification.processors;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import org.apache.commons.beanutils.PropertyUtils;
+
+import com.esfinge.gamification.achievement.Point;
+import com.esfinge.gamification.annotation.RemovePointsToParam;
+import com.esfinge.gamification.mechanics.Game;
+import com.esfinge.gamification.utils.ReflectionUtils;
+
+public class RemovePointsToParameterProcessor implements AchievementProcessor {
+
+	private int quantity;
+	private String name;
+	private String parameterName;
+	private String propertyName;
+	
+	@Override
+	public void receiveAnnotation(Annotation an) {
+		RemovePointsToParam rptu = (RemovePointsToParam) an;
+		quantity = rptu.quantity();
+		name = rptu.name();
+		parameterName = rptu.param();
+		propertyName = rptu.prop();
+	}
+
+	@Override
+	public void process(Game game, Object encapsulated, Method method,
+			Object[] args) {
+		int index = ReflectionUtils.findParameterNamed(method, parameterName);
+		Object target = args[index];
+		if(!propertyName.equals("")){
+			try{
+				target = PropertyUtils.getProperty(target, propertyName);
+			} catch (IllegalAccessException | InvocationTargetException
+					 | NoSuchMethodException e){
+				throw new RuntimeException("Cannot retrieve property '"+propertyName+"' from class "+target.getClass(), e);
+			}
+		}
+		Point p = new Point(quantity, name);
+		game.removeAchievement(target, p);
+	}
+
+}
