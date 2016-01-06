@@ -5,8 +5,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.esfinge.metadata.annotation.SearchInsideAnnotations;
+import org.esfinge.metadata.annotation.SearchOnEnclosingElements;
+
 import com.esfinge.gamification.processors.RemovePointsToParameterProcessor;
 
+@SearchOnEnclosingElements
+@SearchInsideAnnotations
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 @GamificationProcessor(RemovePointsToParameterProcessor.class)

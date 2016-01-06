@@ -10,50 +10,50 @@ import com.esfinge.gamification.processors.AchievementProcessor;
 
 
 public class GameInvoker {
-
+	
 	public static GameInvoker getInstance(){
 		if(instance==null){
 			instance = new GameInvoker();
 		}
 		return instance;
 	}
-
+	
 	private static GameInvoker instance;
 	private Game game;
-
+	
 	private GameInvoker(){
 	}
-
+	
 	public void setGame(Game g){
 		game = g;
 	}
-
+	
 	public void registerAchievment(Object encapsulated, Method method, Object[] args)
 			throws Throwable {
 		List<AchievementProcessor> achievementProcessorList = new ArrayList<>();
-
+		
 		//get annotations
 		getAnnotations(method, achievementProcessorList);
-
+		
 		//process
 		for (AchievementProcessor ap : achievementProcessorList) {
-			process(encapsulated, method, args, ap);
+			ap.process(game, encapsulated, method, args);
 		}
-
+		
 	}
 
 	private void getAnnotations(Method method, List<AchievementProcessor> apList) throws InstantiationException, IllegalAccessException {
 		//method
 		for(Annotation an : method.getAnnotations()){
-			createAchievementProcessor(apList, an);
+			createAchievementProcessor(apList, an);	
 		}
-
+		
 		//class
 		for(Annotation an : method.getClass().getAnnotations()){
 			createAchievementProcessor(apList, an);
 		}
 		
-		//TODO: procurar dentro de outras anotacoes
+		//TODO: procurar dentro de outras anotações
 	}
 
 	private void createAchievementProcessor(List<AchievementProcessor> apList,
@@ -63,17 +63,12 @@ public class GameInvoker {
 		if(anType.isAnnotationPresent(GamificationProcessor.class)){
 			GamificationProcessor gp = anType.getAnnotation(GamificationProcessor.class);
 			Class<? extends AchievementProcessor> c = gp.value();
-			AchievementProcessor ap = c.newInstance();
+			AchievementProcessor ap = c.newInstance();				
 			ap.receiveAnnotation(an);
 			apList.add(ap);
 		}
 	}
-
-	private void process(Object encapsulated, Method method, Object[] args, AchievementProcessor ap)
-			throws InstantiationException, IllegalAccessException {
-		ap.process(game, encapsulated, method, args);
-	}
 }
-
-
+	
+	
 

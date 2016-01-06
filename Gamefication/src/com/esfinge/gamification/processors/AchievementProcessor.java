@@ -11,4 +11,7 @@ public interface AchievementProcessor {
 	
 	public void process(Game game, Object encapsulated, Method method, Object[] args);
 
+	public void process(Game game, Object encapsulated,
+			Class<? extends Method> class1, Object[] args);
+
 }

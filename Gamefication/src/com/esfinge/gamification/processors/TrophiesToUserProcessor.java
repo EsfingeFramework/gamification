@@ -24,4 +24,13 @@ public class TrophiesToUserProcessor implements AchievementProcessor {
 		Trophy t = new Trophy(name);
 		game.addAchievement(user, t);
 	}
+
+	@Override
+	public void process(Game game, Object encapsulated,
+			Class<? extends Method> class1, Object[] args) {
+		Object user = UserStorage.getUserID();
+		Trophy t = new Trophy(name);
+		game.addAchievement(user, t);
+		
+	}
 }

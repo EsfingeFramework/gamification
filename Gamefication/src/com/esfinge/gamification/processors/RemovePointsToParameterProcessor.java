@@ -44,4 +44,11 @@ public class RemovePointsToParameterProcessor implements AchievementProcessor {
 		game.removeAchievement(target, p);
 	}
 
+	@Override
+	public void process(Game game, Object encapsulated,
+			Class<? extends Method> class1, Object[] args) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

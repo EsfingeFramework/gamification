@@ -27,4 +27,13 @@ public class PointsToUserProcessor implements AchievementProcessor {
 		game.addAchievement(user, p);
 	}
 
+	@Override
+	public void process(Game game, Object encapsulated,
+			Class<? extends Method> class1, Object[] args) {
+		Object user = UserStorage.getUserID();
+		Point p = new Point(quantity, name);
+		game.addAchievement(user, p);
+		
+	}
+
 }
