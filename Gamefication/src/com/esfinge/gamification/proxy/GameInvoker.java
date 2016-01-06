@@ -52,8 +52,8 @@ public class GameInvoker {
 		for(Annotation an : method.getClass().getAnnotations()){
 			createAchievementProcessor(apList, an);
 		}
-
-		//TODO: procurar dentro de outras anotações
+		
+		//TODO: procurar dentro de outras anotacoes
 	}
 
 	private void createAchievementProcessor(List<AchievementProcessor> apList,
