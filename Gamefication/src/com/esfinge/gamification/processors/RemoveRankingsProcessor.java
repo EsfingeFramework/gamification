@@ -27,4 +27,14 @@ public class RemoveRankingsProcessor implements AchievementProcessor {
 		game.removeAchievement(user, p);		
 	}
 
+	@Override
+	public void process(Game game, Object encapsulated,
+			Class<? extends Method> class1, Object[] args) {
+		Object user = UserStorage.getUserID();
+		Ranking p = new Ranking(name, level);
+		game.removeAchievement(user, p);		
+
+		
+	}
+
 }

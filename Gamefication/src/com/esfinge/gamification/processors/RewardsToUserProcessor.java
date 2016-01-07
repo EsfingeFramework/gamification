@@ -26,5 +26,14 @@ public class RewardsToUserProcessor implements AchievementProcessor {
 		Reward r = new Reward(name, used);
 		game.addAchievement(user, r);
 	}
+
+	@Override
+	public void process(Game game, Object encapsulated,
+			Class<? extends Method> class1, Object[] args) {
+		Object user = UserStorage.getUserID();
+		Reward r = new Reward(name, used);
+		game.addAchievement(user, r);
+		
+	}
 	
 }

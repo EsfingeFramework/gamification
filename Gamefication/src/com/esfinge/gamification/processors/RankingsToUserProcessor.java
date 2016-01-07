@@ -28,4 +28,14 @@ public class RankingsToUserProcessor implements AchievementProcessor {
 		game.addAchievement(user, r);
 	}
 
+	@Override
+	public void process(Game game, Object encapsulated,
+			Class<? extends Method> class1, Object[] args) {
+		Object user = UserStorage.getUserID();
+		Ranking r = new Ranking(name, level);
+		game.addAchievement(user, r);
+
+		
+	}
+
 }
