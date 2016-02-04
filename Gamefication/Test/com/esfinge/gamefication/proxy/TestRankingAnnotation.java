@@ -10,4 +10,10 @@ public class TestRankingAnnotation implements ITestRankingAnn {
 	public void doRemoveSomething() {
 	}
 
+	@Override
+	public void doSomethingWrong() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

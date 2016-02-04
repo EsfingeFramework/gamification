@@ -27,4 +27,14 @@ public class RemoveRewardProcessor implements AchievementProcessor {
 
 	}
 
+	@Override
+	public void process(Game game, Object encapsulated,
+			Class<? extends Method> class1, Object[] args) {
+		Object user = UserStorage.getUserID();
+		Reward r = new Reward(name, used);
+		game.removeAchievement(user, r);
+
+		
+	}
+
 }

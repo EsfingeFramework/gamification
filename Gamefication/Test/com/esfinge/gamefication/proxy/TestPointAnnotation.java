@@ -23,6 +23,13 @@ public class TestPointAnnotation implements ITestPointAnn{
 	public void doRemoveWrong() {
 		throw new RuntimeException();
 	}
+
+	@Override
+	public void doSomethingWrong() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
 
 

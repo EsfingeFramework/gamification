@@ -43,6 +43,13 @@ public class PointsToParameterProcessor implements AchievementProcessor{
 		Point p = new Point(quantity, name);
 		game.addAchievement(target, p);
 	}
+
+	@Override
+	public void process(Game game, Object encapsulated,
+			Class<? extends Method> class1, Object[] args) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 

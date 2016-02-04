@@ -5,12 +5,22 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.esfinge.gamification.processors.RemoveRankingsProcessor;
+import org.esfinge.metadata.annotation.NotNull;
+import org.esfinge.metadata.annotation.SearchInsideAnnotations;
+import org.esfinge.metadata.annotation.SearchOnEnclosingElements;
 
+import com.esfinge.gamification.processors.RemoveRankingsProcessor;
+import com.esfinge.gamification.validate.annotation.ProhibitsGamification;
+
+@SearchOnEnclosingElements
+@SearchInsideAnnotations
+@ProhibitsGamification(RankingsToUser.class)
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
+@Target({ElementType.METHOD,ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 @GamificationProcessor(RemoveRankingsProcessor.class)
 public @interface RemoveRankings {
+	@NotNull
 	String name();
+	@NotNull
 	String level();
 }

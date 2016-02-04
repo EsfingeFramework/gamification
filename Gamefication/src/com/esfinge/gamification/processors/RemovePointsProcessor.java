@@ -30,4 +30,14 @@ public class RemovePointsProcessor implements AchievementProcessor {
 
 	}
 
+	@Override
+	public void process(Game game, Object encapsulated,
+			Class<? extends Method> class1, Object[] args) {
+		Object user = UserStorage.getUserID();
+		Point p = new Point(quantity, name);
+		game.removeAchievement(user, p);
+
+		
+	}
+
 }

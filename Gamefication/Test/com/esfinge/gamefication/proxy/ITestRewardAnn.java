@@ -12,5 +12,9 @@ public interface ITestRewardAnn {
 
 	@RewardsToUser(name = "coffee", used = false)
 	public void doSomething2();	
+	
+	@RewardsToUser(name = "lunch", used = false)
+	@RemoveReward(name = "lunch", used = true)
+	public void doSomethingWrong();
 
 }
