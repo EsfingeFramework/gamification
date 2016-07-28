@@ -23,8 +23,5 @@ public interface ITestPointAnn {
     
     @PointsToParam(name = "SILVER", quantity = 300, param="comment", prop = "user.login")
     public void niceComment(@Named("comment") Comment c);
-    
-    @PointsToUser(name = "GOLD", quantity = -1)
-    public void doSomethingWrong();
 
 }

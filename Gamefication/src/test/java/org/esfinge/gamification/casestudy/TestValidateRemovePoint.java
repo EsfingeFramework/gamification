@@ -38,7 +38,7 @@ public class TestValidateRemovePoint {
 		}
 	}
 	
-	@Test(expected = AnnotationValidationException.class)
+	@Test(expected = GamificationConfigurationException.class)
 	public void CT02() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestPointAnnotation02());
 	}
@@ -61,7 +61,7 @@ public class TestValidateRemovePoint {
 		}
 	}
 	
-	@Test(expected = AnnotationValidationException.class)
+	@Test(expected = GamificationConfigurationException.class)
 	public void CT03() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestPointAnnotation03());
 	}
@@ -74,7 +74,7 @@ public class TestValidateRemovePoint {
 		}
 	}
 	
-	@Test(expected = AnnotationValidationException.class)
+	@Test(expected = GamificationConfigurationException.class)
 	public void CT04() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestPointAnnotation04());
 	}
@@ -87,7 +87,7 @@ public class TestValidateRemovePoint {
 			//method implementation
 		}
 	}
-	@Test(expected = AnnotationValidationException.class)
+	@Test
 	public void CT05() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestPointAnnotation05());
 	}
@@ -101,7 +101,7 @@ public class TestValidateRemovePoint {
 		}
 	}
 	
-	@Test(expected = AnnotationValidationException.class)
+	@Test
 	public void CT07() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestPointAnnotation07());
 	}
@@ -114,7 +114,7 @@ public class TestValidateRemovePoint {
 		}
 	}
 	
-	@Test(expected = AnnotationValidationException.class)
+	@Test
 	public void CT08() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestPointAnnotation08());
 	}
@@ -127,7 +127,7 @@ public class TestValidateRemovePoint {
 		}
 
 	}
-	@Test(expected = AnnotationValidationException.class)
+	@Test(expected = GamificationConfigurationException.class)
 	public void CT09() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestPointAnnotation09());
 	}
@@ -149,7 +149,7 @@ public class TestValidateRemovePoint {
 		}
 
 	}
-	@Test(expected = AnnotationValidationException.class)
+	@Test(expected = GamificationConfigurationException.class)
 	public void CT11() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestPointAnnotation11());
 	}
@@ -162,7 +162,7 @@ public class TestValidateRemovePoint {
 		}
 
 	}
-	@Test(expected = AnnotationValidationException.class)
+	@Test(expected = GamificationConfigurationException.class)
 	public void CT12() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestPointAnnotation12());
 	}
@@ -174,7 +174,7 @@ public class TestValidateRemovePoint {
 			//method implementation
 		}
 	}
-	@Test(expected = AnnotationValidationException.class)
+	@Test(expected = GamificationConfigurationException.class)
 	public void CT13() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestPointAnnotation13());
 	}
@@ -186,7 +186,7 @@ public class TestValidateRemovePoint {
 			//method implementation
 		}
 	}
-	@Test(expected = AnnotationValidationException.class)
+	@Test(expected = GamificationConfigurationException.class)
 	public void CT14() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestPointAnnotation14());
 	}
@@ -200,7 +200,7 @@ public class TestValidateRemovePoint {
 
 	}
 	
-	@Test(expected = AnnotationValidationException.class)
+	@Test(expected = GamificationConfigurationException.class)
 	public void CT16() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestPointAnnotation16());
 	}
@@ -228,7 +228,7 @@ public class TestValidateRemovePoint {
 
 	}
 
-	@Test
+	@Test(expected = GamificationConfigurationException.class)
 	public void CT10() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestPointAnnotation10());
 	}
@@ -252,7 +252,7 @@ public class TestValidateRemovePoint {
 
 	}
 
-	@Test
+	@Test(expected = GamificationConfigurationException.class)
 	public void CT15() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestPointAnnotation15());
 	}

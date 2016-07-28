@@ -29,7 +29,7 @@ public class TestValidateTrophyWhenReachPointLimit {
 		}
 	}
 
-	@Test
+	@Test(expected = GamificationConfigurationException.class)
 	public void CT02() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestValidateTrophyWhenReachPointLimit02());
 	}
@@ -42,7 +42,7 @@ public class TestValidateTrophyWhenReachPointLimit {
 		}
 	}
 
-	@Test
+	@Test(expected = GamificationConfigurationException.class)
 	public void CT03() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestValidateTrophyWhenReachPointLimit03());
 	}
@@ -55,7 +55,7 @@ public class TestValidateTrophyWhenReachPointLimit {
 		}
 	}
 
-	@Test
+	@Test(expected = GamificationConfigurationException.class)
 	public void CT05() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestValidateTrophyWhenReachPointLimit04());
 	}
@@ -68,8 +68,8 @@ public class TestValidateTrophyWhenReachPointLimit {
 		}
 	}
 
-	@Test
-	public void CT06() throws AnnotationValidationException {
+	@Test(expected = GamificationConfigurationException.class)
+		public void CT06() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestValidateTrophyWhenReachPointLimit05());
 	}
 }

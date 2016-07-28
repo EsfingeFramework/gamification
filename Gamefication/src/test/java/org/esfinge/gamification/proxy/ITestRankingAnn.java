@@ -11,8 +11,5 @@ public interface ITestRankingAnn {
 	@RemoveRankings(name = "Noob", level ="level 1")
 	public void doRemoveSomething();
 	
-	@RankingsToUser(name = "Noob", level = "")
-    public void doSomethingWrong();
-	
 
 }

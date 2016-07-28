@@ -20,10 +20,4 @@ public class TestRewardAnnotation implements ITestRewardAnn {
 		
 	}
 
-	@Override
-	public void doSomethingWrong() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

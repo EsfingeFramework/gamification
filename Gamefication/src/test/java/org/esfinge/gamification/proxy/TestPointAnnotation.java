@@ -24,12 +24,6 @@ public class TestPointAnnotation implements ITestPointAnn{
 		throw new RuntimeException();
 	}
 
-	@Override
-	public void doSomethingWrong() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }
 
 

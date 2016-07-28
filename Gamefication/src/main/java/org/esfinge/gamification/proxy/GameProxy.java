@@ -39,6 +39,7 @@ public class GameProxy implements InvocationHandler{
 		
 		//here is called Esfinge Metadata validator
 		try {
+			MetadataValidator.validateMetadataOn(encapsulated.getClass());
 			for(Class interf : encapsulated.getClass().getInterfaces()){
 				MetadataValidator.validateMetadataOn(interf);
 			}

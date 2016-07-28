@@ -38,7 +38,7 @@ public class TestValidateRemoveRanking {
 		}
 	}
 	
-	@Test(expected = AnnotationValidationException.class)
+	@Test(expected = GamificationConfigurationException.class)
 	public void CT02() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestRankingAnnotation02());
 	}
@@ -61,7 +61,7 @@ public class TestValidateRemoveRanking {
 		}
 	}
 	
-	@Test(expected = AnnotationValidationException.class)
+	@Test(expected = GamificationConfigurationException.class)
 	public void CT03() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestRankingAnnotation03());
 	}
@@ -74,7 +74,7 @@ public class TestValidateRemoveRanking {
 		}
 	}
 	
-	@Test(expected = AnnotationValidationException.class)
+	@Test(expected = GamificationConfigurationException.class)
 	public void CT04() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestRankingAnnotation04());
 	}
@@ -83,11 +83,11 @@ public class TestValidateRemoveRanking {
 	public class TestRankingAnnotation05 {
 		@RemoveRankings(name = "PontoA", level = "1")
 		@RankingsToUser(name = "PontoB", level = "1")
-		public void doSomethingWrong(){
+		public void doSomething(){
 			//method implementation
 		}
 	}
-	@Test(expected = AnnotationValidationException.class)
+	@Test
 	public void CT05() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestRankingAnnotation05());
 	}
@@ -96,12 +96,12 @@ public class TestValidateRemoveRanking {
 	public class TestRankingAnnotation07 {
 		@ExtraPoints03
 		@RankingsToUser(name = "PontoB", level = "1")
-		public void doSomethingWrong(){
+		public void doSomething(){
 			//method implementation
 		}
 	}
 	
-	@Test(expected = AnnotationValidationException.class)
+	@Test
 	public void CT07() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestRankingAnnotation07());
 	}
@@ -109,12 +109,12 @@ public class TestValidateRemoveRanking {
 	@ExtraPoints03
 	public class TestRankingAnnotation08 {
 		@RankingsToUser(name = "PontoB", level = "1")
-		public void doSomethingWrong(){
+		public void doSomething(){
 			//method implementation
 		}
 	}
 	
-	@Test(expected = AnnotationValidationException.class)
+	@Test
 	public void CT08() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestRankingAnnotation08());
 	}
@@ -122,12 +122,12 @@ public class TestValidateRemoveRanking {
     public class TestRankingAnnotation09 {
     	@RemoveRankings(name = "PontoB", level = "-1")
         @RankingsToUser(name = "PontoA", level = "1")
-		public void doSomethingWrong(){
+		public void doSomething(){
 			//method implementation
 		}
 
 	}
-	@Test(expected = AnnotationValidationException.class)
+    @Test
 	public void CT09() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestRankingAnnotation09());
 	}
@@ -144,12 +144,12 @@ public class TestValidateRemoveRanking {
     public class TestRankingAnnotation11 {
     	@ExtraPoints04
         @RankingsToUser(name = "PontoA", level = "1")
-		public void doSomethingWrong(){
+		public void doSomething(){
 			//method implementation
 		}
 
 	}
-	@Test(expected = AnnotationValidationException.class)
+    @Test
 	public void CT11() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestRankingAnnotation11());
 	}
@@ -157,12 +157,12 @@ public class TestValidateRemoveRanking {
 	@ExtraPoints04
     public class TestRankingAnnotation12 {
         @RankingsToUser(name = "PontoA", level = "1")
-		public void doSomethingWrong(){
+		public void doSomething(){
 			//method implementation
 		}
 
 	}
-	@Test(expected = AnnotationValidationException.class)
+	@Test
 	public void CT12() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestRankingAnnotation12());
 	}
@@ -174,7 +174,7 @@ public class TestValidateRemoveRanking {
 			//method implementation
 		}
 	}
-	@Test(expected = AnnotationValidationException.class)
+	@Test(expected = GamificationConfigurationException.class)
 	public void CT13() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestRankingAnnotation13());
 	}
@@ -186,7 +186,7 @@ public class TestValidateRemoveRanking {
 			//method implementation
 		}
 	}
-	@Test(expected = AnnotationValidationException.class)
+	@Test(expected = GamificationConfigurationException.class)
 	public void CT14() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestRankingAnnotation14());
 	}
@@ -200,7 +200,7 @@ public class TestValidateRemoveRanking {
 
 	}
 	
-	@Test(expected = AnnotationValidationException.class)
+	@Test(expected = GamificationConfigurationException.class)
 	public void CT16() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestRankingAnnotation16());
 	}
@@ -252,7 +252,7 @@ public class TestValidateRemoveRanking {
 
 	}
 
-	@Test
+	@Test(expected = GamificationConfigurationException.class)
 	public void CT15() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestRankingAnnotation15());
 	}

@@ -4,38 +4,11 @@ import org.esfinge.gamification.annotation.RankingsToUser;
 import org.esfinge.gamification.annotation.RemoveRankings;
 import org.esfinge.gamification.annotation.RemoveTrophy;
 import org.esfinge.gamification.annotation.TrophiesToUser;
-import org.esfinge.gamification.exception.GamificationConfigurationException;
-import org.esfinge.gamification.proxy.GameProxy;
-import org.esfinge.gamification.proxy.TestPointAnnotation;
-import org.esfinge.gamification.proxy.TestRankingAnnotation;
-import org.esfinge.gamification.proxy.TestRewardAnnotation;
 import org.esfinge.metadata.AnnotationValidationException;
 import org.esfinge.metadata.validate.MetadataValidator;
 import org.junit.Test;
 
 public class TestValidate {
-
-	// @PointsToUser(name = "GOLD", quantity = -1)
-	// Resultado esperado: erro - quantity nao poder ser menor que MinValue(0)
-	@Test (expected = GamificationConfigurationException.class)
-	public void testPointAnnotation() throws AnnotationValidationException {
-		GameProxy.createProxy(new TestPointAnnotation());		
-	}
-
-	// @RankingsToUser(name = "Noob", level = "")
-	// Resultado esperado: erro - level nao pode ser nulo
-	@Test (expected = GamificationConfigurationException.class)
-	public void testRankingAnnotation() throws AnnotationValidationException {
-		GameProxy.createProxy(new TestRankingAnnotation());
-	}
-	
-	// @RewardsToUser(name = "lunch", used = false)
-	// @RemoveReward(name = "lunch", used = true)
-	// Resultado esperado: erro - as anotacoes nao podem estar juntas
-	@Test (expected = GamificationConfigurationException.class)
-	public void testRewardAnnotation() throws AnnotationValidationException {
-		GameProxy.createProxy(new TestRewardAnnotation());
-	}
 	
 	// CT06: @RankingsToUser na classe, name: noobA, com @SearchOnEnclosingElements
 	//       @RemoveRankings no metodo, name: noobA
