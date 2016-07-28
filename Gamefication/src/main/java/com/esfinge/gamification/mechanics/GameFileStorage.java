@@ -3,15 +3,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+
 import com.esfinge.gamification.achievement.Achievement;
-import com.esfinge.gamification.achievement.Point;
-import com.esfinge.gamification.achievement.Ranking;
-import com.esfinge.gamification.achievement.Reward;
-import com.esfinge.gamification.achievement.Trophy;
 import com.esfinge.gamification.factory.AchievementFactory;
 import com.esfinge.gamification.listener.AchievementListener;
 
@@ -46,19 +44,7 @@ public class GameFileStorage extends Game {
 			FileInputStream inputFile = new FileInputStream(dir);
 			props.load(inputFile);
 					
-			if (a instanceof Point) {
-				props.setProperty(key, ((Point) a).getQuantity().toString());
-			}
-			else if (a instanceof Ranking) {
-				props.setProperty(key, ((Ranking) a).getLevel().toString());
-			}
-			else if (a instanceof Reward) {
-				props.setProperty(key,
-						((Boolean) ((Reward) a).isUsed()).toString());
-			}
-			else if (a instanceof Trophy) {
-				props.setProperty(key, "");
-			}
+			saveProperty(a);
 
 			FileOutputStream outputFile = new FileOutputStream(dir);
 			props.store(outputFile, null);
@@ -67,6 +53,22 @@ public class GameFileStorage extends Game {
 		} catch (IOException e) {
 			throw new RuntimeException("Achievement '"+key+"' could not be written into file properly."+e);
 		}
+	}
+
+	private void saveProperty(Achievement a) {
+		String value = "";
+		for(Method m: a.getClass().getDeclaredMethods()){
+			if(!"getName".equals(m.getName())
+					&& (m.getName().startsWith("get")||m.getName().startsWith("is"))
+					&& m.getParameterTypes().length==0){
+				try {
+					value = m.invoke(a).toString();
+				} catch (Exception e) {
+					throw new RuntimeException("Achievement '"+key+"' could not be written into file properly."+e);
+				}
+			}
+		}
+		props.setProperty(key, value);
 	}
 
 	/*
