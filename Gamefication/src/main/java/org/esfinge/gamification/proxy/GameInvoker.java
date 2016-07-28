@@ -3,6 +3,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.esfinge.gamification.annotation.GamificationProcessor;
 import org.esfinge.gamification.mechanics.Game;
@@ -30,34 +31,29 @@ public class GameInvoker {
 	
 	public void registerAchievment(Object encapsulated, Method method, Object[] args)
 			throws Throwable {
-		List<AchievementProcessor> achievementProcessorList = new ArrayList<>();
-		
-		//get annotations
-		getAnnotations(method, achievementProcessorList);
-		
 		//process
-		for (AchievementProcessor ap : achievementProcessorList) {
+		for (AchievementProcessor ap : getAnnotations(method)) {
 			ap.process(game, encapsulated, method, args);
 		}
 		
 	}
 
-	private void getAnnotations(Method method, List<AchievementProcessor> apList) throws InstantiationException, IllegalAccessException {
+	private List<AchievementProcessor> getAnnotations(Method method) throws InstantiationException, IllegalAccessException {
+		List<AchievementProcessor> apList = new ArrayList<>();
 		//method
 		for(Annotation an : method.getAnnotations()){
-			createAchievementProcessor(apList, an);	
+			createAchievementProcessor(an).ifPresent(ap -> apList.add(ap));	
 		}
 		
 		//class
 		for(Annotation an : method.getClass().getAnnotations()){
-			createAchievementProcessor(apList, an);
+			createAchievementProcessor(an).ifPresent(ap -> apList.add(ap));	
 		}
-		
+		return apList;
 		//TODO: procurar dentro de outras anotacoes
 	}
 
-	private void createAchievementProcessor(List<AchievementProcessor> apList,
-			Annotation an) throws InstantiationException,
+	private Optional<AchievementProcessor> createAchievementProcessor(Annotation an) throws InstantiationException,
 			IllegalAccessException {
 		Class<? extends Annotation> anType = an.annotationType();
 		if(anType.isAnnotationPresent(GamificationProcessor.class)){
@@ -65,8 +61,9 @@ public class GameInvoker {
 			Class<? extends AchievementProcessor> c = gp.value();
 			AchievementProcessor ap = c.newInstance();				
 			ap.receiveAnnotation(an);
-			apList.add(ap);
+			return Optional.of(ap);
 		}
+		return Optional.empty();
 	}
 }
 	
