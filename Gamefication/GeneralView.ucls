@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.8" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true">  
-  <interface id="1" language="java" name="com.esfinge.gamification.achievement.Achievement" project="Gamification" 
+  <interface id="1" language="java" name="org.esfinge.gamification.achievement.Achievement" project="Gamification" 
     file="/Gamification/src/com/esfinge/gamification/achievement/Achievement.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="460" y="127"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
@@ -10,7 +10,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <class id="2" language="java" name="com.esfinge.gamification.achievement.Reward" project="Gamification" 
+  <class id="2" language="java" name="org.esfinge.gamification.achievement.Reward" project="Gamification" 
     file="/Gamification/src/com/esfinge/gamification/achievement/Reward.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="532" y="308"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
@@ -19,7 +19,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="com.esfinge.gamification.achievement.Ranking" project="Gamification" 
+  <class id="3" language="java" name="org.esfinge.gamification.achievement.Ranking" project="Gamification" 
     file="/Gamification/src/com/esfinge/gamification/achievement/Ranking.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="392" y="308"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
@@ -28,7 +28,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="com.esfinge.gamification.achievement.Point" project="Gamification" 
+  <class id="4" language="java" name="org.esfinge.gamification.achievement.Point" project="Gamification" 
     file="/Gamification/src/com/esfinge/gamification/achievement/Point.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="247" y="310"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
@@ -37,7 +37,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="com.esfinge.gamification.achievement.Trophy" project="Gamification" 
+  <class id="5" language="java" name="org.esfinge.gamification.achievement.Trophy" project="Gamification" 
     file="/Gamification/src/com/esfinge/gamification/achievement/Trophy.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="673" y="302"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 

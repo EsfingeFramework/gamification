@@ -1,7 +1,7 @@
 ----------------------------------------------------------------
-Tue Jul 26 23:40:09 BRT 2016:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0156-2a39-3a37-0000041ae558 
-on database directory C:\Users\pedrocavalero\git\gamification\Gamefication\MyDB with class loader sun.misc.Launcher$AppClassLoader@42a57993 
+Wed Jul 27 22:52:24 BRT 2016:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0156-2f33-e0c5-0000043891f0 
+on database directory C:\Users\pedrocavalero\git\gamification\Gamefication\MyDB with class loader sun.misc.Launcher$AppClassLoader@29453f44 
 Loaded from file:/C:/Users/pedrocavalero/.m2/repository/org/apache/derby/derby/10.12.1.1/derby-10.12.1.1.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.8.0_51-b16
