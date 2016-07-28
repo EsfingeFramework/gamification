@@ -19,7 +19,7 @@ import org.junit.Test;
 
 public class TestGameFileStorage {
 	
-	private static final String fileName = "./properties/achievements.properties";
+	private static final String fileName = "achievements.properties";
 	private FakeUser user;
 	private Game gameFile;
 		
