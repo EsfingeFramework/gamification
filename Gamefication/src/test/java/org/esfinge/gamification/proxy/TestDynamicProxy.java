@@ -30,10 +30,10 @@ public class TestDynamicProxy {
 	@Before
 	public void setupGame(){
 		UserStorage.setUserID("Spider");
-		p = (ITestPointAnn) GameProxy.createProxy(new TestPointAnnotation());
-		r = (ITestRankingAnn) GameProxy.createProxy(new TestRankingAnnotation());
-		rw = (ITestRewardAnn) GameProxy.createProxy(new TestRewardAnnotation());
-		t = (ITestTrophiesAnn) GameProxy.createProxy(new TestTrophiesAnnotation());
+		p = GameProxy.createProxy(new TestPointAnnotation());
+		r = GameProxy.createProxy(new TestRankingAnnotation());
+		rw = GameProxy.createProxy(new TestRewardAnnotation());
+		t = GameProxy.createProxy(new TestTrophiesAnnotation());
 		gs = new GameMemoryStorage();
 		GameInvoker gi = GameInvoker.getInstance();
 		gi.setGame(gs);

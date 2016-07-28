@@ -32,7 +32,7 @@ public class GameProxy implements InvocationHandler{
 		} 
 	}
 	
-	public static Object createProxy(Object encapsulated){
+	public static <T> T createProxy(T encapsulated){
 		Object obj =  Proxy.newProxyInstance(encapsulated.getClass().getClassLoader(),
 				encapsulated.getClass().getInterfaces(), 
 				new GameProxy(encapsulated));
@@ -47,7 +47,7 @@ public class GameProxy implements InvocationHandler{
 			throw new GamificationConfigurationException("Invalid annotation configuration", e);
 		}
 		
-		return obj;	
+		return (T)obj;	
 	}	
 
 }
