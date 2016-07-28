@@ -4,21 +4,18 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
 import com.esfinge.gamification.achievement.Achievement;
 import com.esfinge.gamification.factory.AchievementFactory;
-import com.esfinge.gamification.listener.AchievementListener;
 
 public class GameFileStorage extends Game {
 	
 	private String key;	
 	private Properties props;
 	private static File dir = null;
-	private ArrayList<AchievementListener> ac = new ArrayList<>();
 	private static String delim = "|";
 	
 	public GameFileStorage(String fileName) {
@@ -187,24 +184,6 @@ public class GameFileStorage extends Game {
 		}
 
 		return achievements;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.esfinge.gamefication.mechanics.Game#addListener(com.esfinge.gamefication
-	 * .listener.AchievementListener)
-	 */
-	@Override
-	public void addListener(AchievementListener listener) {
-		ac.add(listener);
-	}
-
-	private void notify(AchievementListener listener) {
-		for (AchievementListener a : ac) {
-			a.achievementAdded(a, null);
-		}
 	}
 
 	@Override
