@@ -1,6 +1,7 @@
 package org.esfinge.gamification.bonus;
 
 import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 
 import org.esfinge.gamification.achievement.Achievement;
 import org.esfinge.gamification.listener.EvaluationAchievementListener;
@@ -17,7 +18,7 @@ public class BonusBuilder {
 		this.bonus = bonus;
 	}
 
-	public <T extends Achievement> void when(BiFunction<T, Object, Boolean> when) {
+	public <T extends Achievement> void when(BiPredicate<T, Object> when) {
 		game.addListener(new EvaluationAchievementListener<T>(when, bonus));
 	}
 }

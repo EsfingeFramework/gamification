@@ -1,17 +1,18 @@
 package org.esfinge.gamification.listener;
 
 import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 
 import org.esfinge.gamification.achievement.Achievement;
 import org.esfinge.gamification.mechanics.Game;
 
 public class EvaluationAchievementListener<T extends Achievement> implements AchievementListener {
 
-	private BiFunction<T,Object,Boolean> evaluation;
+	private BiPredicate<T,Object> evaluation;
 	private Achievement bonus;
 	
 	
-	public EvaluationAchievementListener(BiFunction<T, Object, Boolean> evaluation, Achievement bonus) {
+	public EvaluationAchievementListener(BiPredicate<T, Object> evaluation, Achievement bonus) {
 		super();
 		this.evaluation = evaluation;
 		this.bonus = bonus;
@@ -22,7 +23,7 @@ public class EvaluationAchievementListener<T extends Achievement> implements Ach
 		Achievement updated = game.getAchievement(user, a.getName());
 		
 		try {
-			if(evaluation.apply((T)updated, user)){
+			if(evaluation.test((T)updated, user)){
 				game.addAchievement(user, bonus);
 			}
 		} catch (ClassCastException e) {
@@ -36,7 +37,7 @@ public class EvaluationAchievementListener<T extends Achievement> implements Ach
 		
 		try {
 			if(updated != null
-					&& !evaluation.apply((T)updated, user)){
+					&& evaluation.negate().test((T)updated, user)){
 				game.removeAchievement(user, bonus);
 			}
 		} catch (ClassCastException e) {
