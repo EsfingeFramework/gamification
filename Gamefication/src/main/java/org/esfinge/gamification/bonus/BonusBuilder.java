@@ -17,21 +17,7 @@ public class BonusBuilder {
 		this.bonus = bonus;
 	}
 
-	public BonusBuilderP1 whenAchievementClassIs(Class<?> whenAchievementClassIs) {
-		return new BonusBuilderP1(whenAchievementClassIs);
-	}
-
-	public class BonusBuilderP1 {
-		Class<?> whenAchievementClassIs;
-
-		public BonusBuilderP1(Class<?> whenAchievementClassIs) {
-			super();
-			this.whenAchievementClassIs = whenAchievementClassIs;
-		}
-
-		public <T extends Achievement> void when(BiFunction<T, Object, Boolean> when) {
-			game.addListener(new EvaluationAchievementListener<T>(whenAchievementClassIs, when, bonus));
-		}
-
+	public <T extends Achievement> void when(BiFunction<T, Object, Boolean> when) {
+		game.addListener(new EvaluationAchievementListener<T>(when, bonus));
 	}
 }

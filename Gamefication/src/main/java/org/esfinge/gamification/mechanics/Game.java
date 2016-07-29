@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.esfinge.gamification.achievement.Achievement;
 import org.esfinge.gamification.bonus.BonusBuilder;
-import org.esfinge.gamification.bonus.BonusBuilder.BonusBuilderP1;
 import org.esfinge.gamification.listener.AchievementListener;
 
 public abstract class Game {

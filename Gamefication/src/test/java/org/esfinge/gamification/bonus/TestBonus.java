@@ -30,7 +30,6 @@ public class TestBonus {
 		GameInvoker gi = GameInvoker.getInstance();
 		gi.setGame(game);
 		game.addBonus(new Trophy("BONUS"))
-			.whenAchievementClassIs(Point.class) 
 			.when((Point a, Object user) -> a.getName().equals("GOLD") && a.getQuantity()>=2000);
 	}
 	
@@ -74,7 +73,6 @@ public class TestBonus {
 	@Test
 	public void testTwoTrophy(){
 		game.addBonus(new Trophy("BONUS2"))
-		.whenAchievementClassIs(Point.class) 
 		.when((Point a, Object user) -> a.getName().equals("GOLD") && a.getQuantity()>=2000);
 
 		p.doSomething();
@@ -87,7 +85,6 @@ public class TestBonus {
 	@Test
 	public void testTwoTrophyDifferentThreshould(){
 		game.addBonus(new Trophy("BONUS2"))
-		.whenAchievementClassIs(Point.class) 
 		.when((Point a, Object user) -> a.getName().equals("GOLD") && a.getQuantity()>=1500);
 
 		p.doSomething();
