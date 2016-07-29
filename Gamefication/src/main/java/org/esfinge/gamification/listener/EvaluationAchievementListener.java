@@ -30,6 +30,13 @@ public class EvaluationAchievementListener<T extends Achievement> implements Ach
 
 	@Override
 	public void achievementRemoved(Game game, Object user, Achievement a) {
+		Achievement updated = game.getAchievement(user, a.getName());
+		
+		if(updated != null
+				&& updated.getClass().isAssignableFrom(clazz) 
+				&& !evaluation.apply((T)updated, user)){
+			game.removeAchievement(user, bonus);
+		}
 	}
 
 }
