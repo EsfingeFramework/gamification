@@ -18,16 +18,14 @@ public class BonusBuilder {
 	}
 
 	public BonusBuilderP1 whenAchievementClassIs(Class<?> whenAchievementClassIs) {
-		return new BonusBuilderP1(bonus, whenAchievementClassIs);
+		return new BonusBuilderP1(whenAchievementClassIs);
 	}
 
 	public class BonusBuilderP1 {
-		Achievement bonus;
 		Class<?> whenAchievementClassIs;
 
-		public BonusBuilderP1(Achievement bonus, Class<?> whenAchievementClassIs) {
+		public BonusBuilderP1(Class<?> whenAchievementClassIs) {
 			super();
-			this.bonus = bonus;
 			this.whenAchievementClassIs = whenAchievementClassIs;
 		}
 
