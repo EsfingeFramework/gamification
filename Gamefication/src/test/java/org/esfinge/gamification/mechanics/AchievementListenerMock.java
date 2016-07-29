@@ -13,7 +13,7 @@ public class AchievementListenerMock implements AchievementListener {
 		error = true;
 	}
 
-	public void achievementAdded(Object user, Achievement added) {
+	public void achievementAdded(Game game, Object user, Achievement added) {
 		
 		if (error){
 			throw new RuntimeException();
@@ -28,7 +28,7 @@ public class AchievementListenerMock implements AchievementListener {
 	}
 	
 
-	public void achievementRemoved(Object user, Achievement removed) {
+	public void achievementRemoved(Game game, Object user, Achievement removed) {
 		 if (error){
 			 throw new RuntimeException();
 		 }
