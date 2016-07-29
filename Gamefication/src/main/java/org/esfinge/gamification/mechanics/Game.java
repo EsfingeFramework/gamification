@@ -3,11 +3,11 @@ package org.esfinge.gamification.mechanics;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiFunction;
 
 import org.esfinge.gamification.achievement.Achievement;
+import org.esfinge.gamification.bonus.BonusBuilder;
+import org.esfinge.gamification.bonus.BonusBuilder.BonusBuilderP1;
 import org.esfinge.gamification.listener.AchievementListener;
-import org.esfinge.gamification.listener.EvaluationAchievementListener;
 
 public abstract class Game {
 
@@ -84,36 +84,10 @@ public abstract class Game {
 		}
 	}
 
-	public BonusBuilderP1 addBonus(Achievement bonus) {
-		return new BonusBuilderP1(bonus);
+	public BonusBuilder addBonus(Achievement bonus) {
+		return new BonusBuilder(this, bonus);
 	}
 	
-	public class BonusBuilderP1 {
-		Achievement bonus;
-
-		public BonusBuilderP1(Achievement bonus) {
-			super();
-			this.bonus = bonus;
-		}
-		
-		public BonusBuilderP2 whenAchievementClassIs(Class<?> whenAchievementClassIs){
-			return new BonusBuilderP2(bonus, whenAchievementClassIs);
-		}
-	}
-	public class BonusBuilderP2 {
-		Achievement bonus;
-		Class<?> whenAchievementClassIs;
-
-		public BonusBuilderP2(Achievement bonus, Class<?> whenAchievementClassIs) {
-			super();
-			this.bonus = bonus;
-			this.whenAchievementClassIs = whenAchievementClassIs;
-		}
-
-		public <T extends Achievement> void when(BiFunction<T,Object,Boolean> when) {
-			Game.this.addListener(new EvaluationAchievementListener<T>(whenAchievementClassIs, when, bonus));
-		}
-
-	}
+	
 
 }
