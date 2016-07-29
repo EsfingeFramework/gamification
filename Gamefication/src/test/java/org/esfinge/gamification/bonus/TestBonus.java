@@ -70,5 +70,33 @@ public class TestBonus {
 		Achievement bonus = game.getAchievement("Spider", "BONUS");
 		assertNull(bonus);
 	}
+	
+	@Test
+	public void testTwoTrophy(){
+		game.addBonus(new Trophy("BONUS2"))
+		.whenAchievementClassIs(Point.class) 
+		.when((Point a, Object user) -> a.getName().equals("GOLD") && a.getQuantity()>=2000);
 
+		p.doSomething();
+		p.doSomething();
+		Achievement bonus = game.getAchievement("Spider", "BONUS");
+		assertNotNull(bonus);
+		Achievement bonus2 = game.getAchievement("Spider", "BONUS2");
+		assertNotNull(bonus2);
+	}
+	@Test
+	public void testTwoTrophyDifferentThreshould(){
+		game.addBonus(new Trophy("BONUS2"))
+		.whenAchievementClassIs(Point.class) 
+		.when((Point a, Object user) -> a.getName().equals("GOLD") && a.getQuantity()>=1500);
+
+		p.doSomething();
+		p.doSomething();
+		p.doRemoveSomething();
+		
+		Achievement bonus = game.getAchievement("Spider", "BONUS");
+		assertNull(bonus);
+		Achievement bonus2 = game.getAchievement("Spider", "BONUS2");
+		assertNotNull(bonus2);
+	}
 }
