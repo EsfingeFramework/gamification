@@ -12,6 +12,7 @@ import org.esfinge.gamification.achievement.Ranking;
 import org.esfinge.gamification.achievement.Reward;
 import org.esfinge.gamification.achievement.Trophy;
 import org.esfinge.gamification.mechanics.FakeUser;
+import org.esfinge.gamification.mechanics.Game;
 import org.esfinge.gamification.mechanics.GameMemoryStorage;
 import org.esfinge.gamification.proxy.GameInvoker;
 import org.esfinge.gamification.proxy.GameProxy;
@@ -21,7 +22,7 @@ import org.junit.Test;
 
 public class TestDynamicProxy {
 	
-	GameMemoryStorage gs;
+	Game gs;
 	ITestPointAnn p;
 	ITestRankingAnn r;
 	ITestRewardAnn rw;
