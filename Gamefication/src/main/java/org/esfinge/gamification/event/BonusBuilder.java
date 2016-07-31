@@ -1,6 +1,5 @@
-package org.esfinge.gamification.bonus;
+package org.esfinge.gamification.event;
 
-import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 
 import org.esfinge.gamification.achievement.Achievement;
