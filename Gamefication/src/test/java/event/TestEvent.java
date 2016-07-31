@@ -24,6 +24,15 @@ public class TestEvent {
 	Game game;
 	ITestPointAnn p;
 
+	@Before
+	public void setupGame(){
+		UserStorage.setUserID("Spider");
+		p = GameProxy.createProxy(new TestPointAnnotation());
+		game = new GameMemoryStorage();
+		GameInvoker gi = GameInvoker.getInstance();
+		gi.setGame(game);
+	}
+	
 	@GamificationListener
 	public class EventBonusConfig {
 		
@@ -35,15 +44,6 @@ public class TestEvent {
 			executed=true;
 		}
 	}
-	@Before
-	public void setupGame(){
-		UserStorage.setUserID("Spider");
-		p = GameProxy.createProxy(new TestPointAnnotation());
-		game = new GameMemoryStorage();
-		GameInvoker gi = GameInvoker.getInstance();
-		gi.setGame(game);
-	}
-	
 	@Test
 	public void testPointAbove2000winTrophy() {
 		EventBonusConfig c = new EventBonusConfig();
@@ -146,4 +146,58 @@ public class TestEvent {
 		assertTrue(c3.executed);
 	}
 
+	@GamificationListener
+	public class EventBonusConfig4 {
+		
+		public boolean executed=false;
+		
+		@WhenReachPoints(type="GOLD", value=2000)
+		public void onlyRunsMethod(){
+			executed=true;
+		}
+	}
+	@Test
+	public void testPointAbove2000onlyRunsMethod() {
+		EventBonusConfig c = new EventBonusConfig();
+		game.addEventListeners(c);
+		p.doSomething();
+		p.doSomething();
+
+		Achievement ach = game.getAchievement("Spider", "GOLD");
+		assertEquals(new Integer(2000), ((Point) ach).getQuantity());
+		assertTrue(c.executed);
+	}
+
+	@GamificationListener
+	public class EventBonusConfig5 {
+		
+		public boolean executed1=false;
+		public boolean executed2=false;
+		
+		@WhenReachPoints(type="GOLD", value=2000)
+		public void onlyRunsMethod(){
+			executed1=true;
+		}
+		@WhenReachPoints(type="GOLD", value=2000)
+		@TrophiesToUser(name="BONUS3")
+		public void winTrophy(){
+			executed2=true;
+		}
+	}
+	@Test
+	public void testPointAbove2000onlyRunsMethodAndWinTrophy() {
+		EventBonusConfig5 c = new EventBonusConfig5();
+		game.addEventListeners(c);
+		p.doSomething();
+		p.doSomething();
+
+		Achievement ach = game.getAchievement("Spider", "GOLD");
+		assertEquals(new Integer(2000), ((Point) ach).getQuantity());
+		Achievement bonus2 = game.getAchievement("Spider", "BONUS3");
+		assertNotNull(bonus2);
+		assertTrue(c.executed1);
+		assertTrue(c.executed2);
+	}
+
+	
 }
