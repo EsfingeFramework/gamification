@@ -1,6 +1,7 @@
 package event;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -131,9 +132,8 @@ public class TestEvent {
 	@Test
 	public void testTwoTrophyDifferentThreshould(){
 		EventBonusConfig c = new EventBonusConfig();
-		game.addEventListeners(c);
 		EventBonusConfig3 c3 = new EventBonusConfig3();
-		game.addEventListeners(c3);
+		game.addEventListeners(c, c3);
 		
 		p.doSomething();
 		p.doSomething();
@@ -199,5 +199,34 @@ public class TestEvent {
 		assertTrue(c.executed2);
 	}
 
+	public class EventBonusConfig6 {
+		
+		public boolean executed1=false;
+		public boolean executed2=false;
+		
+		@WhenReachPoints(type="GOLD", value=2000)
+		public void onlyRunsMethod(){
+			executed1=true;
+		}
+		@WhenReachPoints(type="GOLD", value=2000)
+		@TrophiesToUser(name="BONUS3")
+		public void winTrophy(){
+			executed2=true;
+		}
+	}
+	@Test
+	public void testPointDontConfigure() {
+		EventBonusConfig6 c = new EventBonusConfig6();
+		game.addEventListeners(c);
+		p.doSomething();
+		p.doSomething();
+
+		Achievement ach = game.getAchievement("Spider", "GOLD");
+		assertEquals(new Integer(2000), ((Point) ach).getQuantity());
+		Achievement bonus2 = game.getAchievement("Spider", "BONUS3");
+		assertNull(bonus2);
+		assertFalse(c.executed1);
+		assertFalse(c.executed2);
+	}
 	
 }

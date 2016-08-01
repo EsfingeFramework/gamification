@@ -12,6 +12,6 @@ public interface EventListener<T extends Achievement> {
 	BiPredicate<T,Object> getEvaluation();
 	Method getMethod();
 	void setMethod(Method method);
-	void setConfigurationObject(Object eventListener);
+	void setConfigurationObject(Object configurationObject);
 	Object getConfigurationObject();
 }
