@@ -1,4 +1,4 @@
-package org.esfinge.gamification.event;
+package org.esfinge.gamification.event.annotation;
 
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;

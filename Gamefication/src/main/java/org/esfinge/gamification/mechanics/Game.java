@@ -8,8 +8,8 @@ import java.util.Map;
 
 import org.esfinge.gamification.achievement.Achievement;
 import org.esfinge.gamification.event.BonusBuilder;
-import org.esfinge.gamification.event.EventImplementation;
-import org.esfinge.gamification.event.GamificationListener;
+import org.esfinge.gamification.event.annotation.EventListenerImplementation;
+import org.esfinge.gamification.event.annotation.GamificationListener;
 import org.esfinge.gamification.event.listener.EventListener;
 import org.esfinge.gamification.listener.AchievementListener;
 import org.esfinge.gamification.listener.EvaluationAchievementProcessorAchievementoListener;
@@ -99,9 +99,9 @@ public abstract class Game {
 			if(configurationObjectClazz.isAnnotationPresent(GamificationListener.class)){
 				for(Method m: configurationObjectClazz.getDeclaredMethods()){
 					for(Annotation an: m.getAnnotations()){
-						if(an.annotationType().isAnnotationPresent(EventImplementation.class)){
+						if(an.annotationType().isAnnotationPresent(EventListenerImplementation.class)){
 							try {
-								EventImplementation eventImplementation = an.annotationType().getAnnotation(EventImplementation.class);
+								EventListenerImplementation eventImplementation = an.annotationType().getAnnotation(EventListenerImplementation.class);
 								EventListener eventListener = eventImplementation.value().newInstance();
 								eventListener.setAnnotation(an);
 								eventListener.setMethod(m);

@@ -1,4 +1,4 @@
-package org.esfinge.gamification.event;
+package org.esfinge.gamification.event.annotation;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -11,6 +11,6 @@ import org.esfinge.gamification.event.listener.EventListener;
 
 @Retention(RUNTIME)
 @Target(ANNOTATION_TYPE)
-public @interface EventImplementation {
+public @interface EventListenerImplementation {
 	Class<? extends EventListener<? extends Achievement>> value();
 }
