@@ -58,33 +58,6 @@ public class TestEvent {
 		assertNotNull(bonus);
 		assertTrue(c.executed);
 	}
-
-	//@Test
-	public void testPointBelow2000losesTrophy() {
-		p.doSomething();
-		p.doSomething();
-
-		Achievement ach = game.getAchievement("Spider", "GOLD");
-		assertEquals(new Integer(2000), ((Point) ach).getQuantity());
-		Achievement bonus = game.getAchievement("Spider", "BONUS");
-		assertNotNull(bonus);
-		
-		p.doRemoveSomething();
-		ach = game.getAchievement("Spider", "GOLD");
-		assertEquals(new Integer(1500), ((Point) ach).getQuantity());
-		bonus = game.getAchievement("Spider", "BONUS");
-		assertNull(bonus);
-	}
-	//@Test
-	public void testPointBelow2000hasNoTrophy() {
-		p.doSomething();
-
-		Achievement ach = game.getAchievement("Spider", "GOLD");
-		assertEquals(new Integer(1000), ((Point) ach).getQuantity());
-		Achievement bonus = game.getAchievement("Spider", "BONUS");
-		assertNull(bonus);
-	}
-
 	
 	//Outra classe de config
 	@GamificationListener
