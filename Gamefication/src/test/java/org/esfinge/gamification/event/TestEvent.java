@@ -1,4 +1,4 @@
-package event;
+package org.esfinge.gamification.event;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
