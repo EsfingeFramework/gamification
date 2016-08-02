@@ -2,9 +2,9 @@ package org.esfinge.gamification.event.listener;
 
 import java.lang.reflect.Method;
 
-import org.esfinge.gamification.achievement.Point;
+import org.esfinge.gamification.achievement.Achievement;
 
-public abstract class AbstractEventListener implements EventListener<Point>{
+public abstract class AbstractEventListener<T extends Achievement> implements EventListener<T>{
 
 	Method method;
 	Object configurationObject;

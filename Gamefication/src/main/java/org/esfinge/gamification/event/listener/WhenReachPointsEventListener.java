@@ -5,7 +5,7 @@ import java.lang.annotation.Annotation;
 import org.esfinge.gamification.achievement.Point;
 import org.esfinge.gamification.event.annotation.WhenReachPoints;
 
-public class WhenReachPointsEventListener extends AbstractEventListener  {
+public class WhenReachPointsEventListener extends AbstractEventListener<Point>  {
 
 	private WhenReachPoints an;
 	
