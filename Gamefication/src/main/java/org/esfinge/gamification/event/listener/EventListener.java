@@ -9,7 +9,7 @@ import org.esfinge.gamification.achievement.Achievement;
 public interface EventListener<T extends Achievement> {
 
 	void setAnnotation(Annotation an);
-	BiPredicate<T,Object> getEvaluation();
+	Boolean evaluate(T achievement,Object user);
 	Method getMethod();
 	void setMethod(Method method);
 	void setConfigurationObject(Object configurationObject);

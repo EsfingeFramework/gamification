@@ -20,7 +20,7 @@ public class EvaluationAchievementProcessorAchievementoListener<T extends Achiev
 		Achievement updated = game.getAchievement(user, a.getName());
 		
 		try {
-			if(eventListener.getEvaluation().test((T)updated, user)){
+			if(eventListener.evaluate((T)updated, user)){
 				eventListener.getMethod().invoke(eventListener.getConfigurationObject());
 				gameInvoker.registerAchievment(null, eventListener.getMethod(), null);
 			}
