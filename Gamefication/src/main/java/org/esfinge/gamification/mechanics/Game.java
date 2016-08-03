@@ -1,10 +1,18 @@
 package org.esfinge.gamification.mechanics;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.esfinge.gamification.achievement.Achievement;
+import org.esfinge.gamification.event.BonusBuilder;
+import org.esfinge.gamification.event.annotation.EventListenerImplementation;
+import org.esfinge.gamification.event.annotation.GamificationListener;
+import org.esfinge.gamification.event.listener.EventListener;
 import org.esfinge.gamification.listener.AchievementListener;
+import org.esfinge.gamification.listener.EvaluationAchievementProcessorAchievementoListener;
 
 public abstract class Game {
 
@@ -20,7 +28,7 @@ public abstract class Game {
 	 public abstract Map<String, Achievement> getAchievements(Object user);
 	
 	// /
-	private ArrayList<AchievementListener> listeners = new ArrayList<>();
+	private List<AchievementListener> listeners = new ArrayList<>();
 
 	/*
 	 * (non-Javadoc)
@@ -69,15 +77,43 @@ public abstract class Game {
 
 	private void notifyAdded(Object user, Achievement a) {
 		for (AchievementListener l : listeners) {
-			l.achievementAdded(user, a);
+			l.achievementAdded(this, user, a);
 
 		}
 	}
 	
 	private void notifyRemoved(Object user, Achievement a) {
 		for (AchievementListener l : listeners) {
-			l.achievementRemoved(user, a);
+			l.achievementRemoved(this, user, a);
 
+		}
+	}
+
+	public BonusBuilder addBonus(Achievement bonus) {
+		return new BonusBuilder(this, bonus);
+	}
+	
+	public void addEventListeners(Object... configurationObjects){
+		for (Object configurationObject : configurationObjects) {
+			Class<?> configurationObjectClazz = configurationObject.getClass();
+			if(configurationObjectClazz.isAnnotationPresent(GamificationListener.class)){
+				for(Method m: configurationObjectClazz.getDeclaredMethods()){
+					for(Annotation an: m.getAnnotations()){
+						if(an.annotationType().isAnnotationPresent(EventListenerImplementation.class)){
+							try {
+								EventListenerImplementation eventImplementation = an.annotationType().getAnnotation(EventListenerImplementation.class);
+								EventListener eventListener = eventImplementation.value().newInstance();
+								eventListener.setAnnotation(an);
+								eventListener.setMethod(m);
+								eventListener.setConfigurationObject(configurationObject);
+								this.addListener(new EvaluationAchievementProcessorAchievementoListener(eventListener));
+							} catch (Exception e) {
+								//adicionando o listener de Eventos com anotações
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 

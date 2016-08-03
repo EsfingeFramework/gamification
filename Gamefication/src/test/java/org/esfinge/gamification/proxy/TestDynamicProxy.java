@@ -12,6 +12,7 @@ import org.esfinge.gamification.achievement.Ranking;
 import org.esfinge.gamification.achievement.Reward;
 import org.esfinge.gamification.achievement.Trophy;
 import org.esfinge.gamification.mechanics.FakeUser;
+import org.esfinge.gamification.mechanics.Game;
 import org.esfinge.gamification.mechanics.GameMemoryStorage;
 import org.esfinge.gamification.proxy.GameInvoker;
 import org.esfinge.gamification.proxy.GameProxy;
@@ -21,7 +22,7 @@ import org.junit.Test;
 
 public class TestDynamicProxy {
 	
-	GameMemoryStorage gs;
+	Game gs;
 	ITestPointAnn p;
 	ITestRankingAnn r;
 	ITestRewardAnn rw;
@@ -30,10 +31,10 @@ public class TestDynamicProxy {
 	@Before
 	public void setupGame(){
 		UserStorage.setUserID("Spider");
-		p = (ITestPointAnn) GameProxy.createProxy(new TestPointAnnotation());
-		r = (ITestRankingAnn) GameProxy.createProxy(new TestRankingAnnotation());
-		rw = (ITestRewardAnn) GameProxy.createProxy(new TestRewardAnnotation());
-		t = (ITestTrophiesAnn) GameProxy.createProxy(new TestTrophiesAnnotation());
+		p = GameProxy.createProxy(new TestPointAnnotation());
+		r = GameProxy.createProxy(new TestRankingAnnotation());
+		rw = GameProxy.createProxy(new TestRewardAnnotation());
+		t = GameProxy.createProxy(new TestTrophiesAnnotation());
 		gs = new GameMemoryStorage();
 		GameInvoker gi = GameInvoker.getInstance();
 		gi.setGame(gs);
