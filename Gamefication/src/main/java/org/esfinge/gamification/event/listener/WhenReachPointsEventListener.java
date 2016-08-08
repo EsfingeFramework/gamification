@@ -15,7 +15,7 @@ public class WhenReachPointsEventListener extends AbstractEventListener<Point>  
 	}
 	@Override
 	public Boolean evaluate(Point achievement, Object user) {
-		return achievement.getName().equals(an.type()) && achievement.getQuantity()>=an.value();
+		return achievement.getName().equals(an.name()) && achievement.getQuantity()>=an.value();
 	}
 
 }
