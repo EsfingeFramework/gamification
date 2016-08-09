@@ -12,6 +12,6 @@ import org.esfinge.gamification.event.listener.WhenReachPointsEventListener;
 @Target(METHOD)
 @EventListenerImplementation(WhenReachPointsEventListener.class)
 public @interface WhenReachPoints {
-	public String type();
+	public String name();
 	public int value();
 }

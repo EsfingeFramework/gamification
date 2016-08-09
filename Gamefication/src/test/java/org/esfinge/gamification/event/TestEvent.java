@@ -8,15 +8,27 @@ import static org.junit.Assert.assertTrue;
 
 import org.esfinge.gamification.achievement.Achievement;
 import org.esfinge.gamification.achievement.Point;
+import org.esfinge.gamification.achievement.Ranking;
+import org.esfinge.gamification.achievement.Reward;
+import org.esfinge.gamification.achievement.Trophy;
 import org.esfinge.gamification.annotation.TrophiesToUser;
 import org.esfinge.gamification.event.annotation.GamificationListener;
 import org.esfinge.gamification.event.annotation.WhenReachPoints;
+import org.esfinge.gamification.event.annotation.WhenReachRanking;
+import org.esfinge.gamification.event.annotation.WhenWinReward;
+import org.esfinge.gamification.event.annotation.WhenWinTrophy;
 import org.esfinge.gamification.mechanics.Game;
 import org.esfinge.gamification.mechanics.GameMemoryStorage;
 import org.esfinge.gamification.proxy.GameInvoker;
 import org.esfinge.gamification.proxy.GameProxy;
 import org.esfinge.gamification.proxy.ITestPointAnn;
+import org.esfinge.gamification.proxy.ITestRankingAnn;
+import org.esfinge.gamification.proxy.ITestRewardAnn;
+import org.esfinge.gamification.proxy.ITestTrophiesAnn;
 import org.esfinge.gamification.proxy.TestPointAnnotation;
+import org.esfinge.gamification.proxy.TestRankingAnnotation;
+import org.esfinge.gamification.proxy.TestRewardAnnotation;
+import org.esfinge.gamification.proxy.TestTrophiesAnnotation;
 import org.esfinge.gamification.user.UserStorage;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,11 +36,17 @@ import org.junit.Test;
 public class TestEvent {
 	Game game;
 	ITestPointAnn p;
+	ITestRankingAnn r;
+	ITestTrophiesAnn t;
+	ITestRewardAnn re;
 
 	@Before
 	public void setupGame(){
 		UserStorage.setUserID("Spider");
 		p = GameProxy.createProxy(new TestPointAnnotation());
+		r = GameProxy.createProxy(new TestRankingAnnotation());
+		t = GameProxy.createProxy(new TestTrophiesAnnotation());
+		re = GameProxy.createProxy(new TestRewardAnnotation());
 		game = new GameMemoryStorage();
 		GameInvoker gi = GameInvoker.getInstance();
 		gi.setGame(game);
@@ -39,7 +57,7 @@ public class TestEvent {
 		
 		public boolean executed=false;
 		
-		@WhenReachPoints(type="GOLD", value=2000)
+		@WhenReachPoints(name="GOLD", value=2000)
 		@TrophiesToUser(name="BONUS")
 		public void winTrophy(){
 			executed=true;
@@ -65,7 +83,7 @@ public class TestEvent {
 		
 		public boolean executed=false;
 		
-		@WhenReachPoints(type="GOLD", value=2000)
+		@WhenReachPoints(name="GOLD", value=2000)
 		@TrophiesToUser(name="BONUS2")
 		public void winTrophy(){
 			executed=true;
@@ -95,7 +113,7 @@ public class TestEvent {
 		
 		public boolean executed=false;
 		
-		@WhenReachPoints(type="GOLD", value=1500)
+		@WhenReachPoints(name="GOLD", value=1500)
 		@TrophiesToUser(name="BONUS3")
 		public void winTrophy(){
 			executed=true;
@@ -124,14 +142,14 @@ public class TestEvent {
 		
 		public boolean executed=false;
 		
-		@WhenReachPoints(type="GOLD", value=2000)
+		@WhenReachPoints(name="GOLD", value=2000)
 		public void onlyRunsMethod(){
 			executed=true;
 		}
 	}
 	@Test
 	public void testPointAbove2000onlyRunsMethod() {
-		EventBonusConfig c = new EventBonusConfig();
+		EventBonusConfig4 c = new EventBonusConfig4();
 		game.addEventListeners(c);
 		p.doSomething();
 		p.doSomething();
@@ -147,11 +165,11 @@ public class TestEvent {
 		public boolean executed1=false;
 		public boolean executed2=false;
 		
-		@WhenReachPoints(type="GOLD", value=2000)
+		@WhenReachPoints(name="GOLD", value=2000)
 		public void onlyRunsMethod(){
 			executed1=true;
 		}
-		@WhenReachPoints(type="GOLD", value=2000)
+		@WhenReachPoints(name="GOLD", value=2000)
 		@TrophiesToUser(name="BONUS3")
 		public void winTrophy(){
 			executed2=true;
@@ -177,11 +195,11 @@ public class TestEvent {
 		public boolean executed1=false;
 		public boolean executed2=false;
 		
-		@WhenReachPoints(type="GOLD", value=2000)
+		@WhenReachPoints(name="GOLD", value=2000)
 		public void onlyRunsMethod(){
 			executed1=true;
 		}
-		@WhenReachPoints(type="GOLD", value=2000)
+		@WhenReachPoints(name="GOLD", value=2000)
 		@TrophiesToUser(name="BONUS3")
 		public void winTrophy(){
 			executed2=true;
@@ -202,4 +220,68 @@ public class TestEvent {
 		assertFalse(c.executed2);
 	}
 	
+	//Ranking
+	@GamificationListener
+	public class EventBonusConfig7 {
+		
+		public boolean executed=false;
+		
+		@WhenReachRanking(name="Noob", value="level 1")
+		public void onlyRunsMethod(){
+			executed=true;
+		}
+	}
+	@Test
+	public void testRankingMasterRunsMethod() {
+		EventBonusConfig7 c = new EventBonusConfig7();
+		game.addEventListeners(c);
+		r.doSomething();
+		r.doSomething();
+
+		Achievement ach = game.getAchievement("Spider", "Noob");
+		assertEquals("level 1", ((Ranking) ach).getLevel());
+		assertTrue(c.executed);
+	}
+	
+	@GamificationListener
+	public class EventBonusConfig8 {
+		
+		public boolean executed=false;
+		
+		@WhenWinTrophy("champion")
+		public void onlyRunsMethod(){
+			executed=true;
+		}
+	}
+	@Test
+	public void testTrophyChampionRunsMethod() {
+		EventBonusConfig8 c = new EventBonusConfig8();
+		game.addEventListeners(c);
+		t.doSomething();
+
+		Achievement ach = game.getAchievement("Spider", "champion");
+		assertEquals("champion", ((Trophy) ach).getName());
+		assertTrue(c.executed);
+	}
+	
+	@GamificationListener
+	public class EventBonusConfig9 {
+		
+		public boolean executed=false;
+		
+		@WhenWinReward("lunch")
+		public void onlyRunsMethod(){
+			executed=true;
+		}
+	}
+	@Test
+	public void testRewardLunchRunsMethod() {
+		EventBonusConfig9 c = new EventBonusConfig9();
+		game.addEventListeners(c);
+		re.doSomething();
+
+		Achievement ach = game.getAchievement("Spider", "lunch");
+		assertEquals("lunch", ((Reward) ach).getName());
+		assertTrue(c.executed);
+	}
 }
