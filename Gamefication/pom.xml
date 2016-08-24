@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>net.sf.esfinge</groupId>
@@ -9,7 +10,7 @@
 	<name>Esfinge Gamification</name>
 	<url>http://esfinge.sourceforge.net/</url>
 	<description>The Esfinge Gamification is a matadata based framework applicable to systems requiring an gamification logic, regardless of the domain.</description>
-	
+
 	<licenses>
 		<license>
 			<name>MIT License</name>
@@ -39,8 +40,8 @@
 		<connection>scm:git:git://github.com/EsfingeFramework/gamification.git</connection>
 		<developerConnection>scm:git:ssh://github.com:EsfingeFramework/gamification.git</developerConnection>
 		<url>http://github.com/EsfingeFramework/gamification/tree/master</url>
-	  <tag>gamification-1.0.1</tag>
-  </scm>
+		<tag>gamification-1.0.1</tag>
+	</scm>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -48,8 +49,19 @@
 
 	<build>
 		<plugins>
-		
-		
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<useReleaseProfile>false</useReleaseProfile>
+					<releaseProfiles>release</releaseProfiles>
+					<goals>deploy</goals>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
@@ -63,9 +75,9 @@
 					</execution>
 				</executions>
 			</plugin>
-		
-		
-		<plugin>
+
+
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>2.9.1</version>
@@ -78,9 +90,39 @@
 					</execution>
 				</executions>
 			</plugin>
-		
-		
-					<plugin>
+
+
+<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
 				<version>1.5</version>
@@ -94,7 +136,7 @@
 					</execution>
 				</executions>
 			</plugin>
-		
+
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
@@ -106,7 +148,7 @@
 					<autoReleaseAfterClose>true</autoReleaseAfterClose>
 				</configuration>
 			</plugin>
-		
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -116,6 +158,7 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
+
 		</plugins>
 	</build>
 	<dependencies>
@@ -194,7 +237,7 @@
 		<dependency>
 			<groupId>org.esfinge</groupId>
 			<artifactId>metadata</artifactId>
-			<version>1.0.1</version>
+			<version>1.0.2</version>
 		</dependency>
 
 
