@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 import net.sf.esfinge.gamification.validate.ProhibitsGamificationAnnotationValidator;
 import net.sf.esfinge.metadata.annotation.validator.ToValidate;
 
-@ToValidate(validationClass = ProhibitsGamificationAnnotationValidator.class)
+@ToValidate(ProhibitsGamificationAnnotationValidator.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.ANNOTATION_TYPE)
 public @interface ProhibitsGamification {

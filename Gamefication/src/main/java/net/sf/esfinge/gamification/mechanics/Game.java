@@ -56,7 +56,8 @@ public abstract class Game {
 	 * , net.sf.esfinge.gamification.achievement.Achievement)
 	 */
 	public void removeAchievement(Object user, Achievement a) {
-		Achievement p = this.getAchievement(user, a.getName());
+		Achievement p = this.getAchievement(user, a.getName());		
+		
 		if (p.removeAchievement(a))
 			this.deleteAchievement(user, p);
 		else
@@ -94,27 +95,36 @@ public abstract class Game {
 	}
 	
 	public void addEventListeners(Object... configurationObjects){
+		
 		for (Object configurationObject : configurationObjects) {
 			Class<?> configurationObjectClazz = configurationObject.getClass();
+			
 			if(configurationObjectClazz.isAnnotationPresent(GamificationListener.class)){
 				for(Method m: configurationObjectClazz.getDeclaredMethods()){
+					
 					for(Annotation an: m.getAnnotations()){
 						if(an.annotationType().isAnnotationPresent(EventListenerImplementation.class)){
+							
 							try {
 								EventListenerImplementation eventImplementation = an.annotationType().getAnnotation(EventListenerImplementation.class);
 								EventListener eventListener = eventImplementation.value().newInstance();
 								eventListener.setAnnotation(an);
 								eventListener.setMethod(m);
 								eventListener.setConfigurationObject(configurationObject);
+								
 								this.addListener(new EvaluationAchievementProcessorAchievementoListener(eventListener));
 							} catch (Exception e) {
 								//adicionando o listener de Eventos com anotações
 							}
+							
 						}
 					}
+					
 				}
 			}
+			
 		}
+		
 	}
 
 }

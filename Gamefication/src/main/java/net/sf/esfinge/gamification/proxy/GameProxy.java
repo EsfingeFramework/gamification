@@ -11,8 +11,8 @@ import net.sf.esfinge.metadata.validate.MetadataValidator;
 
 public class GameProxy implements InvocationHandler{
 	
+	private Object encapsulated;	
 	
-	private Object encapsulated;
 	
 	private GameProxy(Object encapsulated) {
 		this.encapsulated = encapsulated;
@@ -22,7 +22,8 @@ public class GameProxy implements InvocationHandler{
 	public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable {
 		try {
-			Object returnValue = method.invoke(encapsulated, args);
+			Object returnValue = method.invoke(encapsulated, args);			
+			
 			GameInvoker gameInvoker = GameInvoker.getInstance();
 			gameInvoker.registerAchievment(encapsulated, method, args);
 			

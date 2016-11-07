@@ -26,7 +26,7 @@ public class TestBonus {
 	@Before
 	public void setupGame(){
 		UserStorage.setUserID("Spider");
-		p = GameProxy.createProxy(new TestPointAnnotation());
+		p = GameProxy.createProxy(new TestPointAnnotation());		
 		game = new GameMemoryStorage();
 		GameInvoker gi = GameInvoker.getInstance();
 		gi.setGame(game);

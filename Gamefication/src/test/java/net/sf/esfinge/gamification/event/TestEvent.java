@@ -73,8 +73,10 @@ public class TestEvent {
 
 		Achievement ach = game.getAchievement("Spider", "GOLD");
 		assertEquals(new Integer(2000), ((Point) ach).getQuantity());
+		
 		Achievement bonus = game.getAchievement("Spider", "BONUS");
 		assertNotNull(bonus);
+		
 		assertTrue(c.executed);
 	}
 	
@@ -100,10 +102,13 @@ public class TestEvent {
 		
 		p.doSomething();
 		p.doSomething();
+		
 		Achievement bonus = game.getAchievement("Spider", "BONUS");
 		assertNotNull(bonus);
+		
 		Achievement bonus2 = game.getAchievement("Spider", "BONUS2");
 		assertNotNull(bonus2);
+		
 		assertTrue(c.executed);
 		assertTrue(c2.executed);
 	}
@@ -132,6 +137,7 @@ public class TestEvent {
 		
 		Achievement bonus = game.getAchievement("Spider", "BONUS");
 		assertNotNull(bonus);
+		
 		Achievement bonus2 = game.getAchievement("Spider", "BONUS3");
 		assertNotNull(bonus2);
 		assertTrue(c.executed);
@@ -185,8 +191,10 @@ public class TestEvent {
 
 		Achievement ach = game.getAchievement("Spider", "GOLD");
 		assertEquals(new Integer(2000), ((Point) ach).getQuantity());
+		
 		Achievement bonus2 = game.getAchievement("Spider", "BONUS3");
 		assertNotNull(bonus2);
+		
 		assertTrue(c.executed1);
 		assertTrue(c.executed2);
 	}
