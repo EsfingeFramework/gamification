@@ -11,13 +11,12 @@ import net.sf.esfinge.gamification.mechanics.Game;
 import net.sf.esfinge.gamification.processors.AchievementProcessor;
 import net.sf.esfinge.metadata.AnnotationReader;
 
-
 public class GameInvoker {
 	
 	public static GameInvoker getInstance(){
-		if(instance==null){
+		if(instance==null)
 			instance = new GameInvoker();
-		}
+		
 		return instance;
 	}
 	
@@ -33,39 +32,38 @@ public class GameInvoker {
 	
 	public void registerAchievment(Object encapsulated, Method method, Object[] args)
 			throws Throwable {
-		
-//		AnnotationReader a = new AnnotationReader();		
-//		ContainerGame container = null;
-//		
-//		try {
-//			container = a.readingAnnotationsTo(encapsulated.getClass(), ContainerGame.class);
-//		} catch (Exception e2) {
-//			e2.printStackTrace();
-//		}
-//		
-//		Map<Method, AchievementProcessor> mapa = container.getMapa();
-//		
-//		for (Map.Entry<Method, AchievementProcessor> entry : mapa.entrySet()){
-////		    System.err.println(entry.getKey() + "/" + entry.getValue());
-//		    
-//		    AchievementProcessor ap = entry.getValue();
-//		    Method m = entry.getKey();
-//		 	
-//		    if(m.equals(method)){
-////		    	System.out.println(m.toString());
-//		    	ap.process(game, encapsulated, method, args);
-//		    }
-//		}
-		
-		
-//		//process
-		for (AchievementProcessor ap : getAnnotations(method))
-			ap.process(game, encapsulated, method, args);
+				
+		if (encapsulated != null) {	
+			createContainerAndProcess(encapsulated, method, args);
+		}else{
+			for (AchievementProcessor ap : getAnnotations(method))
+				ap.process(game, encapsulated, method, args);	
+		}
 		
 	}
 
-	
-	
+	private void createContainerAndProcess(Object encapsulated, Method method, Object[] args) {
+		AnnotationReader a = new AnnotationReader();		
+		ContainerGame container = null;
+		
+		try {
+			container = (ContainerGame) a.readingAnnotationsTo(encapsulated.getClass(), 
+																		ContainerGame.class);
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
+		
+		Map<Method, AchievementProcessor> mapa = container.getMapa();
+		
+		for (Map.Entry<Method, AchievementProcessor> entry : mapa.entrySet()){			    
+		    AchievementProcessor ap = entry.getValue();
+		    Method m = entry.getKey();
+		 	
+		    if(m.equals(method))
+		    	ap.process(game, encapsulated, method, args);
+		}
+
+	}
 	
 	
 	private List<AchievementProcessor> getAnnotations(Method method) throws InstantiationException, IllegalAccessException {
@@ -85,18 +83,20 @@ public class GameInvoker {
 
 	private Optional<AchievementProcessor> createAchievementProcessor(Annotation an) throws InstantiationException,
 			IllegalAccessException {
+		
 		Class<? extends Annotation> anType = an.annotationType();
+		
 		if(anType.isAnnotationPresent(GamificationProcessor.class)){
+			
 			GamificationProcessor gp = anType.getAnnotation(GamificationProcessor.class);
 			Class<? extends AchievementProcessor> c = gp.value();
-			AchievementProcessor ap = c.newInstance();
-			
+			AchievementProcessor ap = c.newInstance();			
 			ap.receiveAnnotation(an);			
 			
 			return Optional.of(ap);
 		}
+		
 		return Optional.empty();
 	}
-	
 	
 }

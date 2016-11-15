@@ -54,8 +54,7 @@ public class TestEvent {
 	}
 	
 	@GamificationListener
-	public class EventBonusConfig {
-		
+	public class EventBonusConfig {		
 		public boolean executed=false;
 		
 		@WhenReachPoints(name="GOLD", value=2000)
@@ -70,20 +69,16 @@ public class TestEvent {
 		game.addEventListeners(c);
 		p.doSomething();
 		p.doSomething();
-
 		Achievement ach = game.getAchievement("Spider", "GOLD");
-		assertEquals(new Integer(2000), ((Point) ach).getQuantity());
-		
+		assertEquals(new Integer(2000), ((Point) ach).getQuantity());		
 		Achievement bonus = game.getAchievement("Spider", "BONUS");
-		assertNotNull(bonus);
-		
+		assertNotNull(bonus);		
 		assertTrue(c.executed);
 	}
 	
 	//Outra classe de config
 	@GamificationListener
-	public class EventBonusConfig2 {
-		
+	public class EventBonusConfig2 {		
 		public boolean executed=false;
 		
 		@WhenReachPoints(name="GOLD", value=2000)
@@ -98,25 +93,20 @@ public class TestEvent {
 		EventBonusConfig c = new EventBonusConfig();
 		game.addEventListeners(c);
 		EventBonusConfig2 c2 = new EventBonusConfig2();
-		game.addEventListeners(c2);
-		
+		game.addEventListeners(c2);		
 		p.doSomething();
-		p.doSomething();
-		
+		p.doSomething();		
 		Achievement bonus = game.getAchievement("Spider", "BONUS");
-		assertNotNull(bonus);
-		
+		assertNotNull(bonus);		
 		Achievement bonus2 = game.getAchievement("Spider", "BONUS2");
-		assertNotNull(bonus2);
-		
+		assertNotNull(bonus2);		
 		assertTrue(c.executed);
 		assertTrue(c2.executed);
 	}
 
 	//Outra classe de config
 	@GamificationListener
-	public class EventBonusConfig3 {
-		
+	public class EventBonusConfig3 {		
 		public boolean executed=false;
 		
 		@WhenReachPoints(name="GOLD", value=1500)
@@ -130,14 +120,11 @@ public class TestEvent {
 	public void testTwoTrophyDifferentThreshould(){
 		EventBonusConfig c = new EventBonusConfig();
 		EventBonusConfig3 c3 = new EventBonusConfig3();
-		game.addEventListeners(c, c3);
-		
+		game.addEventListeners(c, c3);		
 		p.doSomething();
-		p.doSomething();
-		
+		p.doSomething();		
 		Achievement bonus = game.getAchievement("Spider", "BONUS");
-		assertNotNull(bonus);
-		
+		assertNotNull(bonus);		
 		Achievement bonus2 = game.getAchievement("Spider", "BONUS3");
 		assertNotNull(bonus2);
 		assertTrue(c.executed);
@@ -167,8 +154,7 @@ public class TestEvent {
 	}
 
 	@GamificationListener
-	public class EventBonusConfig5 {
-		
+	public class EventBonusConfig5 {		
 		public boolean executed1=false;
 		public boolean executed2=false;
 		
@@ -188,19 +174,15 @@ public class TestEvent {
 		game.addEventListeners(c);
 		p.doSomething();
 		p.doSomething();
-
 		Achievement ach = game.getAchievement("Spider", "GOLD");
-		assertEquals(new Integer(2000), ((Point) ach).getQuantity());
-		
+		assertEquals(new Integer(2000), ((Point) ach).getQuantity());		
 		Achievement bonus2 = game.getAchievement("Spider", "BONUS3");
-		assertNotNull(bonus2);
-		
+		assertNotNull(bonus2);		
 		assertTrue(c.executed1);
 		assertTrue(c.executed2);
 	}
 
-	public class EventBonusConfig6 {
-		
+	public class EventBonusConfig6 {		
 		public boolean executed1=false;
 		public boolean executed2=false;
 		
