@@ -2,6 +2,7 @@ package net.sf.esfinge.gamification.proxy;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -23,7 +24,10 @@ public class GameInvoker {
 	private static GameInvoker instance;
 	private Game game;
 	
+	private Map<String, Map<Method, AchievementProcessor>> containerMapDb; 
+	
 	private GameInvoker(){
+		containerMapDb = new HashMap<>();
 	}
 	
 	public void setGame(Game g){
@@ -43,17 +47,13 @@ public class GameInvoker {
 	}
 
 	private void createContainerAndProcess(Object encapsulated, Method method, Object[] args) {
-		AnnotationReader a = new AnnotationReader();		
-		ContainerGame container = null;
+		Map<Method, AchievementProcessor> mapa = null;
+		String className = encapsulated.getClass().getName();
 		
-		try {
-			container = (ContainerGame) a.readingAnnotationsTo(encapsulated.getClass(), 
-																		ContainerGame.class);
-		} catch (Exception e2) {
-			e2.printStackTrace();
-		}
-		
-		Map<Method, AchievementProcessor> mapa = container.getMapa();
+		if( containerMapDb.containsKey(className) )		
+			mapa = containerMapDb.get(className);			
+		else
+			mapa = readMetadatasFrom(encapsulated);
 		
 		for (Map.Entry<Method, AchievementProcessor> entry : mapa.entrySet()){			    
 		    AchievementProcessor ap = entry.getValue();
@@ -62,7 +62,25 @@ public class GameInvoker {
 		    if(m.equals(method))
 		    	ap.process(game, encapsulated, method, args);
 		}
+	}
 
+	private Map<Method, AchievementProcessor> readMetadatasFrom(Object encapsulated) {
+		AnnotationReader reader = new AnnotationReader();
+		
+		Map<Method, AchievementProcessor> mapa = null;
+		ContainerGame container = null;
+		
+		try {
+			container = (ContainerGame) reader.readingAnnotationsTo(encapsulated.getClass(), 
+																		ContainerGame.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}			
+		
+		mapa = container.getMapa();			
+		containerMapDb.put(encapsulated.getClass().getName(), mapa);
+		
+		return mapa;
 	}
 	
 	
