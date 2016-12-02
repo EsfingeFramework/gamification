@@ -1,5 +1,7 @@
 package net.sf.esfinge.gamification.listener;
 
+import java.lang.reflect.Method;
+
 import net.sf.esfinge.gamification.achievement.Achievement;
 import net.sf.esfinge.gamification.event.listener.EventListener;
 import net.sf.esfinge.gamification.mechanics.Game;
@@ -21,8 +23,12 @@ public class EvaluationAchievementProcessorAchievementoListener<T extends Achiev
 		
 		try {
 			if(eventListener.evaluate((T)updated, user)){
-				eventListener.getMethod().invoke(eventListener.getConfigurationObject());
-				gameInvoker.registerAchievment(null, eventListener.getMethod(), null);
+				
+				Method method = eventListener.getMethod();
+				
+				method.invoke(eventListener.getConfigurationObject());
+				
+				gameInvoker.registerAchievment(null, method, null);
 			}
 		} catch (Throwable e) {
 			//nao eh possível colocar achievements

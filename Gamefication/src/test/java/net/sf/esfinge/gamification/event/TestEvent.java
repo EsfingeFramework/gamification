@@ -120,7 +120,7 @@ public class TestEvent {
 	public void testTwoTrophyDifferentThreshould(){
 		EventBonusConfig c = new EventBonusConfig();
 		EventBonusConfig3 c3 = new EventBonusConfig3();
-		game.addEventListeners(c, c3);		
+		game.addEventListeners(c, c3);	
 		p.doSomething();
 		p.doSomething();		
 		Achievement bonus = game.getAchievement("Spider", "BONUS");
