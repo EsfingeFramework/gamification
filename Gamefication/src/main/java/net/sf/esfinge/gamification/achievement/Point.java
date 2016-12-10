@@ -2,13 +2,10 @@ package net.sf.esfinge.gamification.achievement;
 
 public class Point implements Achievement{
 	
-	
 	private Integer quantity;
-	private String name;
-	
+	private String name;	
 
 	public Point(Integer quantity, String name) {
-		super();
 		this.quantity = quantity;
 		this.name = name;
 	}
@@ -35,8 +32,7 @@ public class Point implements Achievement{
 			this.quantity -= ((Point)r).getQuantity();
 			return this.quantity <=0;
 	}
-	
-	
+		
 	public String toString() {
 		return "Points Achieved - " + name + ": "+ quantity;
 	}
@@ -45,7 +41,6 @@ public class Point implements Achievement{
 	public boolean equals(Object o) {
 		Point p = (Point)o;
 		return this.name == p.name && this.quantity == p.quantity;
-	}
-	
+	}	
 	
 }

@@ -8,16 +8,13 @@ import net.sf.esfinge.gamification.exception.GamificationConfigurationException;
 import net.sf.esfinge.metadata.AnnotationValidationException;
 import net.sf.esfinge.metadata.validate.MetadataValidator;
 
-
 public class GameProxy implements InvocationHandler{
 	
 	private Object encapsulated;	
 	
-	
 	private GameProxy(Object encapsulated) {
 		this.encapsulated = encapsulated;
 	}
-
 	
 	public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable {

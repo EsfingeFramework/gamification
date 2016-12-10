@@ -35,14 +35,14 @@ public class GameInvoker {
 	public void registerAchievment(Object encapsulated, Method method, Object[] args)
 			throws Throwable {	
 				
-		if (encapsulated != null) {	
-			createContainerAndProcess(encapsulated, method, args);
-		}else{
-			for (AchievementProcessor ap : getAnnotations(method))
-				ap.process(game, encapsulated, method, args);	
-		}
+//		if (encapsulated != null) {	
+//			createContainerAndProcess(encapsulated, method, args);
+//		}else{
+//			for (AchievementProcessor ap : getAnnotations(method))
+//				ap.process(game, encapsulated, method, args);	
+//		}
 		
-//		createContainerAndProcess(encapsulated, method, args);		
+		createContainerAndProcess(encapsulated, method, args);		
 	}
 
 	private void createContainerAndProcess(Object encapsulated, Method method, Object[] args) {		

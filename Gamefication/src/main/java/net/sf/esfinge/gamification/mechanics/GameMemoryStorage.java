@@ -18,9 +18,9 @@ public class GameMemoryStorage extends Game {
 	 */
 	@Override
 	public void insertAchievement(Object user, Achievement a) {
-		if (!achievments.containsKey(user)) {
+		if (!achievments.containsKey(user)) 
 			achievments.put(user, new HashMap<String, Achievement>());
-		}
+		
 		Map<String, Achievement> userAchiev = achievments.get(user);
 		userAchiev.put(a.getName(), a);
 	}
@@ -35,13 +35,13 @@ public class GameMemoryStorage extends Game {
 	@Override
 	public void deleteAchievement(Object user, Achievement a) {
 
-		if (!achievments.containsKey(user)) {
+		if (!achievments.containsKey(user)) 
 			achievments.put(user, new HashMap<String, Achievement>());
-		}
+		
 		Map<String, Achievement> userAchiev = achievments.get(user);
-		if (userAchiev.containsKey(a.getName())) {
+		if (userAchiev.containsKey(a.getName())) 
 				userAchiev.remove(a.getName());
-		}
+		
 	}
 
 	/*
@@ -55,11 +55,7 @@ public class GameMemoryStorage extends Game {
 	public Achievement getAchievement(Object user, String achievName) {
 		if (!achievments.containsKey(user)) 
 			achievments.put(user, new HashMap<String, Achievement>());		
-		
-//		System.out.println("\n\n user: " + user.toString());
-//		System.out.println("achievName: " + achievName.toString());
-//		System.out.println("achievments: " + achievments.toString());
-		
+				
 		return achievments.get(user).get(achievName);
 	}
 
@@ -76,8 +72,7 @@ public class GameMemoryStorage extends Game {
 
 	@Override
 	public void updateAchievement(Object user, Achievement a) {
-		insertAchievement(user, a);
-		
+		insertAchievement(user, a);		
 	}
 
 }

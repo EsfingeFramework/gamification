@@ -53,12 +53,16 @@ public class TestEvent {
 		gi.setGame(game);
 	}
 	
-	@GamificationListener
-	public class EventBonusConfig {		
-		public boolean executed=false;
-		
+	
+	public interface GenericInterfaceEventBonusConfig{		
 		@WhenReachPoints(name="GOLD", value=2000)
 		@TrophiesToUser(name="BONUS")
+		public void winTrophy();		
+	}	
+	@GamificationListener
+	public class EventBonusConfig implements GenericInterfaceEventBonusConfig{		
+		public boolean executed=false;
+
 		public void winTrophy(){
 			executed=true;
 		}
@@ -76,18 +80,22 @@ public class TestEvent {
 		assertTrue(c.executed);
 	}
 	
-	//Outra classe de config
-	@GamificationListener
-	public class EventBonusConfig2 {		
-		public boolean executed=false;
-		
+	
+	
+	public interface GenericInterfaceEventBonusConfig2{		
 		@WhenReachPoints(name="GOLD", value=2000)
 		@TrophiesToUser(name="BONUS2")
+		public void winTrophy();		
+	}		
+	//Outra classe de config
+	@GamificationListener
+	public class EventBonusConfig2 implements GenericInterfaceEventBonusConfig2 {		
+		public boolean executed=false;
+		
 		public void winTrophy(){
 			executed=true;
 		}
-	}
-	
+	}	
 	@Test
 	public void testTwoTrophy(){
 		EventBonusConfig c = new EventBonusConfig();
@@ -104,18 +112,21 @@ public class TestEvent {
 		assertTrue(c2.executed);
 	}
 
-	//Outra classe de config
-	@GamificationListener
-	public class EventBonusConfig3 {		
-		public boolean executed=false;
-		
+	
+	public interface GenericInterfaceEventBonusConfig3{		
 		@WhenReachPoints(name="GOLD", value=1500)
 		@TrophiesToUser(name="BONUS3")
+		public void winTrophy();		
+	}	
+	//Outra classe de config
+	@GamificationListener
+	public class EventBonusConfig3 implements GenericInterfaceEventBonusConfig3{		
+		public boolean executed=false;
+		
 		public void winTrophy(){
 			executed=true;
 		}
-	}
-	
+	}	
 	@Test
 	public void testTwoTrophyDifferentThreshould(){
 		EventBonusConfig c = new EventBonusConfig();
@@ -130,13 +141,16 @@ public class TestEvent {
 		assertTrue(c.executed);
 		assertTrue(c3.executed);
 	}
-
+	
+	
+	public interface GenericInterfaceEventBonusConfig4{		
+		@WhenReachPoints(name="GOLD", value=2000)
+		public void onlyRunsMethod();		
+	}	
 	@GamificationListener
-	public class EventBonusConfig4 {
-		
+	public class EventBonusConfig4 implements GenericInterfaceEventBonusConfig4{		
 		public boolean executed=false;
 		
-		@WhenReachPoints(name="GOLD", value=2000)
 		public void onlyRunsMethod(){
 			executed=true;
 		}
@@ -147,23 +161,28 @@ public class TestEvent {
 		game.addEventListeners(c);
 		p.doSomething();
 		p.doSomething();
-
 		Achievement ach = game.getAchievement("Spider", "GOLD");
 		assertEquals(new Integer(2000), ((Point) ach).getQuantity());
 		assertTrue(c.executed);
 	}
 
+	
+	public interface GenericInterfaceEventBonusConfig5{		
+		@WhenReachPoints(name="GOLD", value=2000)
+		public void onlyRunsMethod();
+		
+		@WhenReachPoints(name="GOLD", value=2000)
+		@TrophiesToUser(name="BONUS3")
+		public void winTrophy();	
+	}	
 	@GamificationListener
-	public class EventBonusConfig5 {		
+	public class EventBonusConfig5 implements GenericInterfaceEventBonusConfig5{		
 		public boolean executed1=false;
 		public boolean executed2=false;
 		
-		@WhenReachPoints(name="GOLD", value=2000)
 		public void onlyRunsMethod(){
 			executed1=true;
 		}
-		@WhenReachPoints(name="GOLD", value=2000)
-		@TrophiesToUser(name="BONUS3")
 		public void winTrophy(){
 			executed2=true;
 		}
@@ -181,17 +200,23 @@ public class TestEvent {
 		assertTrue(c.executed1);
 		assertTrue(c.executed2);
 	}
-
-	public class EventBonusConfig6 {		
+		
+	
+	public interface GenericInterfaceEventBonusConfig6{		
+		@WhenReachPoints(name="GOLD", value=2000)
+		public void onlyRunsMethod();
+		
+		@WhenReachPoints(name="GOLD", value=2000)
+		@TrophiesToUser(name="BONUS3")
+		public void winTrophy();
+	}	
+	public class EventBonusConfig6 implements GenericInterfaceEventBonusConfig6 {		
 		public boolean executed1=false;
 		public boolean executed2=false;
 		
-		@WhenReachPoints(name="GOLD", value=2000)
 		public void onlyRunsMethod(){
 			executed1=true;
 		}
-		@WhenReachPoints(name="GOLD", value=2000)
-		@TrophiesToUser(name="BONUS3")
 		public void winTrophy(){
 			executed2=true;
 		}
@@ -211,13 +236,16 @@ public class TestEvent {
 		assertFalse(c.executed2);
 	}
 	
+	
+	public interface GenericInterfaceEventBonusConfig7{		
+		@WhenReachRanking(name="Noob", value="level 1")
+		public void onlyRunsMethod();
+	}		
 	//Ranking
 	@GamificationListener
-	public class EventBonusConfig7 {
-		
+	public class EventBonusConfig7 implements GenericInterfaceEventBonusConfig7{		
 		public boolean executed=false;
 		
-		@WhenReachRanking(name="Noob", value="level 1")
 		public void onlyRunsMethod(){
 			executed=true;
 		}
@@ -228,18 +256,20 @@ public class TestEvent {
 		game.addEventListeners(c);
 		r.doSomething();
 		r.doSomething();
-
 		Achievement ach = game.getAchievement("Spider", "Noob");
 		assertEquals("level 1", ((Ranking) ach).getLevel());
 		assertTrue(c.executed);
 	}
 	
+	
+	public interface GenericInterfaceEventBonusConfig8{		
+		@WhenWinTrophy("champion")
+		public void onlyRunsMethod();
+	}	
 	@GamificationListener
-	public class EventBonusConfig8 {
-		
+	public class EventBonusConfig8 implements GenericInterfaceEventBonusConfig8{		
 		public boolean executed=false;
 		
-		@WhenWinTrophy("champion")
 		public void onlyRunsMethod(){
 			executed=true;
 		}
@@ -255,12 +285,15 @@ public class TestEvent {
 		assertTrue(c.executed);
 	}
 	
+	
+	public interface GenericInterfaceEventBonusConfig9{		
+		@WhenWinReward("lunch")
+		public void onlyRunsMethod();
+	}	
 	@GamificationListener
-	public class EventBonusConfig9 {
-		
+	public class EventBonusConfig9 implements GenericInterfaceEventBonusConfig9{		
 		public boolean executed=false;
 		
-		@WhenWinReward("lunch")
 		public void onlyRunsMethod(){
 			executed=true;
 		}
@@ -270,9 +303,9 @@ public class TestEvent {
 		EventBonusConfig9 c = new EventBonusConfig9();
 		game.addEventListeners(c);
 		re.doSomething();
-
 		Achievement ach = game.getAchievement("Spider", "lunch");
 		assertEquals("lunch", ((Reward) ach).getName());
 		assertTrue(c.executed);
 	}
+	
 }

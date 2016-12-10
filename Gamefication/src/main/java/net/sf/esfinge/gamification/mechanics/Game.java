@@ -13,6 +13,7 @@ import net.sf.esfinge.gamification.event.annotation.GamificationListener;
 import net.sf.esfinge.gamification.event.listener.EventListener;
 import net.sf.esfinge.gamification.listener.AchievementListener;
 import net.sf.esfinge.gamification.listener.EvaluationAchievementProcessorAchievementoListener;
+import net.sf.esfinge.gamification.proxy.GameProxy;
 
 public abstract class Game {
 
@@ -77,17 +78,13 @@ public abstract class Game {
 	}
 
 	private void notifyAdded(Object user, Achievement a) {
-		for (AchievementListener l : listeners) {
+		for (AchievementListener l : listeners) 
 			l.achievementAdded(this, user, a);
-
-		}
 	}
 	
 	private void notifyRemoved(Object user, Achievement a) {
-		for (AchievementListener l : listeners) {
-			l.achievementRemoved(this, user, a);
-
-		}
+		for (AchievementListener l : listeners) 
+			l.achievementRemoved(this, user, a);		
 	}
 
 	public BonusBuilder addBonus(Achievement bonus) {
@@ -99,28 +96,69 @@ public abstract class Game {
 		for (Object configurationObject : configurationObjects) {
 			Class<?> configurationObjectClazz = configurationObject.getClass();
 			
-			if(configurationObjectClazz.isAnnotationPresent(GamificationListener.class)){
-				for(Method m: configurationObjectClazz.getDeclaredMethods()){
+			if(configurationObjectClazz.isAnnotationPresent(GamificationListener.class)){				
+				Class<?>[] interfaces = configurationObjectClazz.getInterfaces();
+				
+				for(Class<?> _interface_ : interfaces){
 					
-					for(Annotation an: m.getAnnotations()){
-						if(an.annotationType().isAnnotationPresent(EventListenerImplementation.class)){
+					for(Method m: _interface_.getDeclaredMethods()){
+						
+						for(Annotation an: m.getAnnotations()){
 							
-							try {
-								EventListenerImplementation eventImplementation = an.annotationType().getAnnotation(EventListenerImplementation.class);
-								EventListener eventListener = eventImplementation.value().newInstance();
-								eventListener.setAnnotation(an);
-								eventListener.setMethod(m);
-								eventListener.setConfigurationObject(configurationObject);
+							if(an.annotationType().isAnnotationPresent(EventListenerImplementation.class)){
 								
-								this.addListener(new EvaluationAchievementProcessorAchievementoListener(eventListener));
-							} catch (Exception e) {
-								//adicionando o listener de Eventos com anotações
+								try {
+									EventListenerImplementation eventImplementation = an.annotationType().getAnnotation(EventListenerImplementation.class);
+									EventListener eventListener = eventImplementation.value().newInstance();
+									eventListener.setAnnotation(an);
+									eventListener.setMethod(m);
+	//								eventListener.setConfigurationObject(configurationObject);
+									eventListener.setConfigurationObject(GameProxy.createProxy(configurationObject));
+									
+									this.addListener(new EvaluationAchievementProcessorAchievementoListener(eventListener));
+								} catch (Exception e) {
+									//adicionando o listener de Eventos com anotações
+								}
+								
 							}
-							
 						}
+						
 					}
-					
+				
+				
 				}
+				
+				
+				
+				
+//				for(Method m: configurationObjectClazz.getDeclaredMethods()){
+//					
+//					for(Annotation an: m.getAnnotations()){
+//						if(an.annotationType().isAnnotationPresent(EventListenerImplementation.class)){
+//							
+//							try {
+//								EventListenerImplementation eventImplementation = an.annotationType().getAnnotation(EventListenerImplementation.class);
+//								EventListener eventListener = eventImplementation.value().newInstance();
+//								eventListener.setAnnotation(an);
+//								eventListener.setMethod(m);
+////								eventListener.setConfigurationObject(configurationObject);
+//								eventListener.setConfigurationObject(GameProxy.createProxy(configurationObject));
+//								
+//								this.addListener(new EvaluationAchievementProcessorAchievementoListener(eventListener));
+//							} catch (Exception e) {
+//								//adicionando o listener de Eventos com anotações
+//							}
+//							
+//						}
+//					}
+//					
+//				}
+				
+				
+				
+				
+				
+				
 			}
 			
 		}

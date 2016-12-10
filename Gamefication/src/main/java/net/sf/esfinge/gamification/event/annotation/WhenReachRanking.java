@@ -6,11 +6,14 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import net.sf.esfinge.gamification.annotation.GamificationProcessor;
+import net.sf.esfinge.gamification.event.listener.WhenReachPointsEventListener;
 import net.sf.esfinge.gamification.event.listener.WhenReachRankingEventListener;
 
 @Retention(RUNTIME)
 @Target(METHOD)
 @EventListenerImplementation(WhenReachRankingEventListener.class)
+@GamificationProcessor(WhenReachRankingEventListener.class)
 public @interface WhenReachRanking {
 	public String name();
 	public String value();
