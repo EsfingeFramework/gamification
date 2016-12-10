@@ -21,8 +21,7 @@ public class EvaluationAchievementProcessorAchievementoListener<T extends Achiev
 		try {
 			if(eventListener.evaluate((T)updated, user)){				
 				Method method = eventListener.getMethod();				
-				method.invoke(eventListener.getConfigurationObject());				
-//				gameInvoker.registerAchievment(null, method, null);
+				method.invoke(eventListener.getConfigurationObject());
 			}
 		} catch (Throwable e) {
 			//nao eh possível colocar achievements

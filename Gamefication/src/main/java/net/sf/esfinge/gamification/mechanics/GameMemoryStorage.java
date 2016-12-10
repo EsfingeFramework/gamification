@@ -34,14 +34,12 @@ public class GameMemoryStorage extends Game {
 	 */
 	@Override
 	public void deleteAchievement(Object user, Achievement a) {
-
 		if (!achievments.containsKey(user)) 
 			achievments.put(user, new HashMap<String, Achievement>());
 		
 		Map<String, Achievement> userAchiev = achievments.get(user);
 		if (userAchiev.containsKey(a.getName())) 
-				userAchiev.remove(a.getName());
-		
+				userAchiev.remove(a.getName());		
 	}
 
 	/*

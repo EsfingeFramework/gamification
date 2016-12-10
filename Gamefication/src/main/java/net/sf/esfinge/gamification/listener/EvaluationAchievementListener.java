@@ -12,7 +12,6 @@ public class EvaluationAchievementListener<T extends Achievement> implements Ach
 	
 	
 	public EvaluationAchievementListener(BiPredicate<T, Object> evaluation, Achievement bonus) {
-		super();
 		this.evaluation = evaluation;
 		this.bonus = bonus;
 	}

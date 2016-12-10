@@ -94,74 +94,34 @@ public abstract class Game {
 	public void addEventListeners(Object... configurationObjects){
 		
 		for (Object configurationObject : configurationObjects) {
-			Class<?> configurationObjectClazz = configurationObject.getClass();
-			
+			Class<?> configurationObjectClazz = configurationObject.getClass();			
 			if(configurationObjectClazz.isAnnotationPresent(GamificationListener.class)){				
 				Class<?>[] interfaces = configurationObjectClazz.getInterfaces();
 				
-				for(Class<?> _interface_ : interfaces){
-					
-					for(Method m: _interface_.getDeclaredMethods()){
-						
-						for(Annotation an: m.getAnnotations()){
+				for(Class<?> _interface_ : interfaces){					
+					for(Method m: _interface_.getDeclaredMethods()){						
+						for(Annotation an: m.getAnnotations()){	
 							
-							if(an.annotationType().isAnnotationPresent(EventListenerImplementation.class)){
-								
+							if(an.annotationType().isAnnotationPresent(EventListenerImplementation.class)){								
 								try {
 									EventListenerImplementation eventImplementation = an.annotationType().getAnnotation(EventListenerImplementation.class);
 									EventListener eventListener = eventImplementation.value().newInstance();
 									eventListener.setAnnotation(an);
 									eventListener.setMethod(m);
-	//								eventListener.setConfigurationObject(configurationObject);
 									eventListener.setConfigurationObject(GameProxy.createProxy(configurationObject));
 									
 									this.addListener(new EvaluationAchievementProcessorAchievementoListener(eventListener));
 								} catch (Exception e) {
 									//adicionando o listener de Eventos com anotações
-								}
-								
+								}								
 							}
-						}
 						
-					}
+						}
+					}		
+				}	
 				
-				
-				}
-				
-				
-				
-				
-//				for(Method m: configurationObjectClazz.getDeclaredMethods()){
-//					
-//					for(Annotation an: m.getAnnotations()){
-//						if(an.annotationType().isAnnotationPresent(EventListenerImplementation.class)){
-//							
-//							try {
-//								EventListenerImplementation eventImplementation = an.annotationType().getAnnotation(EventListenerImplementation.class);
-//								EventListener eventListener = eventImplementation.value().newInstance();
-//								eventListener.setAnnotation(an);
-//								eventListener.setMethod(m);
-////								eventListener.setConfigurationObject(configurationObject);
-//								eventListener.setConfigurationObject(GameProxy.createProxy(configurationObject));
-//								
-//								this.addListener(new EvaluationAchievementProcessorAchievementoListener(eventListener));
-//							} catch (Exception e) {
-//								//adicionando o listener de Eventos com anotações
-//							}
-//							
-//						}
-//					}
-//					
-//				}
-				
-				
-				
-				
-				
-				
-			}
-			
-		}
+			}			
+		}		
 		
 	}
 
