@@ -57,11 +57,14 @@ public abstract class Game {
 	 */
 	public void removeAchievement(Object user, Achievement a) {
 		Achievement p = this.getAchievement(user, a.getName());
-		if (p.removeAchievement(a))
-			this.deleteAchievement(user, p);
-		else
-			this.updateAchievement(user, p);
-		notifyRemoved(user, a);
+		
+		if(p != null) {
+			if (p.removeAchievement(a))
+				this.deleteAchievement(user, p);
+			else
+				this.updateAchievement(user, p);
+			notifyRemoved(user, a);
+		}
 	}
 
 	/*

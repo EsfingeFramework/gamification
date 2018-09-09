@@ -115,4 +115,10 @@ public class PointStorage implements Storage {
 		stmt.execute();
 	}
 
+	
+	
+	public Map highestPointsByUser() {
+		
+		return null;
+	}
 }
