@@ -5,3 +5,4 @@ Gamification/MyDB/
 *.class
 MyDB/
 *.class
+/.gradle/
