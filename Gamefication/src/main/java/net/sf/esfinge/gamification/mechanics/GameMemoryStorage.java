@@ -40,7 +40,7 @@ public class GameMemoryStorage extends Game {
 		}
 		Map<String, Achievement> userAchiev = achievments.get(user);
 		if (userAchiev.containsKey(a.getName())) {
-				userAchiev.remove(a.getName());
+			userAchiev.remove(a.getName());
 		}
 	}
 
@@ -73,7 +73,24 @@ public class GameMemoryStorage extends Game {
 	@Override
 	public void updateAchievement(Object user, Achievement a) {
 		insertAchievement(user, a);
-		
+
+	}
+
+	@Override
+	public Map<String, Achievement> getAllAchievements(Class<? extends Achievement> type) {
+
+		Map<String, Achievement> map = new HashMap<>();
+
+		for (Map.Entry<Object, Map<String, Achievement>> keys : achievments.entrySet()) {
+			String key = (String) keys.getKey();
+			Map<String, Achievement> userAchievement = achievments.get(key);
+			for (Achievement achievement : userAchievement.values()) {
+				if (type.getTypeName() == achievement.getClass().getTypeName())
+					map.put(key, achievement);
+			}
+		}
+
+		return map;
 	}
 
 }

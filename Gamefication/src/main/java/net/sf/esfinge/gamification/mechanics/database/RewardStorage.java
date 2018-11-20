@@ -86,4 +86,22 @@ public class RewardStorage implements Storage {
 		stmt.execute();
 		
 	}
+
+	@Override
+	public Map<String, Achievement> selectAll() throws SQLException {
+		Map<String, Achievement> map = null;
+		PreparedStatement stmt;
+		stmt = connection.prepareStatement("select userid, name, used from gamification.reward");
+		ResultSet rs = stmt.executeQuery();
+		if(rs != null) {
+			map = new HashMap<>();
+			while(rs.next()) {
+				String name = rs.getString("name");
+				boolean used = rs.getBoolean("used");
+				Reward reward = new Reward(name, used);
+				map.put(rs.getString("userid"), reward);
+			}
+		}
+		return map;
+	}
 }

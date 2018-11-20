@@ -84,4 +84,22 @@ public class RankingStorage implements Storage {
 		stmt.execute();
 
 	}
+
+	@Override
+	public Map<String, Achievement> selectAll() throws SQLException {
+		Map<String, Achievement> map = null;
+		PreparedStatement stmt;
+		stmt = connection.prepareStatement("select userid, name, level from gamification.ranking");
+		ResultSet rs = stmt.executeQuery();
+		if(rs != null) {
+			map = new HashMap<>();
+			while(rs.next()) {
+				String name = rs.getString("name");
+				String level = rs.getString("level");
+				Ranking ranking = new Ranking(name, level);
+				map.put(rs.getString("userid"), ranking);
+			}
+		}
+		return map;
+	}
 }

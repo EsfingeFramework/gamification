@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.SortOrder;
+
 import net.sf.esfinge.gamification.achievement.Achievement;
 import net.sf.esfinge.gamification.achievement.Point;
 
@@ -20,16 +22,15 @@ public class PointStorage implements Storage {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * net.sf.esfinge.gamification.mechanics.database.Storage#insert(java.lang.
+	 * @see net.sf.esfinge.gamification.mechanics.database.Storage#insert(java.lang.
 	 * Object, net.sf.esfinge.gamification.achievement.Point)
 	 */
 	@Override
 	public void insert(Object user, Achievement a) throws SQLException {
 		Point p = (Point) a;
 		PreparedStatement stmt;
-		stmt = connection.prepareStatement("insert into gamification.points "
-				+ "(userid, name, points) values (?,?,?)");
+		stmt = connection
+				.prepareStatement("insert into gamification.points " + "(userid, name, points) values (?,?,?)");
 		stmt.setString(1, user.toString());
 		stmt.setString(2, p.getName());
 		stmt.setInt(3, p.getQuantity());
@@ -39,15 +40,13 @@ public class PointStorage implements Storage {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * net.sf.esfinge.gamification.mechanics.database.Storage#select(java.lang.
+	 * @see net.sf.esfinge.gamification.mechanics.database.Storage#select(java.lang.
 	 * Object, java.lang.String)
 	 */
 	@Override
 	public Achievement select(Object user, String name) throws SQLException {
 		PreparedStatement stmt;
-		stmt = connection.prepareStatement("select * from gamification.points "
-				+ "where userid=? and name = ?");
+		stmt = connection.prepareStatement("select * from gamification.points " + "where userid=? and name = ?");
 		stmt.setString(1, user.toString());
 		stmt.setString(2, name);
 		ResultSet rs = stmt.executeQuery();
@@ -62,16 +61,14 @@ public class PointStorage implements Storage {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * net.sf.esfinge.gamification.mechanics.database.Storage#select(java.lang.
+	 * @see net.sf.esfinge.gamification.mechanics.database.Storage#select(java.lang.
 	 * Object)
 	 */
 	@Override
 	public Map<String, Achievement> select(Object user) throws SQLException {
 		Map<String, Achievement> map = new HashMap<String, Achievement>();
 		PreparedStatement stmt;
-		stmt = connection.prepareStatement("select * from gamification.points "
-				+ "where userid=?");
+		stmt = connection.prepareStatement("select * from gamification.points " + "where userid=?");
 		stmt.setString(1, user.toString());
 		ResultSet rs = stmt.executeQuery();
 		while (rs.next()) {
@@ -87,16 +84,14 @@ public class PointStorage implements Storage {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * net.sf.esfinge.gamification.mechanics.database.Storage#update(java.lang.
+	 * @see net.sf.esfinge.gamification.mechanics.database.Storage#update(java.lang.
 	 * Object, net.sf.esfinge.gamification.achievement.Point)
 	 */
 	@Override
 	public void update(Object user, Achievement a) throws SQLException {
 		Point p = (Point) a;
 		PreparedStatement stmt;
-		stmt = connection.prepareStatement("update gamification.points "
-				+ "set points = ? where userid=? and name=?");
+		stmt = connection.prepareStatement("update gamification.points " + "set points = ? where userid=? and name=?");
 		stmt.setString(2, user.toString());
 		stmt.setString(3, p.getName());
 		stmt.setInt(1, p.getQuantity());
@@ -108,17 +103,34 @@ public class PointStorage implements Storage {
 		Point p = (Point) a;
 
 		PreparedStatement stmt;
-		stmt = connection.prepareStatement("delete from gamification.points "
-				+ "where userid=? and name=?");
+		stmt = connection.prepareStatement("delete from gamification.points " + "where userid=? and name=?");
 		stmt.setString(1, user.toString());
 		stmt.setString(2, p.getName());
 		stmt.execute();
 	}
 
-	
-	
-	public Map highestPointsByUser() {
-		
+	@Override
+	public Map<String, Achievement> selectAll() throws SQLException {
+
+		Map<String, Achievement> map = null;
+		PreparedStatement stmt;
+		stmt = connection.prepareStatement("select userid, name, points from gamification.points");
+		ResultSet rs = stmt.executeQuery();
+		if (rs != null) {
+			map = new HashMap<>();
+			while (rs.next()) {
+				String name = rs.getString("name");
+				int quantity = rs.getInt("points");
+				Point point = new Point(quantity, name);
+				map.put(rs.getString("userid"), point);
+			}
+		}
+		return map;
+	}
+
+	// @Override
+	public Map<String, Achievement> findAll(SortOrder sortOrder) {
 		return null;
 	}
+
 }

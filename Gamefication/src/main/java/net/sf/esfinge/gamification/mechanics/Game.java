@@ -26,6 +26,8 @@ public abstract class Game {
 	 achievName);
 	
 	 public abstract Map<String, Achievement> getAchievements(Object user);
+	 
+	 public abstract Map<String, Achievement> getAllAchievements(Class<? extends Achievement> type);
 	
 	// /
 	private List<AchievementListener> listeners = new ArrayList<>();
