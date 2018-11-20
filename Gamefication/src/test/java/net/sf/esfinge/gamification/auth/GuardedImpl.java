@@ -10,6 +10,5 @@ public class GuardedImpl implements Guarded {
 	}
 
 	@MinPoin(quantity = 20, achievementName = "gold")
-	public void takePhoto() {
-	}
+	public void takePhoto() {	}
 }
