@@ -1,4 +1,4 @@
-package net.sf.esfinge.gamification.auth;
+package net.sf.esfinge.gamification.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
