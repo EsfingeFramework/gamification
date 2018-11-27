@@ -5,7 +5,7 @@ import java.lang.reflect.Proxy;
 
 import net.sf.esfinge.gamification.mechanics.Game;
 
-public class GenericListener {
+public class AuthorizerHandler {
 	/**
 	 * Return a class that implements the interface that contains the declaration
 	 * for listenerObject. In this new class, listenerObject will call first invoke
@@ -16,7 +16,7 @@ public class GenericListener {
 		 * Create a instance of the AuthorizationHandler and override the invoke method
 		 * to handle the invoking method on the target.
 		 */
-		InvocationHandler handler = new AuthorizationHandler(game, user);
+		InvocationHandler handler = new AuthorizationHandler(game, listenerObject, user);
 
 		return Proxy.newProxyInstance(listenerObject.getClass().getClassLoader(),
 				listenerObject.getClass().getInterfaces(), handler);

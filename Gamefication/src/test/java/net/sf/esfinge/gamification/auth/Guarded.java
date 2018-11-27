@@ -8,6 +8,7 @@ public interface Guarded {
 	 * Setting 10 points of gold for this resource
 	 * 
 	 */
+	
 	@MinPoin(quantity = 10, achievementName = "gold")
 	void changeProfilePhoto();
 

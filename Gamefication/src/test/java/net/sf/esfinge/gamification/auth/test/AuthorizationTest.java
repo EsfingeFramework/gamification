@@ -8,7 +8,7 @@ import net.sf.esfinge.gamification.achievement.Achievement;
 import net.sf.esfinge.gamification.achievement.Point;
 import net.sf.esfinge.gamification.auth.Guarded;
 import net.sf.esfinge.gamification.auth.GuardedImpl;
-import net.sf.esfinge.gamification.auth.invoke.GenericListener;
+import net.sf.esfinge.gamification.auth.invoke.AuthorizerHandler;
 import net.sf.esfinge.gamification.exception.GamificationConfigurationException;
 import net.sf.esfinge.gamification.exception.UnauthorizedException;
 import net.sf.esfinge.gamification.mechanics.Game;
@@ -52,7 +52,7 @@ public class AuthorizationTest {
 
 		game.addAchievement("user", silver);
 
-		listenedObject = (Guarded) GenericListener.create(guarded, game, "user");
+		listenedObject = (Guarded) AuthorizerHandler.create(guarded, game, "user");
 		listenedObject.takePhoto();
 	}
 
@@ -67,7 +67,7 @@ public class AuthorizationTest {
 	
 	@Test(expected = UnauthorizedException.class)
 	public void unauthorizedUser() {
-		listenedObject = (Guarded) GenericListener.create(guarded, game, "user");
+		listenedObject = (Guarded) AuthorizerHandler.create(guarded, game, "user");
 		listenedObject.takePhoto();
 	}
 	
@@ -79,7 +79,7 @@ public class AuthorizationTest {
 	
 	@Test(expected = GamificationConfigurationException.class)
 	public void wrongSetUp() {
-		listenedObject = (Guarded) GenericListener.create(guarded, game, "user");
+		listenedObject = (Guarded) AuthorizerHandler.create(guarded, game, "user");
 		listenedObject.changeProfilePhoto();
 	}
 }
