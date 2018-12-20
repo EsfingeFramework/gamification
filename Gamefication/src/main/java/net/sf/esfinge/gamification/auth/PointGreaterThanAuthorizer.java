@@ -4,21 +4,21 @@ import java.lang.reflect.Method;
 import java.util.logging.Logger;
 
 import net.sf.esfinge.gamification.achievement.Point;
-import net.sf.esfinge.gamification.annotation.MinPoin;
+import net.sf.esfinge.gamification.annotation.AllowPointGraterThan;
 import net.sf.esfinge.gamification.exception.GamificationConfigurationException;
 import net.sf.esfinge.gamification.exception.UnauthorizedException;
 import net.sf.esfinge.gamification.mechanics.Game;
 
-public class GameAuthorizer implements Authorizer<MinPoin> {
+public class PointGreaterThanAuthorizer implements Authorizer<AllowPointGraterThan> {
 
 	@Override
 	public Boolean authorize(Method method, Game game, Object user) {
 
-		MinPoin annotation = method.getAnnotation(MinPoin.class);
+		AllowPointGraterThan annotation = method.getAnnotation(AllowPointGraterThan.class);
 
 		if (annotation == null)
 			throw new GamificationConfigurationException(
-					MinPoin.class.getName() + " it's necessary to validade this process");
+					AllowPointGraterThan.class.getName() + " it's necessary to validade this process");
 
 		int quantity = annotation.quantity();
 		String achiev = annotation.achievementName();

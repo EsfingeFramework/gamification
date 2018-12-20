@@ -9,15 +9,17 @@ import net.sf.esfinge.metadata.annotation.validator.NotNull;
 
 /**
  * 
- * Interface for validate a minimum quantity to achievements
- * @param quantity 			minimum quantity for user access resources
- * @param achievementName	achievement to listen
+ * Annotation for validate a minimum quantity of points
+ * 
+ * @param quantity        minimum quantity for user access resources
+ * @param achievementName achievement to listen
  *
  */
 
+
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface MinPoin {
+public @interface AllowPointGraterThan {
 	
 	@NotNull int quantity();
 	@NotNull String achievementName();

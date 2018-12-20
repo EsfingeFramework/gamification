@@ -1,6 +1,6 @@
 package net.sf.esfinge.gamification.auth;
 
-import net.sf.esfinge.gamification.annotation.MinPoin;
+import net.sf.esfinge.gamification.annotation.AllowPointGraterThan;
 
 public interface Guarded {
 
@@ -9,14 +9,14 @@ public interface Guarded {
 	 * 
 	 */
 	
-	@MinPoin(quantity = 10, achievementName = "gold")
+	@AllowPointGraterThan(quantity = 10, achievementName = "gold")
 	void changeProfilePhoto();
 
 	/**
-	 * Setting 20 points of gold for this resource
+	 * Setting 20 points of silver for this resource
 	 * 
 	 */
-	@MinPoin(quantity = 20, achievementName = "silver")
+	@AllowPointGraterThan(quantity = 20, achievementName = "silver")
 	public void takePhoto();
 
 }

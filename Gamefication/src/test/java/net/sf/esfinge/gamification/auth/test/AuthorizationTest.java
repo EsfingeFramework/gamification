@@ -8,7 +8,7 @@ import net.sf.esfinge.gamification.achievement.Achievement;
 import net.sf.esfinge.gamification.achievement.Point;
 import net.sf.esfinge.gamification.auth.Guarded;
 import net.sf.esfinge.gamification.auth.GuardedImpl;
-import net.sf.esfinge.gamification.auth.invoke.AuthorizerHandler;
+import net.sf.esfinge.gamification.auth.invoke.AuthorizerCreator;
 import net.sf.esfinge.gamification.exception.GamificationConfigurationException;
 import net.sf.esfinge.gamification.exception.UnauthorizedException;
 import net.sf.esfinge.gamification.mechanics.Game;
@@ -17,7 +17,7 @@ import net.sf.esfinge.gamification.mechanics.GameMemoryStorage;
 public class AuthorizationTest {
 
 	private Game game;
-	private Achievement silver;
+	private Achievement silver, gold;
 	private Guarded guarded;
 	private Guarded listenedObject;
 
@@ -25,6 +25,7 @@ public class AuthorizationTest {
 	public void setUp() {
 		game = new GameMemoryStorage();
 		silver = new Point(10, "silver");
+		gold = new Point(5, "gold");
 		game.addAchievement("user", silver);
 		guarded = new GuardedImpl();
 
@@ -33,27 +34,31 @@ public class AuthorizationTest {
 	@After
 	public void tearDown() {
 		game.removeAchievement("user", silver);
-		game.removeAchievement("user", silver);
 		game = null;
 		silver = null;
+		gold = null;
 		guarded = null;
 		listenedObject = null;
 	}
 
 	/**
 	 * 
-	 * In the interface 20 points of silver are defined of minimum points for access this resource
+	 * In the interface 20 points of silver are defined of minimum points for access
+	 * this resource
 	 * 
-	 *  see @net.sf.esfinge.gamification.auth.Guarded
+	 * see @net.sf.esfinge.gamification.auth.Guarded
 	 */
-	
+
 	@Test
 	public void authorizedUser() {
 
 		game.addAchievement("user", silver);
-
-		listenedObject = (Guarded) AuthorizerHandler.create(guarded, game, "user");
+		game.addAchievement("user", gold);
+		game.addAchievement("user", gold);
+		listenedObject = (Guarded) AuthorizerCreator.create(guarded, game, "user");
 		listenedObject.takePhoto();
+		listenedObject.changeProfilePhoto();
+		game.removeAchievement("user", gold);
 	}
 
 	/**
@@ -64,22 +69,22 @@ public class AuthorizationTest {
 	 * see @net.sf.esfinge.gamification.exception.UnauthorizedException
 	 * 
 	 */
-	
+
 	@Test(expected = UnauthorizedException.class)
 	public void unauthorizedUser() {
-		listenedObject = (Guarded) AuthorizerHandler.create(guarded, game, "user");
+		listenedObject = (Guarded) AuthorizerCreator.create(guarded, game, "user");
 		listenedObject.takePhoto();
 	}
-	
+
 	/**
-	 * If a achievement is set for GameAuthorizer and not be found in gamification storage a exception is throw
-	 * because is a configuration error
+	 * If a achievement is set for GameAuthorizer and not be found in gamification
+	 * storage an exception is throw because is a configuration error
 	 * 
 	 */
-	
+
 	@Test(expected = GamificationConfigurationException.class)
 	public void wrongSetUp() {
-		listenedObject = (Guarded) AuthorizerHandler.create(guarded, game, "user");
+		listenedObject = (Guarded) AuthorizerCreator.create(guarded, game, "user");
 		listenedObject.changeProfilePhoto();
 	}
 }

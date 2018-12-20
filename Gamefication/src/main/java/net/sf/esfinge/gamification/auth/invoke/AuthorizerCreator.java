@@ -5,7 +5,7 @@ import java.lang.reflect.Proxy;
 
 import net.sf.esfinge.gamification.mechanics.Game;
 
-public class AuthorizerHandler {
+public class AuthorizerCreator {
 	/**
 	 * Return a class that implements the interface that contains the declaration
 	 * for listenerObject. In this new class, listenerObject will call first invoke
