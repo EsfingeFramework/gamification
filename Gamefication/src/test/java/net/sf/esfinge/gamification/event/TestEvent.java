@@ -18,6 +18,7 @@ import net.sf.esfinge.gamification.annotation.TrophiesToUser;
 import net.sf.esfinge.gamification.event.annotation.GamificationListener;
 import net.sf.esfinge.gamification.event.annotation.WhenReachPoints;
 import net.sf.esfinge.gamification.event.annotation.WhenReachRanking;
+import net.sf.esfinge.gamification.event.annotation.WhenUseReward;
 import net.sf.esfinge.gamification.event.annotation.WhenWinReward;
 import net.sf.esfinge.gamification.event.annotation.WhenWinTrophy;
 import net.sf.esfinge.gamification.mechanics.Game;
@@ -42,7 +43,7 @@ public class TestEvent {
 	ITestRewardAnn re;
 
 	@Before
-	public void setupGame(){
+	public void setupGame() {
 		UserStorage.setUserID("Spider");
 		p = GameProxy.createProxy(new TestPointAnnotation());
 		r = GameProxy.createProxy(new TestRankingAnnotation());
@@ -52,18 +53,19 @@ public class TestEvent {
 		GameInvoker gi = GameInvoker.getInstance();
 		gi.setGame(game);
 	}
-	
+
 	@GamificationListener
 	public class EventBonusConfig {
-		
-		public boolean executed=false;
-		
-		@WhenReachPoints(name="GOLD", value=2000)
-		@TrophiesToUser(name="BONUS")
-		public void winTrophy(){
-			executed=true;
+
+		public boolean executed = false;
+
+		@WhenReachPoints(name = "GOLD", value = 2000)
+		@TrophiesToUser(name = "BONUS")
+		public void winTrophy() {
+			executed = true;
 		}
 	}
+
 	@Test
 	public void testPointAbove2000winTrophy() {
 		EventBonusConfig c = new EventBonusConfig();
@@ -77,27 +79,27 @@ public class TestEvent {
 		assertNotNull(bonus);
 		assertTrue(c.executed);
 	}
-	
-	//Outra classe de config
+
+	// Outra classe de config
 	@GamificationListener
 	public class EventBonusConfig2 {
-		
-		public boolean executed=false;
-		
-		@WhenReachPoints(name="GOLD", value=2000)
-		@TrophiesToUser(name="BONUS2")
-		public void winTrophy(){
-			executed=true;
+
+		public boolean executed = false;
+
+		@WhenReachPoints(name = "GOLD", value = 2000)
+		@TrophiesToUser(name = "BONUS2")
+		public void winTrophy() {
+			executed = true;
 		}
 	}
-	
+
 	@Test
-	public void testTwoTrophy(){
+	public void testTwoTrophy() {
 		EventBonusConfig c = new EventBonusConfig();
 		game.addEventListeners(c);
 		EventBonusConfig2 c2 = new EventBonusConfig2();
 		game.addEventListeners(c2);
-		
+
 		p.doSomething();
 		p.doSomething();
 		Achievement bonus = game.getAchievement("Spider", "BONUS");
@@ -108,28 +110,28 @@ public class TestEvent {
 		assertTrue(c2.executed);
 	}
 
-	//Outra classe de config
+	// Outra classe de config
 	@GamificationListener
 	public class EventBonusConfig3 {
-		
-		public boolean executed=false;
-		
-		@WhenReachPoints(name="GOLD", value=1500)
-		@TrophiesToUser(name="BONUS3")
-		public void winTrophy(){
-			executed=true;
+
+		public boolean executed = false;
+
+		@WhenReachPoints(name = "GOLD", value = 1500)
+		@TrophiesToUser(name = "BONUS3")
+		public void winTrophy() {
+			executed = true;
 		}
 	}
-	
+
 	@Test
-	public void testTwoTrophyDifferentThreshould(){
+	public void testTwoTrophyDifferentThreshould() {
 		EventBonusConfig c = new EventBonusConfig();
 		EventBonusConfig3 c3 = new EventBonusConfig3();
 		game.addEventListeners(c, c3);
-		
+
 		p.doSomething();
 		p.doSomething();
-		
+
 		Achievement bonus = game.getAchievement("Spider", "BONUS");
 		assertNotNull(bonus);
 		Achievement bonus2 = game.getAchievement("Spider", "BONUS3");
@@ -140,14 +142,15 @@ public class TestEvent {
 
 	@GamificationListener
 	public class EventBonusConfig4 {
-		
-		public boolean executed=false;
-		
-		@WhenReachPoints(name="GOLD", value=2000)
-		public void onlyRunsMethod(){
-			executed=true;
+
+		public boolean executed = false;
+
+		@WhenReachPoints(name = "GOLD", value = 2000)
+		public void onlyRunsMethod() {
+			executed = true;
 		}
 	}
+
 	@Test
 	public void testPointAbove2000onlyRunsMethod() {
 		EventBonusConfig4 c = new EventBonusConfig4();
@@ -162,20 +165,22 @@ public class TestEvent {
 
 	@GamificationListener
 	public class EventBonusConfig5 {
-		
-		public boolean executed1=false;
-		public boolean executed2=false;
-		
-		@WhenReachPoints(name="GOLD", value=2000)
-		public void onlyRunsMethod(){
-			executed1=true;
+
+		public boolean executed1 = false;
+		public boolean executed2 = false;
+
+		@WhenReachPoints(name = "GOLD", value = 2000)
+		public void onlyRunsMethod() {
+			executed1 = true;
 		}
-		@WhenReachPoints(name="GOLD", value=2000)
-		@TrophiesToUser(name="BONUS3")
-		public void winTrophy(){
-			executed2=true;
+
+		@WhenReachPoints(name = "GOLD", value = 2000)
+		@TrophiesToUser(name = "BONUS3")
+		public void winTrophy() {
+			executed2 = true;
 		}
 	}
+
 	@Test
 	public void testPointAbove2000onlyRunsMethodAndWinTrophy() {
 		EventBonusConfig5 c = new EventBonusConfig5();
@@ -192,20 +197,22 @@ public class TestEvent {
 	}
 
 	public class EventBonusConfig6 {
-		
-		public boolean executed1=false;
-		public boolean executed2=false;
-		
-		@WhenReachPoints(name="GOLD", value=2000)
-		public void onlyRunsMethod(){
-			executed1=true;
+
+		public boolean executed1 = false;
+		public boolean executed2 = false;
+
+		@WhenReachPoints(name = "GOLD", value = 2000)
+		public void onlyRunsMethod() {
+			executed1 = true;
 		}
-		@WhenReachPoints(name="GOLD", value=2000)
-		@TrophiesToUser(name="BONUS3")
-		public void winTrophy(){
-			executed2=true;
+
+		@WhenReachPoints(name = "GOLD", value = 2000)
+		@TrophiesToUser(name = "BONUS3")
+		public void winTrophy() {
+			executed2 = true;
 		}
 	}
+
 	@Test
 	public void testPointDontConfigure() {
 		EventBonusConfig6 c = new EventBonusConfig6();
@@ -220,18 +227,19 @@ public class TestEvent {
 		assertFalse(c.executed1);
 		assertFalse(c.executed2);
 	}
-	
-	//Ranking
+
+	// Ranking
 	@GamificationListener
 	public class EventBonusConfig7 {
-		
-		public boolean executed=false;
-		
-		@WhenReachRanking(name="Noob", value="level 1")
-		public void onlyRunsMethod(){
-			executed=true;
+
+		public boolean executed = false;
+
+		@WhenReachRanking(name = "Noob", value = "level 1")
+		public void onlyRunsMethod() {
+			executed = true;
 		}
 	}
+
 	@Test
 	public void testRankingMasterRunsMethod() {
 		EventBonusConfig7 c = new EventBonusConfig7();
@@ -243,17 +251,18 @@ public class TestEvent {
 		assertEquals("level 1", ((Ranking) ach).getLevel());
 		assertTrue(c.executed);
 	}
-	
+
 	@GamificationListener
 	public class EventBonusConfig8 {
-		
-		public boolean executed=false;
-		
+
+		public boolean executed = false;
+
 		@WhenWinTrophy("champion")
-		public void onlyRunsMethod(){
-			executed=true;
+		public void onlyRunsMethod() {
+			executed = true;
 		}
 	}
+
 	@Test
 	public void testTrophyChampionRunsMethod() {
 		EventBonusConfig8 c = new EventBonusConfig8();
@@ -264,17 +273,18 @@ public class TestEvent {
 		assertEquals("champion", ((Trophy) ach).getName());
 		assertTrue(c.executed);
 	}
-	
+
 	@GamificationListener
 	public class EventBonusConfig9 {
-		
-		public boolean executed=false;
-		
+
+		public boolean executed = false;
+
 		@WhenWinReward("lunch")
-		public void onlyRunsMethod(){
-			executed=true;
+		public void onlyRunsMethod() {
+			executed = true;
 		}
 	}
+
 	@Test
 	public void testRewardLunchRunsMethod() {
 		EventBonusConfig9 c = new EventBonusConfig9();
@@ -284,5 +294,29 @@ public class TestEvent {
 		Achievement ach = game.getAchievement("Spider", "lunch");
 		assertEquals("lunch", ((Reward) ach).getName());
 		assertTrue(c.executed);
+	}
+
+	@GamificationListener
+	public class EventRankingConfig {
+
+		public boolean executed;
+
+		@WhenUseReward("lunch")
+		public void removeMethod() {
+			executed = false;
+		}
+
+	}
+
+	@Test
+	public void testRewardLunchRemoveMethod() {
+		EventRankingConfig eventListener = new EventRankingConfig();
+		game.addEventListeners(eventListener);
+		re.doSomething();
+		re.doRemoveSomething();
+
+		Achievement ach = game.getAchievement("Spider", "lunch");
+		assertEquals("lunch", ((Reward) ach).getName());
+		assertFalse(eventListener.executed);
 	}
 }
