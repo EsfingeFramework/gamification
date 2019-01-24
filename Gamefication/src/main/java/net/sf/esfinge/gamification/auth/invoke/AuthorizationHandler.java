@@ -3,7 +3,7 @@ package net.sf.esfinge.gamification.auth.invoke;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
-import net.sf.esfinge.gamification.auth.PointGreaterThanAuthorizer;
+import net.sf.esfinge.gamification.guardian.auth.PointGreaterThanAuthorizer;
 import net.sf.esfinge.gamification.mechanics.Game;
 
 /**
@@ -26,7 +26,7 @@ class AuthorizationHandler implements InvocationHandler {
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		
 		PointGreaterThanAuthorizer gameAuthorizer = new PointGreaterThanAuthorizer();
-		gameAuthorizer.authorize(method, game, user);
+		//gameAuthorizer.authorize(method, game, user);
 		
 		return method.invoke(listenedObject, args);
 	}

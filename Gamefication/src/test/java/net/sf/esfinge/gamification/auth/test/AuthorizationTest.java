@@ -1,5 +1,8 @@
 package net.sf.esfinge.gamification.auth.test;
 
+import org.esfinge.guardian.annotation.context.Environment;
+import org.esfinge.guardian.annotation.context.Subject;
+import org.esfinge.guardian.context.AuthorizationContext;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,12 +14,16 @@ import net.sf.esfinge.gamification.auth.GuardedImpl;
 import net.sf.esfinge.gamification.auth.invoke.AuthorizerCreator;
 import net.sf.esfinge.gamification.exception.GamificationConfigurationException;
 import net.sf.esfinge.gamification.exception.UnauthorizedException;
+import net.sf.esfinge.gamification.guardian.auth.GamificationAuthorizationPopulator;
 import net.sf.esfinge.gamification.mechanics.Game;
 import net.sf.esfinge.gamification.mechanics.GameMemoryStorage;
 
 public class AuthorizationTest {
 
+	@Environment("game")
 	private Game game;
+	@Subject("user")
+	private String user = "user";
 	private Achievement silver, gold;
 	private Guarded guarded;
 	private Guarded listenedObject;
@@ -52,12 +59,18 @@ public class AuthorizationTest {
 	@Test
 	public void authorizedUser() {
 
-		game.addAchievement("user", silver);
+		game.addAchievement(user, silver);
 		game.addAchievement("user", gold);
 		game.addAchievement("user", gold);
-		listenedObject = (Guarded) AuthorizerCreator.create(guarded, game, "user");
-		listenedObject.takePhoto();
-		listenedObject.changeProfilePhoto();
+		AuthorizationContext context = new AuthorizationContext(guarded);
+		guarded.changeProfilePhoto();
+		GamificationAuthorizationPopulator auth = new GamificationAuthorizationPopulator();
+		auth.setUser(user);
+		auth.setGame(game);
+		auth.populate(context);
+//		listenedObject = (Guarded) AuthorizerCreator.create(guarded, game, "user");
+//		listenedObject.takePhoto();
+//		listenedObject.changeProfilePhoto();
 		game.removeAchievement("user", gold);
 	}
 

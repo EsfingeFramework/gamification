@@ -5,6 +5,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.esfinge.guardian.annotation.config.AuthorizerClass;
+
+import net.sf.esfinge.gamification.guardian.auth.PointGreaterThanAuthorizer;
 import net.sf.esfinge.metadata.annotation.validator.NotNull;
 
 /**
@@ -19,6 +22,7 @@ import net.sf.esfinge.metadata.annotation.validator.NotNull;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
+@AuthorizerClass(PointGreaterThanAuthorizer.class)
 public @interface AllowPointGraterThan {
 	
 	@NotNull int quantity();

@@ -1,7 +1,9 @@
-package net.sf.esfinge.gamification.auth;
+package net.sf.esfinge.gamification.guardian.auth;
 
-import java.lang.reflect.Method;
 import java.util.logging.Logger;
+
+import org.esfinge.guardian.authorizer.Authorizer;
+import org.esfinge.guardian.context.AuthorizationContext;
 
 import net.sf.esfinge.gamification.achievement.Point;
 import net.sf.esfinge.gamification.annotation.AllowPointGraterThan;
@@ -12,27 +14,28 @@ import net.sf.esfinge.gamification.mechanics.Game;
 public class PointGreaterThanAuthorizer implements Authorizer<AllowPointGraterThan> {
 
 	@Override
-	public Boolean authorize(Method method, Game game, Object user) {
-
-		AllowPointGraterThan annotation = method.getAnnotation(AllowPointGraterThan.class);
-
-		if (annotation == null)
+	public Boolean authorize(AuthorizationContext context, AllowPointGraterThan securityAnnotation) {
+		if (securityAnnotation == null)
 			throw new GamificationConfigurationException(
 					AllowPointGraterThan.class.getName() + " it's necessary to validade this process");
 
-		int quantity = annotation.quantity();
-		String achiev = annotation.achievementName();
+		int quantity = securityAnnotation.quantity();
+		String achiev = securityAnnotation.achievementName();
 		Point points;
 
 		try {
+
+			Game game = (Game) context.getEnvironment().get("game");
+			Object user = (Object) context.getResource().get("user");
 			points = (Point) game.getAchievement(user, achiev);
-			if (points == null) {
+
+			if (points == null)
 				throw new GamificationConfigurationException("Annotation could not be found or is not set in the user");
-			}
 			if (quantity <= points.getQuantity()) {
 				return true;
 			}
 			throw new UnauthorizedException("User unauthorized to perform this operation");
+
 		} catch (ClassCastException e) {
 			Logger.getLogger(this.getClass().getName(), "Could be not be get user achievement: " + e.getMessage());
 		}
