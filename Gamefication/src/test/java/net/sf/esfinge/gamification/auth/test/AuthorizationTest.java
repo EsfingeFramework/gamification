@@ -1,8 +1,7 @@
 package net.sf.esfinge.gamification.auth.test;
 
-import org.esfinge.guardian.annotation.context.Environment;
-import org.esfinge.guardian.annotation.context.Subject;
 import org.esfinge.guardian.context.AuthorizationContext;
+import org.esfinge.guardian.context.WrappedObj;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,41 +10,44 @@ import net.sf.esfinge.gamification.achievement.Achievement;
 import net.sf.esfinge.gamification.achievement.Point;
 import net.sf.esfinge.gamification.auth.Guarded;
 import net.sf.esfinge.gamification.auth.GuardedImpl;
-import net.sf.esfinge.gamification.auth.invoke.AuthorizerCreator;
 import net.sf.esfinge.gamification.exception.GamificationConfigurationException;
 import net.sf.esfinge.gamification.exception.UnauthorizedException;
-import net.sf.esfinge.gamification.guardian.auth.GamificationAuthorizationPopulator;
 import net.sf.esfinge.gamification.mechanics.Game;
 import net.sf.esfinge.gamification.mechanics.GameMemoryStorage;
 
 public class AuthorizationTest {
 
-	@Environment("game")
 	private Game game;
-	@Subject("user")
 	private String user = "user";
 	private Achievement silver, gold;
 	private Guarded guarded;
-	private Guarded listenedObject;
+	private WrappedObj<Object> wUser;
+	private WrappedObj<Game> wGame;
 
 	@Before
 	public void setUp() {
+
 		game = new GameMemoryStorage();
 		silver = new Point(10, "silver");
 		gold = new Point(5, "gold");
 		game.addAchievement("user", silver);
-		guarded = new GuardedImpl();
+		wGame = AuthorizationContext.wrapAsEnvironmentProp("game", game);
+		wUser = AuthorizationContext.wrapAsResourceProp("currentUser", user);
+		guarded = AuthorizationContext.guardObject(new GuardedImpl(), wGame, wUser);
 
 	}
 
 	@After
 	public void tearDown() {
+
 		game.removeAchievement("user", silver);
 		game = null;
 		silver = null;
 		gold = null;
 		guarded = null;
-		listenedObject = null;
+		wUser = null;
+		wGame = null;
+
 	}
 
 	/**
@@ -62,15 +64,11 @@ public class AuthorizationTest {
 		game.addAchievement(user, silver);
 		game.addAchievement("user", gold);
 		game.addAchievement("user", gold);
-		AuthorizationContext context = new AuthorizationContext(guarded);
-		guarded.changeProfilePhoto();
-		GamificationAuthorizationPopulator auth = new GamificationAuthorizationPopulator();
-		auth.setUser(user);
-		auth.setGame(game);
-		auth.populate(context);
-//		listenedObject = (Guarded) AuthorizerCreator.create(guarded, game, "user");
-//		listenedObject.takePhoto();
-//		listenedObject.changeProfilePhoto();
+
+		Guarded guard = AuthorizationContext.guardObject(new GuardedImpl(), wGame, wUser);
+
+		guard.changeProfilePhoto();
+
 		game.removeAchievement("user", gold);
 	}
 
@@ -85,8 +83,7 @@ public class AuthorizationTest {
 
 	@Test(expected = UnauthorizedException.class)
 	public void unauthorizedUser() {
-		listenedObject = (Guarded) AuthorizerCreator.create(guarded, game, "user");
-		listenedObject.takePhoto();
+		guarded.takePhoto();
 	}
 
 	/**
@@ -97,7 +94,7 @@ public class AuthorizationTest {
 
 	@Test(expected = GamificationConfigurationException.class)
 	public void wrongSetUp() {
-		listenedObject = (Guarded) AuthorizerCreator.create(guarded, game, "user");
-		listenedObject.changeProfilePhoto();
+
+		guarded.changeProfilePhoto();
 	}
 }

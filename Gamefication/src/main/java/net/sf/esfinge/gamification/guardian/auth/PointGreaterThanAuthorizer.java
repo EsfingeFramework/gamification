@@ -26,7 +26,7 @@ public class PointGreaterThanAuthorizer implements Authorizer<AllowPointGraterTh
 		try {
 
 			Game game = (Game) context.getEnvironment().get("game");
-			Object user = (Object) context.getResource().get("user");
+			Object user = (Object) context.getResource().get("currentUser");
 			points = (Point) game.getAchievement(user, achiev);
 
 			if (points == null)

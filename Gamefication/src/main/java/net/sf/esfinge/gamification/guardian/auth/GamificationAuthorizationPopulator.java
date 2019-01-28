@@ -6,16 +6,16 @@ import org.esfinge.guardian.populator.Populator;
 
 import net.sf.esfinge.gamification.mechanics.Game;
 
-@PopulatorClass(GamificationAuthorizationPopulator.class)
-public class GamificationAuthorizationPopulator implements Populator {
+//@PopulatorClass(GamificationAuthorizationPopulator.class)
+public class GamificationAuthorizationPopulator {//implements Populator {
 
 	private Game game;
 	private Object user;
 
-	@Override
+//	@Override
 	public void populate(AuthorizationContext context) {
-		context.getResource().put("currentUser", user);
-		context.getEnvironment().put("game", game);
+		context.getResource().put("currentUser", getUser());
+		context.getEnvironment().put("game", getGame());
 	}
 
 	public Game getGame() {
