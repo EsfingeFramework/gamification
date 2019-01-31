@@ -80,7 +80,7 @@ public class AuthorizationTest {
 
 	@Test(expected = UnauthorizedException.class)
 	public void unauthorizedUser() {
-		
+
 		user = "un";
 		game.addAchievement(user, silver);
 		UserStorage.setUserID(user);
@@ -95,8 +95,20 @@ public class AuthorizationTest {
 	 */
 
 	@Test(expected = GamificationConfigurationException.class)
-	public void wrongSetUp() {
+	public void wrongAuthorizationSetUp() {
 
 		guarded.changeProfilePhoto();
+	}
+
+	@Test(expected = GamificationConfigurationException.class)
+	public void wrongGameSetUp() {
+		GameInvoker.getInstance().setGame(null);
+		guarded.takePhoto();
+	}
+
+	@Test(expected = GamificationConfigurationException.class)
+	public void wrongUserSetUp() {
+		UserStorage.setUserID(null);
+		guarded.takePhoto();
 	}
 }
