@@ -1,9 +1,9 @@
 package net.sf.esfinge.gamification.auth;
 
-import net.sf.esfinge.gamification.annotation.auth.AllowPointGreaterThan;
-import net.sf.esfinge.gamification.annotation.auth.AllowPointLessOrEqualsThan;
-import net.sf.esfinge.gamification.annotation.auth.DenyPointGreaterThan;
-import net.sf.esfinge.gamification.annotation.auth.DenyPointLessOrEqualsThan;
+import net.sf.esfinge.gamification.annotation.auth.points.AllowPointGreaterThan;
+import net.sf.esfinge.gamification.annotation.auth.points.AllowPointLessOrEqualsThan;
+import net.sf.esfinge.gamification.annotation.auth.points.DenyPointGreaterThan;
+import net.sf.esfinge.gamification.annotation.auth.points.DenyPointLessOrEqualsThan;
 
 public class GuardedImpl implements Guarded {
 

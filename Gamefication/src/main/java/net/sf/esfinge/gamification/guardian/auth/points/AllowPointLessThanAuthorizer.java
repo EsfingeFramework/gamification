@@ -4,18 +4,18 @@ import org.esfinge.guardian.authorizer.Authorizer;
 import org.esfinge.guardian.context.AuthorizationContext;
 
 import net.sf.esfinge.gamification.achievement.Point;
-import net.sf.esfinge.gamification.annotation.auth.AllowPointLessOrEqualsThan;
+import net.sf.esfinge.gamification.annotation.auth.points.AllowPointLessOrEqualsThan;
 import net.sf.esfinge.gamification.exception.UnauthorizedException;
-import net.sf.esfinge.gamification.guardian.AuthorizationPointsProcessor;
+import net.sf.esfinge.gamification.guardian.AuthorizationProcessor;
 
 public class AllowPointLessThanAuthorizer implements Authorizer<AllowPointLessOrEqualsThan> {
 
 	@Override
 	public Boolean authorize(AuthorizationContext context, AllowPointLessOrEqualsThan securityAnnotation) {
 
-		AuthorizationPointsProcessor processor = new AuthorizationPointsProcessor(context);
-		Point points = processor.process(securityAnnotation);
-		
+		AuthorizationProcessor processor = new AuthorizationProcessor(context);
+		Point points = (Point) processor.process(securityAnnotation);
+
 		if (securityAnnotation.quantity() >= points.getQuantity()) {
 			return true;
 		}

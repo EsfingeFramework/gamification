@@ -1,4 +1,4 @@
-package net.sf.esfinge.gamification.annotation.auth;
+package net.sf.esfinge.gamification.annotation.auth.points;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
