@@ -1,4 +1,4 @@
-package net.sf.esfinge.gamification.annotation;
+package net.sf.esfinge.gamification.annotation.auth;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 import org.esfinge.guardian.annotation.config.AuthorizerClass;
 
-import net.sf.esfinge.gamification.guardian.auth.PointGreaterThanAuthorizer;
+import net.sf.esfinge.gamification.guardian.auth.points.AllowPointGreaterThanAuthorizer;
 import net.sf.esfinge.metadata.annotation.validator.NotNull;
 
 /**
@@ -22,8 +22,8 @@ import net.sf.esfinge.metadata.annotation.validator.NotNull;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@AuthorizerClass(PointGreaterThanAuthorizer.class)
-public @interface AllowPointGraterThan {
+@AuthorizerClass(AllowPointGreaterThanAuthorizer.class)
+public @interface AllowPointGreaterThan {
 	
 	@NotNull int quantity();
 	@NotNull String achievementName();

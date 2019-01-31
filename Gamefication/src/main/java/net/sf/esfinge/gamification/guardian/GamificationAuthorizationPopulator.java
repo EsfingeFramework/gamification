@@ -1,4 +1,4 @@
-package net.sf.esfinge.gamification.guardian.auth;
+package net.sf.esfinge.gamification.guardian;
 
 import java.util.Optional;
 
