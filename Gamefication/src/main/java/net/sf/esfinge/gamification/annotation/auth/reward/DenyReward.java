@@ -9,10 +9,19 @@ import java.lang.annotation.Target;
 import org.esfinge.guardian.annotation.config.AuthorizerClass;
 
 import net.sf.esfinge.gamification.guardian.auth.reward.DenyRewardAuthorizer;
+import net.sf.esfinge.metadata.annotation.validator.NotNull;
+
+/***
+ * 
+ * Deny users execution with a specific {@link Reward} 
+ *
+ */
 
 @Retention(RUNTIME)
 @Target(METHOD)
 @AuthorizerClass(DenyRewardAuthorizer.class)
 public @interface DenyReward {
-	String achievementName();
+	
+	@NotNull String achievementName();
+	
 }

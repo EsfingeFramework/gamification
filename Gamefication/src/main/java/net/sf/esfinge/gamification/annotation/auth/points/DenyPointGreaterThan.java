@@ -8,13 +8,14 @@ import java.lang.annotation.Target;
 
 import org.esfinge.guardian.annotation.config.AuthorizerClass;
 
+import net.sf.esfinge.gamification.achievement.Point;
 import net.sf.esfinge.gamification.guardian.auth.points.DenyPointGreaterThanAuthorizer;
 import net.sf.esfinge.metadata.annotation.validator.NotNull;
 
 
 /**
  * 
- * Annotation for validate a maximum quantity of points
+ * Annotation for validate a maximum quantity of {@link Point}
  * 
  * @param quantity        minimum quantity for user access resources
  * @param achievementName achievement to listen

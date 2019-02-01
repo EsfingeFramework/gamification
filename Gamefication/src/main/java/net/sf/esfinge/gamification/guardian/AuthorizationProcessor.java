@@ -11,27 +11,13 @@ import net.sf.esfinge.gamification.achievement.Achievement;
 import net.sf.esfinge.gamification.exception.GamificationConfigurationException;
 import net.sf.esfinge.gamification.mechanics.Game;
 
-public class AuthorizationProcessor {
+public abstract class AuthorizationProcessor {
 
-	private Game game;
-	private Object user;
+	public Achievement process(AuthorizationContext context, Annotation securityAnnotation) {
+		
+		Game game = (Game) context.getEnvironment().get("game");
+		Object user = (Object) context.getResource().get("currentUser");
 
-	public AuthorizationProcessor(AuthorizationContext context) {
-
-		this.game = (Game) context.getEnvironment().get("game");
-		this.user = (Object) context.getResource().get("currentUser");
-
-	}
-
-	public Game getGame() {
-		return game;
-	}
-
-	public Object getUser() {
-		return user;
-	}
-
-	public Achievement process(Annotation securityAnnotation) {
 		if (Objects.isNull(securityAnnotation))
 			throw new GamificationConfigurationException(
 					"One security annotation it's necessary to validade this process");
@@ -49,13 +35,13 @@ public class AuthorizationProcessor {
 					invokeException);
 		}
 
-		Achievement points = game.getAchievement(user, achiev);
+		Achievement achievement = game.getAchievement(user, achiev);
 
-		if (Objects.isNull(points))
+		if (Objects.isNull(achievement))
 			throw new GamificationConfigurationException(
 					"Annotation could not be found or current user is not set correctly");
 
-		return points;
+		return achievement;
 	}
 
 }
