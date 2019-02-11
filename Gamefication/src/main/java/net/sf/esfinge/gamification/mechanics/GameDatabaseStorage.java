@@ -157,4 +157,21 @@ public class GameDatabaseStorage extends Game {
 		
 	}
 
+	@Override
+	public Map<String, Achievement> getAllAchievements(Class<? extends Achievement> type) {
+		Storage ps = null;
+		Map<String, Achievement> map = null;
+		try {
+			ps = factory.storageFor(type.newInstance());
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		try {
+			map = ps.selectAll();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
+
 }

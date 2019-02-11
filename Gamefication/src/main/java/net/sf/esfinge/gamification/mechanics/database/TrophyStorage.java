@@ -78,4 +78,21 @@ public class TrophyStorage implements Storage{
 		
 	}
 
+	@Override
+	public Map<String, Achievement> selectAll() throws SQLException {
+		Map<String, Achievement> map = null;
+		PreparedStatement stmt;
+		stmt = connection.prepareStatement("select userid, name from gamification.trophy");
+		ResultSet rs = stmt.executeQuery();
+		if(rs != null) {
+			map = new HashMap<>();
+			while(rs.next()) {
+				String name = rs.getString("name");
+				Trophy trophy = new Trophy(name);
+				map.put(rs.getString("userid"), trophy);
+			}
+		}
+		return map;
+	}
+
 }

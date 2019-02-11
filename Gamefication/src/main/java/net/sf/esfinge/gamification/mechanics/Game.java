@@ -26,6 +26,8 @@ public abstract class Game {
 	 achievName);
 	
 	 public abstract Map<String, Achievement> getAchievements(Object user);
+	 
+	 public abstract Map<String, Achievement> getAllAchievements(Class<? extends Achievement> type);
 	
 	// /
 	private List<AchievementListener> listeners = new ArrayList<>();
@@ -57,11 +59,14 @@ public abstract class Game {
 	 */
 	public void removeAchievement(Object user, Achievement a) {
 		Achievement p = this.getAchievement(user, a.getName());
-		if (p.removeAchievement(a))
-			this.deleteAchievement(user, p);
-		else
-			this.updateAchievement(user, p);
-		notifyRemoved(user, a);
+		
+		if(p != null) {
+			if (p.removeAchievement(a))
+				this.deleteAchievement(user, p);
+			else
+				this.updateAchievement(user, p);
+			notifyRemoved(user, a);
+		}
 	}
 
 	/*

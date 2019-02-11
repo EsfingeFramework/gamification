@@ -5,6 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.junit.Test;
+
 import net.sf.esfinge.gamification.annotation.PointsToUser;
 import net.sf.esfinge.gamification.annotation.RankingsToUser;
 import net.sf.esfinge.gamification.annotation.RemovePoints;
@@ -13,7 +15,6 @@ import net.sf.esfinge.gamification.proxy.GameProxy;
 import net.sf.esfinge.metadata.AnnotationValidationException;
 import net.sf.esfinge.metadata.annotation.validator.SearchInsideAnnotations;
 import net.sf.esfinge.metadata.annotation.validator.SearchOnEnclosingElements;
-import org.junit.Test;
 
 public class TestValidateRemovePoint {
 
@@ -256,5 +257,5 @@ public class TestValidateRemovePoint {
 	public void CT15() throws AnnotationValidationException {
 		GameProxy.createProxy(new TestPointAnnotation15());
 	}
-	
+
 }

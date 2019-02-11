@@ -84,6 +84,12 @@ public class TestGameFileStorage {
 	}
 	
 	@Test
+	public void removePointsLassThanZero() {
+		Achievement point = new Point(1, "moedas");
+		gameFile.removeAchievement(user, point);
+	}
+	
+	@Test
 	public void removeAllPointsFile(){
 		Achievement p = new Point(200, "moedas");
 		gameFile.addAchievement(user, p);
