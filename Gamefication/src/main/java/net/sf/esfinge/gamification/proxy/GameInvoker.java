@@ -29,6 +29,10 @@ public class GameInvoker {
 		game = g;
 	}
 	
+	public Game getGame() {
+		return game;
+	}
+	
 	public void registerAchievment(Object encapsulated, Method method, Object[] args)
 			throws Throwable {
 		//process
