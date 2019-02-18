@@ -35,6 +35,12 @@
 			<organizationUrl />
 
 		</developer>
+		<developer>
+			<name>Weslei Luiz de Paula Pinto</name>
+			<email>weslei.paula@fatec.sp.gov.br</email>
+			<organization></organization>
+			<organizationUrl></organizationUrl>
+		</developer>
 	</developers>
 
 	<scm>
@@ -153,11 +159,6 @@
 			<version>1.6.1</version>
 		</dependency>
 		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>1.4</version><!-- 2.7 -->
-		</dependency>
-		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>11.0.2</version><!-- 19.0 -->
@@ -192,11 +193,6 @@
 			<groupId>net.sf.esfinge</groupId>
 			<artifactId>metadata</artifactId>
 			<version>1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.esfinge.guardian</groupId>
-			<artifactId>esfinge-guardian</artifactId>
-			<version>1.0-SNAPSHOT</version>
 		</dependency>
 
 	</dependencies>
