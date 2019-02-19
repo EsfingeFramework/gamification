@@ -1,24 +1,31 @@
 package net.sf.esfinge.gamification.mechanics;
 
-import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 
+import java.lang.reflect.Constructor;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Map;
 
 import org.bson.Document;
+import org.reflections.Reflections;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 import net.sf.esfinge.gamification.achievement.Achievement;
+import net.sf.esfinge.gamification.mechanics.database.Storage;
+import net.sf.esfinge.gamification.mechanics.database.nosql.MongoStorageFactory;
 
-public class GameNoSqlStorage extends Game {
+public class GameMongoStorage extends Game {
 
 	private MongoDatabase mongo;
-	private MongoCollection collection;
+	private MongoCollection<Document> collection;
 	private Document document;
+	private MongoStorageFactory factory;
 
-	public GameNoSqlStorage(MongoDatabase mongo) {
+	public GameMongoStorage(MongoDatabase mongo) {
+
 		this.mongo = mongo;
 		this.document = new Document();
 		try {
@@ -26,48 +33,86 @@ public class GameNoSqlStorage extends Game {
 		} catch (IllegalArgumentException e) {
 			mongo.createCollection("gamification");
 		}
+		factory = new MongoStorageFactory(collection);
 	}
 
 	@Override
 	public void insertAchievement(Object user, Achievement a) {
-
-		document.append("user", user).append("achievement", a);
-		collection.insertOne(document);
+		Storage storage = factory.storageFor(a);
+		try {
+			storage.insert(user, a);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		document.clear();
 	}
 
 	@Override
 	public void deleteAchievement(Object user, Achievement a) {
-
-		collection.findOneAndDelete(and(eq(user), eq(a)));
+		Storage storage = factory.storageFor(a);
+		try {
+			storage.delete(user, a);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void updateAchievement(Object user, Achievement a) {
 
-		document.append("user", user).append("achievement", a);
-		collection.findOneAndUpdate(new Document().append("user", user).append("achievement.name", a.getName()),
-				document);
-		document.clear();
-
+		Storage storage = factory.storageFor(a);
+		try {
+			storage.update(user, a);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public Achievement getAchievement(Object user, String achievName) {
-		Map<Object, Achievement> firstResult = (Map<Object, Achievement>) collection.find(and(eq(user), eq(achievName)))
-				.first();
-		return firstResult.get(firstResult.keySet());
+		Reflections r = new Reflections("net.sf.esfinge.gamification.mechanics.database.nosql");
+		for (Class c : r.getSubTypesOf(Storage.class)) {
+			Storage s;
+			try {
+				Constructor m = c.getConstructor(Connection.class);
+				s = (Storage) m.newInstance(collection);
+			} catch (Exception e) {
+				throw new RuntimeException("Error creating an instance of " + c.getName()
+						+ ". A constructor receiving a Connection must be available.", e);
+			}
+			try {
+				Achievement a = s.select(user, achievName);
+				if (a != null)
+					return a;
+			} catch (SQLException e) {
+				throw new RuntimeException("Database error", e);
+			}
+		}
+		return null;
 	}
 
 	@Override
 	public Map<String, Achievement> getAchievements(Object user) {
+
 		Map<String, Achievement> result = (Map<String, Achievement>) collection.find(eq("user", user));
 		return result;
 	}
 
 	@Override
 	public Map<String, Achievement> getAllAchievements(Class<? extends Achievement> type) {
-		Map<String, Achievement> result = (Map<String, Achievement>) collection.find(eq("achievement.type", type));
+		Storage storage;
+		Map<String, Achievement> result = null;
+
+		try {
+			storage = factory.storageFor(type.newInstance());
+			result = (Map<String, Achievement>) storage.selectAll();
+
+		} catch (InstantiationException | IllegalAccessException | SQLException e) {
+			e.printStackTrace();
+		}
 		return result;
 	}
 

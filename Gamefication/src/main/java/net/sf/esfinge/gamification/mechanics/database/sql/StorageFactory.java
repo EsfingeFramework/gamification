@@ -1,4 +1,4 @@
-package net.sf.esfinge.gamification.mechanics.database;
+package net.sf.esfinge.gamification.mechanics.database.sql;
 
 
 import java.sql.Connection;
@@ -8,6 +8,7 @@ import net.sf.esfinge.gamification.achievement.Point;
 import net.sf.esfinge.gamification.achievement.Ranking;
 import net.sf.esfinge.gamification.achievement.Reward;
 import net.sf.esfinge.gamification.achievement.Trophy;
+import net.sf.esfinge.gamification.mechanics.database.Storage;
 
 public class StorageFactory {
 	

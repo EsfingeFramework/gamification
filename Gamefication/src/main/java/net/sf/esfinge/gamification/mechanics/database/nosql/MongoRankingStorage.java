@@ -1,4 +1,4 @@
-package net.sf.esfinge.gamification.mechanics.database.sql;
+package net.sf.esfinge.gamification.mechanics.database.nosql;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,24 +7,33 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bson.Document;
+
+import com.mongodb.client.MongoCollection;
+
 import net.sf.esfinge.gamification.achievement.Achievement;
 import net.sf.esfinge.gamification.achievement.Ranking;
 import net.sf.esfinge.gamification.mechanics.database.Storage;
 
-public class RankingStorage implements Storage {
+public class MongoRankingStorage implements Storage {
 
 	private Connection connection;
+	private MongoCollection<Document> collection;
 
-	public RankingStorage(Connection c) {
+	public MongoRankingStorage(Connection c) {
 		connection = c;
+	}
+
+	public MongoRankingStorage(MongoCollection<Document> c) {
+		collection = c;
 	}
 
 	public void insert(Object user, Achievement a) throws SQLException {
 		Ranking r = (Ranking) a;
 		PreparedStatement stmt;
 
-		stmt = connection.prepareStatement("insert into gamification.ranking"
-				+ " (userid, name, level) values (?,?,?)");
+		stmt = connection
+				.prepareStatement("insert into gamification.ranking" + " (userid, name, level) values (?,?,?)");
 		stmt.setString(1, user.toString());
 		stmt.setString(2, r.getName());
 		stmt.setString(3, r.getLevel());
@@ -33,8 +42,7 @@ public class RankingStorage implements Storage {
 
 	public Ranking select(Object user, String name) throws SQLException {
 		PreparedStatement stmt;
-		stmt = connection.prepareStatement("select * from gamification.ranking"
-				+ " where userid=? and name = ?");
+		stmt = connection.prepareStatement("select * from gamification.ranking" + " where userid=? and name = ?");
 		stmt.setString(1, user.toString());
 		stmt.setString(2, name);
 		ResultSet rs = stmt.executeQuery();
@@ -49,9 +57,7 @@ public class RankingStorage implements Storage {
 	public Map<String, Achievement> select(Object user) throws SQLException {
 		Map<String, Achievement> map = new HashMap<String, Achievement>();
 		PreparedStatement stmt;
-		stmt = connection
-				.prepareStatement("select * from gamification.ranking "
-						+ "where userid=?");
+		stmt = connection.prepareStatement("select * from gamification.ranking " + "where userid=?");
 		stmt.setString(1, user.toString());
 		ResultSet rs = stmt.executeQuery();
 		while (rs.next()) {
@@ -67,8 +73,7 @@ public class RankingStorage implements Storage {
 	public void update(Object user, Achievement a) throws SQLException {
 		Ranking r = (Ranking) a;
 		PreparedStatement stmt;
-		stmt = connection.prepareStatement("update gamification.ranking "
-				+ "set level = ? where userid=? and name=?");
+		stmt = connection.prepareStatement("update gamification.ranking " + "set level = ? where userid=? and name=?");
 		stmt.setString(2, user.toString());
 		stmt.setString(3, r.getName());
 		stmt.setString(1, r.getLevel());
@@ -78,8 +83,7 @@ public class RankingStorage implements Storage {
 	@Override
 	public void delete(Object user, Achievement a) throws SQLException {
 		PreparedStatement stmt;
-		stmt = connection.prepareStatement("delete from gamification.ranking"
-				+ " where userid=? and name = ?");
+		stmt = connection.prepareStatement("delete from gamification.ranking" + " where userid=? and name = ?");
 		stmt.setString(1, user.toString());
 		stmt.setString(2, a.getName());
 		stmt.execute();
@@ -92,9 +96,9 @@ public class RankingStorage implements Storage {
 		PreparedStatement stmt;
 		stmt = connection.prepareStatement("select userid, name, level from gamification.ranking");
 		ResultSet rs = stmt.executeQuery();
-		if(rs != null) {
+		if (rs != null) {
 			map = new HashMap<>();
-			while(rs.next()) {
+			while (rs.next()) {
 				String name = rs.getString("name");
 				String level = rs.getString("level");
 				Ranking ranking = new Ranking(name, level);

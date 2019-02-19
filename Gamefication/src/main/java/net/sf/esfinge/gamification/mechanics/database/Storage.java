@@ -20,8 +20,4 @@ public interface Storage {
 
 	public abstract Map<String, Achievement> selectAll() throws SQLException;
 	
-//	public abstract Map<Object, Achievement> findAll() throws SQLException;
-//	
-//	public abstract Map<String, Achievement> findAll(SortOrder sortOrder);
-
 }

@@ -13,10 +13,8 @@ import org.apache.commons.collections.MapUtils;
 import org.reflections.Reflections;
 
 import net.sf.esfinge.gamification.achievement.Achievement;
-import net.sf.esfinge.gamification.mechanics.database.PointStorage;
-import net.sf.esfinge.gamification.mechanics.database.RankingStorage;
 import net.sf.esfinge.gamification.mechanics.database.Storage;
-import net.sf.esfinge.gamification.mechanics.database.StorageFactory;
+import net.sf.esfinge.gamification.mechanics.database.sql.StorageFactory;
 
 public class GameDatabaseStorage extends Game {
 	private Connection connection;
@@ -93,7 +91,7 @@ public class GameDatabaseStorage extends Game {
 	public Achievement getAchievement(Object user, String achievName) {
 
 		Reflections r = new Reflections(
-				"net.sf.esfinge.gamification.mechanics.database");
+				"net.sf.esfinge.gamification.mechanics.database.sql");
 		for (Class c : r.getSubTypesOf(Storage.class)) {
 			Storage s;
 			try {
@@ -121,7 +119,7 @@ public class GameDatabaseStorage extends Game {
 	public Map<String, Achievement> getAchievements(Object user) {
 		Map<String, Achievement> achievements = new HashMap<String, Achievement>();
 		Reflections r = new Reflections(
-				"net.sf.esfinge.gamification.mechanics.database");
+				"net.sf.esfinge.gamification.mechanics.database.sql");
 		for (Class c : r.getSubTypesOf(Storage.class)) {
 			Storage s;
 			try {

@@ -1,4 +1,4 @@
-package net.sf.esfinge.gamification.mechanics.database;
+package net.sf.esfinge.gamification.mechanics.database.sql;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,6 +11,7 @@ import javax.swing.SortOrder;
 
 import net.sf.esfinge.gamification.achievement.Achievement;
 import net.sf.esfinge.gamification.achievement.Point;
+import net.sf.esfinge.gamification.mechanics.database.Storage;
 
 public class PointStorage implements Storage {
 	private Connection connection;

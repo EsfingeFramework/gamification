@@ -1,4 +1,4 @@
-package net.sf.esfinge.gamification.mechanics.database.sql;
+package net.sf.esfinge.gamification.mechanics.database.nosql;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,34 +7,39 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bson.Document;
+
+import com.mongodb.client.MongoCollection;
+
 import net.sf.esfinge.gamification.achievement.Achievement;
 import net.sf.esfinge.gamification.achievement.Trophy;
 import net.sf.esfinge.gamification.mechanics.database.Storage;
 
-public class TrophyStorage implements Storage{
+public class MongoTrophyStorage implements Storage {
 	private Connection connection;
+	private MongoCollection<Document> collection;
 
-	public TrophyStorage(Connection c) {
+	public MongoTrophyStorage(Connection c) {
 		connection = c;
 	}
 
+	public MongoTrophyStorage(MongoCollection<Document> c) {
+		collection = c;
+	}
+
 	public void insert(Object user, Achievement a) throws SQLException {
-		Trophy t = (Trophy)a;
+		Trophy t = (Trophy) a;
 		PreparedStatement stmt;
-		stmt = connection
-				.prepareStatement("insert into gamification.trophy "
-						+ "(userid, name) values (?,?)");
+		stmt = connection.prepareStatement("insert into gamification.trophy " + "(userid, name) values (?,?)");
 		stmt.setString(1, user.toString());
 		stmt.setString(2, t.getName());
-	
+
 		stmt.execute();
 	}
 
 	public Trophy select(Object user, String name) throws SQLException {
 		PreparedStatement stmt;
-		stmt = connection
-				.prepareStatement("select * from gamification.trophy "
-						+ "where userid=? and name = ?");
+		stmt = connection.prepareStatement("select * from gamification.trophy " + "where userid=? and name = ?");
 		stmt.setString(1, user.toString());
 		stmt.setString(2, name);
 		ResultSet rs = stmt.executeQuery();
@@ -44,39 +49,35 @@ public class TrophyStorage implements Storage{
 		}
 		return null;
 	}
-	
-	public Map<String, Achievement> select(Object user) throws SQLException{
+
+	public Map<String, Achievement> select(Object user) throws SQLException {
 		Map<String, Achievement> map = new HashMap<String, Achievement>();
 		PreparedStatement stmt;
-		stmt = connection
-				.prepareStatement("select * from gamification.trophy "
-						+ "where userid=?");
+		stmt = connection.prepareStatement("select * from gamification.trophy " + "where userid=?");
 		stmt.setString(1, user.toString());
 		ResultSet rs = stmt.executeQuery();
-		while(rs.next()){
+		while (rs.next()) {
 			String name = rs.getString("name");
 			Trophy t = new Trophy(name);
 			map.put(t.getName(), t);
 		}
-		
+
 		return map;
 	}
 
 	@Override
 	public void delete(Object user, Achievement p) throws SQLException {
 		PreparedStatement stmt;
-		stmt = connection
-				.prepareStatement("delete from gamification.trophy "
-						+ "where userid=? and name = ?");
+		stmt = connection.prepareStatement("delete from gamification.trophy " + "where userid=? and name = ?");
 		stmt.setString(1, user.toString());
 		stmt.setString(2, p.getName());
 		stmt.execute();
-		
+
 	}
 
 	@Override
 	public void update(Object user, Achievement p) throws SQLException {
-		
+
 	}
 
 	@Override
@@ -85,9 +86,9 @@ public class TrophyStorage implements Storage{
 		PreparedStatement stmt;
 		stmt = connection.prepareStatement("select userid, name from gamification.trophy");
 		ResultSet rs = stmt.executeQuery();
-		if(rs != null) {
+		if (rs != null) {
 			map = new HashMap<>();
-			while(rs.next()) {
+			while (rs.next()) {
 				String name = rs.getString("name");
 				Trophy trophy = new Trophy(name);
 				map.put(rs.getString("userid"), trophy);
