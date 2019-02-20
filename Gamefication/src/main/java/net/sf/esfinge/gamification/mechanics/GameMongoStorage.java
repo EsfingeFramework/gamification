@@ -1,9 +1,6 @@
 package net.sf.esfinge.gamification.mechanics;
 
-import static com.mongodb.client.model.Filters.eq;
-
 import java.lang.reflect.Constructor;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,13 +9,11 @@ import org.apache.commons.collections.MapUtils;
 import org.bson.Document;
 import org.reflections.Reflections;
 
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 import net.sf.esfinge.gamification.achievement.Achievement;
 import net.sf.esfinge.gamification.mechanics.database.Storage;
-import net.sf.esfinge.gamification.mechanics.database.nosql.MongoPointStorage;
 import net.sf.esfinge.gamification.mechanics.database.nosql.MongoStorageFactory;
 
 public class GameMongoStorage extends Game {
@@ -87,12 +82,9 @@ public class GameMongoStorage extends Game {
 						+ ". A constructor receiving a MongoCollection must be available.", e);
 			}
 			try {
-				// TODO add more classes
-				if (s instanceof MongoPointStorage) {
-					Achievement a = s.select(user, achievName);
-					if (a != null)
-						return a;
-				}
+				Achievement a = s.select(user, achievName);
+				if (a != null)
+					return a;
 			} catch (SQLException e) {
 				throw new RuntimeException("Database error", e);
 			}
@@ -115,10 +107,8 @@ public class GameMongoStorage extends Game {
 						+ ". A constructor receiving a MongoCollection must be available.", e);
 			}
 			try {
-				if (s instanceof MongoPointStorage) {
-					Map<String, Achievement> a = s.select(user);
-					MapUtils.putAll(achievements, a.entrySet().toArray());
-				}
+				Map<String, Achievement> a = s.select(user);
+				MapUtils.putAll(achievements, a.entrySet().toArray());
 
 			} catch (SQLException e) {
 				throw new RuntimeException("Database error", e);

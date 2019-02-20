@@ -1,4 +1,4 @@
-package net.sf.esfinge.gamification.mechanics;
+package net.sf.esfinge.gamification.mechanics.sql;
 
 import static org.junit.Assert.assertEquals;
 
@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import net.sf.esfinge.gamification.achievement.Achievement;
 import net.sf.esfinge.gamification.achievement.Point;
+import net.sf.esfinge.gamification.mechanics.FakeUser;
 import net.sf.esfinge.gamification.mechanics.Game;
 import net.sf.esfinge.gamification.mechanics.GameDatabaseStorage;
 

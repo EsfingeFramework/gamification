@@ -1,14 +1,20 @@
 package net.sf.esfinge.gamification.mechanics.database.nosql;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Projections.exclude;
+import static com.mongodb.client.model.Projections.excludeId;
+import static com.mongodb.client.model.Projections.fields;
+
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.bson.Document;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 
 import net.sf.esfinge.gamification.achievement.Achievement;
@@ -16,92 +22,78 @@ import net.sf.esfinge.gamification.achievement.Reward;
 import net.sf.esfinge.gamification.mechanics.database.Storage;
 
 public class MongoRewardStorage implements Storage {
-	private Connection connection;
-	private MongoCollection<Document> collection;
 
-	public MongoRewardStorage(Connection c) {
-		connection = c;
-	}
+	private MongoCollection<Document> collection;
 
 	public MongoRewardStorage(MongoCollection<Document> c) {
 		collection = c;
 	}
 
 	public void insert(Object user, Achievement a) throws SQLException {
-		Reward r = (Reward) a;
-		PreparedStatement stmt;
-		stmt = connection.prepareStatement("insert into gamification.reward " + "(userid, name, used) values (?,?,?)");
-		stmt.setString(1, user.toString());
-		stmt.setString(2, r.getName());
-		stmt.setBoolean(3, r.isUsed());
-		stmt.execute();
+		Document document = toDocument(user, a);
+		collection.insertOne(document);
 	}
 
 	public Reward select(Object user, String name) throws SQLException {
-		PreparedStatement stmt;
-		stmt = connection.prepareStatement("select * from gamification.reward " + "where userid=? and name = ?");
-		stmt.setString(1, user.toString());
-		stmt.setString(2, name);
-		ResultSet rs = stmt.executeQuery();
-		if (rs.next()) {
-			boolean u = rs.getBoolean("used");
-			Reward r = new Reward(name, u);
-			return r;
+
+		BasicDBObject query = new BasicDBObject().append("user", user).append("achievement.name", name)
+				.append("achievement.type", "Reward");
+		Optional<Document> achievement = Optional.ofNullable(collection.find(query).first());
+
+		Reward r = null;
+		if (achievement.isPresent()) {
+			Document achievementProperties = achievement.get().get("achievement", Document.class);
+
+			r = new Reward(name, achievementProperties.getBoolean("isUsed"));
 		}
-		return null;
+		return r;
 	}
 
 	public Map<String, Achievement> select(Object user) throws SQLException {
-		Map<String, Achievement> map = new HashMap<String, Achievement>();
-		PreparedStatement stmt;
-		stmt = connection.prepareStatement("select * from gamification.reward " + "where userid=?");
-		stmt.setString(1, user.toString());
-		ResultSet rs = stmt.executeQuery();
-		while (rs.next()) {
-			String name = rs.getString("name");
-			boolean u = rs.getBoolean("used");
-			Reward r = new Reward(name, u);
-			map.put(r.getName(), r);
+
+		Map<String, Achievement> achievements = new HashMap<>();
+		FindIterable<Document> results = collection.find(and(eq("user", user), eq("achievement.type", "Reward")))
+				.projection(fields(exclude("achievement.type"), excludeId()));
+
+		for (Document result : results) {
+			Document achievement = result.get("achievement", Document.class);
+			Reward r = new Reward(achievement.getString("name"), achievement.getBoolean("isUsed"));
+			achievements.put(r.getName(), r);
 		}
 
-		return map;
+		return achievements;
 	}
 
 	public void update(Object user, Achievement a) throws SQLException {
-		Reward r = (Reward) a;
-		PreparedStatement stmt;
-		stmt = connection.prepareStatement("update gamification.reward " + "set used = ? where userid=? and name=?");
-		stmt.setString(2, user.toString());
-		stmt.setString(3, r.getName());
-		stmt.setBoolean(1, r.isUsed());
-		stmt.execute();
+		BasicDBObject query = new BasicDBObject().append("user", user).append("achievement.name", a.getName())
+				.append("achievement.type", "Reward");
+		Document update = new Document("$set", new Document().append("achievement.isUsed", ((Reward) a).isUsed()));
+		collection.updateOne(query, update);
 	}
 
 	@Override
 	public void delete(Object user, Achievement p) throws SQLException {
-		PreparedStatement stmt;
-		stmt = connection.prepareStatement("delete from gamification.reward " + "where userid=? and name = ?");
-		stmt.setString(1, user.toString());
-		stmt.setString(2, p.getName());
-		stmt.execute();
+		collection.deleteOne(
+				and(eq("user", user), eq("achievement.name", p.getName()), eq("achievement.type", "Reward")));
 
 	}
 
 	@Override
 	public Map<String, Achievement> selectAll() throws SQLException {
-		Map<String, Achievement> map = null;
-		PreparedStatement stmt;
-		stmt = connection.prepareStatement("select userid, name, used from gamification.reward");
-		ResultSet rs = stmt.executeQuery();
-		if (rs != null) {
-			map = new HashMap<>();
-			while (rs.next()) {
-				String name = rs.getString("name");
-				boolean used = rs.getBoolean("used");
-				Reward reward = new Reward(name, used);
-				map.put(rs.getString("userid"), reward);
-			}
+		Map<String, Achievement> achievements = new HashMap<>();
+		FindIterable<Document> results = collection.find(eq("achievement.type", "Reward"));
+		for (Document result : results) {
+			Document achievement = result.get("achievement", Document.class);
+			Reward r = new Reward(achievement.getString("name"), achievement.getBoolean("isUsed"));
+			achievements.put(r.getName(), r);
 		}
-		return map;
+
+		return achievements;
+	}
+
+	private Document toDocument(Object user, Achievement a) {
+		Reward r = (Reward) a;
+		return new Document().append("user", user).append("achievement",
+				new BasicDBObject("type", "Reward").append("name", r.getName()).append("isUsed", r.isUsed()));
 	}
 }

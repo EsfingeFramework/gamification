@@ -1,4 +1,4 @@
-package net.sf.esfinge.gamification.mechanics;
+package net.sf.esfinge.gamification.mechanics.nosql;
 
 import static org.junit.Assert.assertEquals;
 
@@ -8,35 +8,35 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
 
 import net.sf.esfinge.gamification.achievement.Achievement;
 import net.sf.esfinge.gamification.achievement.Point;
+import net.sf.esfinge.gamification.mechanics.Game;
+import net.sf.esfinge.gamification.mechanics.GameMongoStorage;
 
-public class TestGameMongoPointStorage {
-	private Object user, user2;
+public class TestMongoPointStorage {
+	private String user, user2;
 	private Game gameMongo;
+	private MongoClient client;
 
 	@Before
 	public void initializeGame() throws IOException {
 
 		user = new String("Spider");
 		user2 = new String("Jiraia");
-		Achievement p = new Point(200, "moedas");
-
-		MongoClientURI uri = new MongoClientURI("mongodb://localhost:27017");
-		MongoClient client = new MongoClient(uri);
+		client = new MongoClient();
 		gameMongo = new GameMongoStorage(client.getDatabase("local"));
 
 	}
 
 	@Test
 	public void addPoint() {
+		
 		Achievement p = new Point(200, "moedas");
 		gameMongo.addAchievement(user, p);
 		assertEquals(p.getName(), gameMongo.getAchievement(user, p.getName()).getName());
 		assertEquals(200, ((Point) gameMongo.getAchievement(user, p.getName())).getQuantity().intValue());
-		gameMongo.removeAchievement(user, p);
+		gameMongo.deleteAchievement(user, p);
 	}
 
 	@Test
@@ -47,8 +47,8 @@ public class TestGameMongoPointStorage {
 		gameMongo.addAchievement(user, a2);
 		assertEquals(30, ((Point) gameMongo.getAchievement(user, "point")).getQuantity().intValue());
 		assertEquals(1, gameMongo.getAchievements(user).size());
-		gameMongo.removeAchievement(user, a1);
-		gameMongo.removeAchievement(user, a2);
+		gameMongo.deleteAchievement(user, a1);
+		gameMongo.deleteAchievement(user, a2);
 	}
 
 	@Test
@@ -61,8 +61,8 @@ public class TestGameMongoPointStorage {
 		assertEquals(1, gameMongo.getAchievements(user2).size());
 		assertEquals(10, ((Point) gameMongo.getAchievement(user, "point")).getQuantity().intValue());
 		assertEquals(20, ((Point) gameMongo.getAchievement(user2, "point")).getQuantity().intValue());
-		gameMongo.removeAchievement(user, a1);
-		gameMongo.removeAchievement(user2, a2);
+		gameMongo.deleteAchievement(user, a1);
+		gameMongo.deleteAchievement(user2, a2);
 	}
 
 	@Test
@@ -80,7 +80,7 @@ public class TestGameMongoPointStorage {
 		gameMongo.addAchievement(user, p);
 		gameMongo.removeAchievement(user, r);
 		assertEquals(20, ((Point) gameMongo.getAchievement(user, "point")).getQuantity().intValue());
-		gameMongo.removeAchievement(user, r);
+		gameMongo.deleteAchievement(user, r);
 	}
 
 	@Test
@@ -94,8 +94,8 @@ public class TestGameMongoPointStorage {
 		assertEquals(1, gameMongo.getAchievements(user2).size());
 		assertEquals(10, ((Point) gameMongo.getAchievement(user, "point")).getQuantity().intValue());
 		assertEquals(10, ((Point) gameMongo.getAchievement(user2, "point")).getQuantity().intValue());
-		gameMongo.removeAchievement(user, a1);
-		gameMongo.removeAchievement(user2, a1);
+		gameMongo.deleteAchievement(user, a1);
+		gameMongo.deleteAchievement(user2, a1);
 	}
 
 }

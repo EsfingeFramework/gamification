@@ -1,14 +1,20 @@
 package net.sf.esfinge.gamification.mechanics.database.nosql;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Projections.exclude;
+import static com.mongodb.client.model.Projections.excludeId;
+import static com.mongodb.client.model.Projections.fields;
+
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.bson.Document;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 
 import net.sf.esfinge.gamification.achievement.Achievement;
@@ -16,62 +22,49 @@ import net.sf.esfinge.gamification.achievement.Trophy;
 import net.sf.esfinge.gamification.mechanics.database.Storage;
 
 public class MongoTrophyStorage implements Storage {
-	private Connection connection;
-	private MongoCollection<Document> collection;
 
-	public MongoTrophyStorage(Connection c) {
-		connection = c;
-	}
+	private MongoCollection<Document> collection;
 
 	public MongoTrophyStorage(MongoCollection<Document> c) {
 		collection = c;
 	}
 
 	public void insert(Object user, Achievement a) throws SQLException {
-		Trophy t = (Trophy) a;
-		PreparedStatement stmt;
-		stmt = connection.prepareStatement("insert into gamification.trophy " + "(userid, name) values (?,?)");
-		stmt.setString(1, user.toString());
-		stmt.setString(2, t.getName());
+		Document document = toDocument(user, a);
+		collection.insertOne(document);
 
-		stmt.execute();
 	}
 
 	public Trophy select(Object user, String name) throws SQLException {
-		PreparedStatement stmt;
-		stmt = connection.prepareStatement("select * from gamification.trophy " + "where userid=? and name = ?");
-		stmt.setString(1, user.toString());
-		stmt.setString(2, name);
-		ResultSet rs = stmt.executeQuery();
-		if (rs.next()) {
-			Trophy t = new Trophy(name);
-			return t;
+		BasicDBObject query = new BasicDBObject().append("user", user).append("achievement.name", name).append("achievement.type", "Trophy");
+		Optional<Document> achievement = Optional.ofNullable(collection.find(query).first());
+
+		Trophy t = null;
+		if (achievement.isPresent()) {
+			Document achievementProperties = achievement.get().get("achievement", Document.class);
+
+			t = new Trophy(achievementProperties.getString("name"));
 		}
-		return null;
+		return t;
 	}
 
 	public Map<String, Achievement> select(Object user) throws SQLException {
-		Map<String, Achievement> map = new HashMap<String, Achievement>();
-		PreparedStatement stmt;
-		stmt = connection.prepareStatement("select * from gamification.trophy " + "where userid=?");
-		stmt.setString(1, user.toString());
-		ResultSet rs = stmt.executeQuery();
-		while (rs.next()) {
-			String name = rs.getString("name");
-			Trophy t = new Trophy(name);
-			map.put(t.getName(), t);
+		Map<String, Achievement> achievements = new HashMap<>();
+		FindIterable<Document> results = collection.find(and(eq("user", user), eq("achievement.type", "Trophy")))
+				.projection(fields(exclude("achievement.type"), excludeId()));
+
+		for (Document result : results) {
+			Document achievement = result.get("achievement", Document.class);
+			Trophy t = new Trophy(achievement.getString("name"));
+			achievements.put(t.getName(), t);
 		}
 
-		return map;
+		return achievements;
 	}
 
 	@Override
 	public void delete(Object user, Achievement p) throws SQLException {
-		PreparedStatement stmt;
-		stmt = connection.prepareStatement("delete from gamification.trophy " + "where userid=? and name = ?");
-		stmt.setString(1, user.toString());
-		stmt.setString(2, p.getName());
-		stmt.execute();
+		collection.deleteOne(and(eq("user", user), eq("achievement.name", p.getName()),eq("achievement.type", "Trophy")));
 
 	}
 
@@ -82,19 +75,22 @@ public class MongoTrophyStorage implements Storage {
 
 	@Override
 	public Map<String, Achievement> selectAll() throws SQLException {
-		Map<String, Achievement> map = null;
-		PreparedStatement stmt;
-		stmt = connection.prepareStatement("select userid, name from gamification.trophy");
-		ResultSet rs = stmt.executeQuery();
-		if (rs != null) {
-			map = new HashMap<>();
-			while (rs.next()) {
-				String name = rs.getString("name");
-				Trophy trophy = new Trophy(name);
-				map.put(rs.getString("userid"), trophy);
-			}
+
+		Map<String, Achievement> achievements = new HashMap<>();
+		FindIterable<Document> results = collection.find(eq("achievement.type", "Trophy"));
+		for (Document result : results) {
+			Document achievement = result.get("achievement", Document.class);
+			Trophy t = new Trophy(achievement.getString("name"));
+			achievements.put(t.getName(), t);
 		}
-		return map;
+
+		return achievements;
+	}
+
+	private Document toDocument(Object user, Achievement a) {
+		Trophy t = (Trophy) a;
+		return new Document().append("user", user).append("achievement",
+				new BasicDBObject("type", "Trophy").append("name", t.getName()));
 	}
 
 }

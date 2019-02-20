@@ -28,27 +28,16 @@ public class MongoPointStorage implements Storage {
 		collection = c;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sf.esfinge.gamification.mechanics.database.Storage#insert(java.lang.
-	 * Object, net.sf.esfinge.gamification.achievement.Point)
-	 */
 	@Override
 	public void insert(Object user, Achievement a) throws SQLException {
 		Document document = toDocument(user, a);
 		collection.insertOne(document);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sf.esfinge.gamification.mechanics.database.Storage#select(java.lang.
-	 * Object, java.lang.String)
-	 */
 	@Override
 	public Achievement select(Object user, String name) throws SQLException {
-		BasicDBObject query = new BasicDBObject().append("user", user).append("achievement.name", name);
+		BasicDBObject query = new BasicDBObject().append("user", user).append("achievement.name", name)
+				.append("achievement.type", "Point");
 		Optional<Document> achievement = Optional.ofNullable(collection.find(query).first());
 
 		Point p = null;
@@ -60,12 +49,6 @@ public class MongoPointStorage implements Storage {
 		return p;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sf.esfinge.gamification.mechanics.database.Storage#select(java.lang.
-	 * Object)
-	 */
 	@Override
 	public Map<String, Achievement> select(Object user) throws SQLException {
 
@@ -83,15 +66,10 @@ public class MongoPointStorage implements Storage {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sf.esfinge.gamification.mechanics.database.Storage#update(java.lang.
-	 * Object, net.sf.esfinge.gamification.achievement.Point)
-	 */
 	@Override
 	public void update(Object user, Achievement a) throws SQLException {
-		BasicDBObject query = new BasicDBObject().append("user", user).append("achievement.name", a.getName());
+		BasicDBObject query = new BasicDBObject().append("user", user).append("achievement.name", a.getName())
+				.append("achievement.type", "Point");
 		Document update = new Document("$set",
 				new Document().append("achievement.quantity", ((Point) a).getQuantity()));
 		collection.updateOne(query, update);
@@ -99,7 +77,8 @@ public class MongoPointStorage implements Storage {
 
 	@Override
 	public void delete(Object user, Achievement a) throws SQLException {
-		collection.deleteOne(and(eq("user", user), eq("achievement.name", a.getName())));
+		collection
+				.deleteOne(and(eq("user", user), eq("achievement.name", a.getName()), eq("achievement.type", "Point")));
 	}
 
 	@Override

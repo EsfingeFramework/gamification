@@ -1,14 +1,20 @@
 package net.sf.esfinge.gamification.mechanics.database.nosql;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Projections.exclude;
+import static com.mongodb.client.model.Projections.excludeId;
+import static com.mongodb.client.model.Projections.fields;
+
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.bson.Document;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 
 import net.sf.esfinge.gamification.achievement.Achievement;
@@ -17,94 +23,78 @@ import net.sf.esfinge.gamification.mechanics.database.Storage;
 
 public class MongoRankingStorage implements Storage {
 
-	private Connection connection;
 	private MongoCollection<Document> collection;
-
-	public MongoRankingStorage(Connection c) {
-		connection = c;
-	}
 
 	public MongoRankingStorage(MongoCollection<Document> c) {
 		collection = c;
 	}
 
 	public void insert(Object user, Achievement a) throws SQLException {
-		Ranking r = (Ranking) a;
-		PreparedStatement stmt;
-
-		stmt = connection
-				.prepareStatement("insert into gamification.ranking" + " (userid, name, level) values (?,?,?)");
-		stmt.setString(1, user.toString());
-		stmt.setString(2, r.getName());
-		stmt.setString(3, r.getLevel());
-		stmt.execute();
+		Document document = toDocument(user, a);
+		collection.insertOne(document);
 	}
 
 	public Ranking select(Object user, String name) throws SQLException {
-		PreparedStatement stmt;
-		stmt = connection.prepareStatement("select * from gamification.ranking" + " where userid=? and name = ?");
-		stmt.setString(1, user.toString());
-		stmt.setString(2, name);
-		ResultSet rs = stmt.executeQuery();
-		if (rs.next()) {
-			String level = rs.getString("level");
-			Ranking r = new Ranking(name, level);
-			return r;
+
+		BasicDBObject query = new BasicDBObject().append("user", user).append("achievement.name", name).append("achievement.type", "Ranking");
+		Optional<Document> achievement = Optional.ofNullable(collection.find(query).first());
+
+		Ranking r = null;
+		if (achievement.isPresent()) {
+			Document achievementProperties = achievement.get().get("achievement", Document.class);
+
+			r = new Ranking(name, achievementProperties.getString("level"));
 		}
-		return null;
+		return r;
 	}
 
 	public Map<String, Achievement> select(Object user) throws SQLException {
-		Map<String, Achievement> map = new HashMap<String, Achievement>();
-		PreparedStatement stmt;
-		stmt = connection.prepareStatement("select * from gamification.ranking " + "where userid=?");
-		stmt.setString(1, user.toString());
-		ResultSet rs = stmt.executeQuery();
-		while (rs.next()) {
-			String name = rs.getString("name");
-			String level = rs.getString("level");
-			Ranking r = new Ranking(name, level);
-			map.put(r.getName(), r);
+
+		Map<String, Achievement> achievements = new HashMap<>();
+		FindIterable<Document> results = collection.find(and(eq("user", user), eq("achievement.type", "Ranking")))
+				.projection(fields(exclude("achievement.type"), excludeId()));
+
+		for (Document result : results) {
+			Document achievement = result.get("achievement", Document.class);
+			Ranking r = new Ranking(achievement.getString("name"), achievement.getString("level"));
+			achievements.put(r.getName(), r);
 		}
 
-		return map;
+		return achievements;
+
 	}
 
 	public void update(Object user, Achievement a) throws SQLException {
-		Ranking r = (Ranking) a;
-		PreparedStatement stmt;
-		stmt = connection.prepareStatement("update gamification.ranking " + "set level = ? where userid=? and name=?");
-		stmt.setString(2, user.toString());
-		stmt.setString(3, r.getName());
-		stmt.setString(1, r.getLevel());
-		stmt.execute();
+
+		BasicDBObject query = new BasicDBObject().append("user", user).append("achievement.name", a.getName()).append("achievement.type", "Ranking");
+		Document update = new Document("$set", new Document().append("achievement.level", ((Ranking) a).getLevel()));
+		collection.updateOne(query, update);
+
 	}
 
 	@Override
 	public void delete(Object user, Achievement a) throws SQLException {
-		PreparedStatement stmt;
-		stmt = connection.prepareStatement("delete from gamification.ranking" + " where userid=? and name = ?");
-		stmt.setString(1, user.toString());
-		stmt.setString(2, a.getName());
-		stmt.execute();
+
+		collection.deleteOne(and(eq("user", user), eq("achievement.name", a.getName()), eq("achievement.type", "Ranking")));
 
 	}
 
 	@Override
 	public Map<String, Achievement> selectAll() throws SQLException {
-		Map<String, Achievement> map = null;
-		PreparedStatement stmt;
-		stmt = connection.prepareStatement("select userid, name, level from gamification.ranking");
-		ResultSet rs = stmt.executeQuery();
-		if (rs != null) {
-			map = new HashMap<>();
-			while (rs.next()) {
-				String name = rs.getString("name");
-				String level = rs.getString("level");
-				Ranking ranking = new Ranking(name, level);
-				map.put(rs.getString("userid"), ranking);
-			}
+		Map<String, Achievement> achievements = new HashMap<>();
+		FindIterable<Document> results = collection.find(eq("achievement.type", "Ranking"));
+		for (Document result : results) {
+			Document achievement = result.get("achievement", Document.class);
+			Ranking r = new Ranking(achievement.getString("name"), achievement.getString("level"));
+			achievements.put(r.getName(), r);
 		}
-		return map;
+
+		return achievements;
+	}
+
+	private Document toDocument(Object user, Achievement a) {
+		Ranking r = (Ranking) a;
+		return new Document().append("user", user).append("achievement",
+				new BasicDBObject("type", "Ranking").append("name", r.getName()).append("level", r.getLevel()));
 	}
 }
