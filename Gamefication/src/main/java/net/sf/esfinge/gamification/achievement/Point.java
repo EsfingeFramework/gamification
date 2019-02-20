@@ -5,7 +5,6 @@ public class Point implements Achievement{
 	
 	private Integer quantity;
 	private String name;
-	
 
 	public Point(Integer quantity, String name) {
 		super();

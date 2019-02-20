@@ -1,14 +1,20 @@
 package net.sf.esfinge.gamification.mechanics.database.nosql;
 
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Map;
+import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Projections.exclude;
+import static com.mongodb.client.model.Projections.excludeId;
+import static com.mongodb.client.model.Projections.fields;
 
-import javax.swing.SortOrder;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 import org.bson.Document;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 
 import net.sf.esfinge.gamification.achievement.Achievement;
@@ -42,7 +48,16 @@ public class MongoPointStorage implements Storage {
 	 */
 	@Override
 	public Achievement select(Object user, String name) throws SQLException {
-		return null;
+		BasicDBObject query = new BasicDBObject().append("user", user).append("achievement.name", name);
+		Optional<Document> achievement = Optional.ofNullable(collection.find(query).first());
+
+		Point p = null;
+		if (achievement.isPresent()) {
+			Document achievementProperties = achievement.get().get("achievement", Document.class);
+
+			p = new Point(achievementProperties.getInteger("quantity"), name);
+		}
+		return p;
 	}
 
 	/*
@@ -53,7 +68,19 @@ public class MongoPointStorage implements Storage {
 	 */
 	@Override
 	public Map<String, Achievement> select(Object user) throws SQLException {
-		return null;
+
+		Map<String, Achievement> achievements = new HashMap<>();
+		FindIterable<Document> results = collection.find(and(eq("user", user), eq("achievement.type", "Point")))
+				.projection(fields(exclude("achievement.type"), excludeId()));
+
+		for (Document result : results) {
+			Document achievement = result.get("achievement", Document.class);
+			Point p = new Point(achievement.getInteger("quantity"), achievement.getString("name"));
+			achievements.put(p.getName(), p);
+		}
+
+		return achievements;
+
 	}
 
 	/*
@@ -64,22 +91,29 @@ public class MongoPointStorage implements Storage {
 	 */
 	@Override
 	public void update(Object user, Achievement a) throws SQLException {
-
+		BasicDBObject query = new BasicDBObject().append("user", user).append("achievement.name", a.getName());
+		Document update = new Document("$set",
+				new Document().append("achievement.quantity", ((Point) a).getQuantity()));
+		collection.updateOne(query, update);
 	}
 
 	@Override
 	public void delete(Object user, Achievement a) throws SQLException {
+		collection.deleteOne(and(eq("user", user), eq("achievement.name", a.getName())));
 	}
 
 	@Override
 	public Map<String, Achievement> selectAll() throws SQLException {
 
-		return null;
-	}
+		Map<String, Achievement> achievements = new HashMap<>();
+		FindIterable<Document> results = collection.find(eq("achievement.type", "Point"));
+		for (Document result : results) {
+			Document achievement = result.get("achievement", Document.class);
+			Point p = new Point(achievement.getInteger("quantity"), achievement.getString("name"));
+			achievements.put(p.getName(), p);
+		}
 
-	// @Override
-	public Map<String, Achievement> findAll(SortOrder sortOrder) {
-		return null;
+		return achievements;
 	}
 
 	private Document toDocument(Object user, Achievement a) {
