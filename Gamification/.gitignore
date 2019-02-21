@@ -1,0 +1,7 @@
+/target/
+/derby.log
+/.classpath
+/.project
+/bin/
+/.gradle/
+achievement.properties
