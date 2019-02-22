@@ -161,12 +161,12 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>11.0.2</version><!-- 19.0 -->
+			<version>23.0</version><!-- 19.0 -->
 		</dependency>
 		<dependency>
-			<groupId>javassist</groupId>
+			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
-			<version>3.12.1.GA</version>
+			<version>3.23.1-GA</version>
 		</dependency>
 
 		<dependency>
@@ -177,7 +177,7 @@
 		<dependency>
 			<groupId>org.reflections</groupId>
 			<artifactId>reflections</artifactId>
-			<version>0.9.10</version>
+			<version>0.9.11</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -202,7 +202,7 @@
 		<dependency>
 			<groupId>net.sf.esfinge</groupId>
 			<artifactId>RBAC</artifactId>
-			<version>1.2.0</version>
+			<version>1.2.2</version>
 		</dependency>
 
 	</dependencies>

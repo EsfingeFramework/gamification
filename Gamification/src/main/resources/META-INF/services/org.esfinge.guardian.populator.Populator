@@ -1,0 +1,4 @@
+org.esfinge.guardian.populator.core.ParamPopulator
+org.esfinge.guardian.populator.core.AttributePopulator
+org.esfinge.guardian.populator.core.RepositoryPopulator
+org.esfinge.guardian.populator.core.WrappedObjPopulator
