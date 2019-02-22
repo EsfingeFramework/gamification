@@ -1,8 +1,8 @@
 *.class
-Gamefication/achievements.properties
-Gamefication/bin/com/esfinge/gamefication/mechanics/TestGameToDatabase.class
+Gamification/achievements.properties
+Gamification/bin/com/esfinge/gamefication/mechanics/TestGameToDatabase.class
 Gamification/MyDB/
-Gamefication/lib/
+Gamification/lib/
 *.class
 MyDB/
 *.class
