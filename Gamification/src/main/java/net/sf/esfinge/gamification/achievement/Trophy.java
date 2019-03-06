@@ -8,6 +8,9 @@ public class Trophy implements Achievement{
 		this.name = name;
 	}
 
+	public Trophy() {
+	}
+	
 	public Trophy(String name) {
 		super();
 		this.name = name;
