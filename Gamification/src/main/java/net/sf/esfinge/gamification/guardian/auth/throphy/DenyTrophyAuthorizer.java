@@ -1,5 +1,7 @@
 package net.sf.esfinge.gamification.guardian.auth.throphy;
 
+import java.util.Objects;
+
 import org.esfinge.guardian.authorizer.Authorizer;
 import org.esfinge.guardian.context.AuthorizationContext;
 
@@ -13,7 +15,7 @@ public class DenyTrophyAuthorizer extends AuthorizationProcessor implements Auth
 	public Boolean authorize(AuthorizationContext context, DenyTrophy securityAnnotation) {
 
 		Trophy trophy = (Trophy) process(context, securityAnnotation);
-		if (trophy.getName().equals(securityAnnotation.achievementName()))
+		if (Objects.nonNull(trophy) || trophy.getName().equals(securityAnnotation.achievementName()))
 			return false;
 
 		return true;

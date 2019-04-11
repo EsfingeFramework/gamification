@@ -37,10 +37,6 @@ public abstract class AuthorizationProcessor {
 
 		Achievement achievement = game.getAchievement(user, achiev);
 
-		if (Objects.isNull(achievement))
-			throw new GamificationConfigurationException(
-					"Annotation could not be found or current user is not set correctly");
-
 		return achievement;
 	}
 

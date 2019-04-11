@@ -1,5 +1,7 @@
 package net.sf.esfinge.gamification.guardian.auth.ranking;
 
+import java.util.Objects;
+
 import org.esfinge.guardian.authorizer.Authorizer;
 import org.esfinge.guardian.context.AuthorizationContext;
 
@@ -14,7 +16,7 @@ public class AllowRankingOrLevelAuthorizer extends AuthorizationProcessor implem
 
 		Ranking ranking = (Ranking) process(context, securityAnnotation);
 
-		if (ranking.getName().equals(securityAnnotation.achievementName())
+		if (Objects.nonNull(ranking) && ranking.getName().equals(securityAnnotation.achievementName())
 				&& ranking.getLevel().equals(securityAnnotation.level()))
 			return true;
 

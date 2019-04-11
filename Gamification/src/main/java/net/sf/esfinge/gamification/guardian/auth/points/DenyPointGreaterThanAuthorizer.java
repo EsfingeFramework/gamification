@@ -1,5 +1,7 @@
 package net.sf.esfinge.gamification.guardian.auth.points;
 
+import java.util.Objects;
+
 import org.esfinge.guardian.authorizer.Authorizer;
 import org.esfinge.guardian.context.AuthorizationContext;
 
@@ -14,7 +16,7 @@ public class DenyPointGreaterThanAuthorizer extends AuthorizationProcessor imple
 
 		Point points = (Point) process(context, securityAnnotation);
 
-		if (securityAnnotation.quantity() >= points.getQuantity()) {
+		if (Objects.nonNull(points) && securityAnnotation.quantity() >= points.getQuantity()) {
 			return true;
 		}
 

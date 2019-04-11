@@ -1,5 +1,7 @@
 package net.sf.esfinge.gamification.guardian.auth.reward;
 
+import java.util.Objects;
+
 import org.esfinge.guardian.authorizer.Authorizer;
 import org.esfinge.guardian.context.AuthorizationContext;
 
@@ -13,7 +15,8 @@ public class DenyRewardAuthorizer extends AuthorizationProcessor implements Auth
 	public Boolean authorize(AuthorizationContext context, DenyReward securityAnnotation) {
 
 		Reward reward = (Reward) process(context, securityAnnotation);
-		if (!reward.isUsed() && reward.getName().equals(securityAnnotation.achievementName()))
+		if (Objects.nonNull(reward) && !reward.isUsed()
+				&& reward.getName().equals(securityAnnotation.achievementName()))
 			return false;
 
 		return true;
