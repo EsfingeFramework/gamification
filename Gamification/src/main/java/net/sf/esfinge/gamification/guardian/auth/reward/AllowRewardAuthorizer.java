@@ -1,6 +1,8 @@
 package net.sf.esfinge.gamification.guardian.auth.reward;
 
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.esfinge.guardian.authorizer.Authorizer;
 import org.esfinge.guardian.context.AuthorizationContext;
@@ -16,9 +18,13 @@ public class AllowRewardAuthorizer extends AuthorizationProcessor implements Aut
 
 		Reward reward = (Reward) process(context, securityAnnotation);
 		if (Objects.nonNull(reward) && !reward.isUsed()
-				&& reward.getName().equals(securityAnnotation.achievementName()))
+				&& reward.getName().equals(securityAnnotation.achievementName())) {
+			Logger.getLogger(this.getClass().getName()).log(Level.INFO,
+					"Authorized accesss:" + " Required achievement: Reward available");
 			return true;
-
+		}
+		Logger.getLogger(this.getClass().getName()).log(Level.WARNING,
+				"Unauthorized accesss:" + " Required achievement: Reward available");
 		return false;
 	}
 
