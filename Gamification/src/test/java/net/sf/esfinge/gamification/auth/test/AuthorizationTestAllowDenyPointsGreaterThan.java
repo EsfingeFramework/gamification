@@ -1,6 +1,5 @@
 package net.sf.esfinge.gamification.auth.test;
 
-import org.esfinge.guardian.context.AuthorizationContext;
 import org.esfinge.guardian.exception.AuthorizationException;
 import org.junit.After;
 import org.junit.Before;
@@ -8,10 +7,12 @@ import org.junit.Test;
 
 import net.sf.esfinge.gamification.achievement.Achievement;
 import net.sf.esfinge.gamification.achievement.Point;
-import net.sf.esfinge.gamification.auth.GuardedPoints;
+import net.sf.esfinge.gamification.auth.Guarded;
+import net.sf.esfinge.gamification.auth.GuardedPointsImpl;
 import net.sf.esfinge.gamification.mechanics.Game;
 import net.sf.esfinge.gamification.mechanics.GameMemoryStorage;
 import net.sf.esfinge.gamification.proxy.GameInvoker;
+import net.sf.esfinge.gamification.proxy.GameProxy;
 import net.sf.esfinge.gamification.user.UserStorage;
 
 public class AuthorizationTestAllowDenyPointsGreaterThan {
@@ -19,7 +20,7 @@ public class AuthorizationTestAllowDenyPointsGreaterThan {
 	private Game game;
 	private String user = "user";
 	private Achievement silver, gold;
-	private GuardedPoints guarded;
+	private Guarded guarded;
 
 	@Before
 	public void setUp() {
@@ -29,7 +30,7 @@ public class AuthorizationTestAllowDenyPointsGreaterThan {
 		gold = new Point(5, "gold");
 		game.addAchievement(user, silver);
 		GameInvoker.getInstance().setGame(game);
-		guarded = AuthorizationContext.guardObject(new GuardedPoints());
+		guarded = GameProxy.createProxy(new GuardedPointsImpl());
 
 	}
 

@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import net.sf.esfinge.gamification.achievement.Achievement;
 import net.sf.esfinge.gamification.achievement.Point;
-import net.sf.esfinge.gamification.auth.GuardedPoints;
+import net.sf.esfinge.gamification.auth.GuardedPointsImpl;
 import net.sf.esfinge.gamification.exception.GamificationConfigurationException;
 import net.sf.esfinge.gamification.mechanics.Game;
 import net.sf.esfinge.gamification.mechanics.GameMemoryStorage;
@@ -19,7 +19,7 @@ public class AuthorizationSetup {
 	private Game game;
 	private String user = "user";
 	private Achievement silver;
-	private GuardedPoints guarded;
+	private GuardedPointsImpl guarded;
 
 	@Before
 	public void setUp() {
@@ -28,7 +28,7 @@ public class AuthorizationSetup {
 		silver = new Point(10, "silver");
 		game.addAchievement(user, silver);
 		GameInvoker.getInstance().setGame(game);
-		guarded = AuthorizationContext.guardObject(new GuardedPoints());
+		guarded = AuthorizationContext.guardObject(new GuardedPointsImpl());
 
 	}
 

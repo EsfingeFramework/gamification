@@ -3,7 +3,7 @@ package net.sf.esfinge.gamification.auth;
 import net.sf.esfinge.gamification.annotation.auth.reward.AllowReward;
 import net.sf.esfinge.gamification.annotation.auth.reward.DenyReward;
 
-public class GuardedReward {
+public class GuardedRewardImpl implements Guarded {
 
 	@AllowReward(achievementName = "gold")
 	public void changeProfilePhoto() {

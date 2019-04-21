@@ -1,6 +1,5 @@
 package net.sf.esfinge.gamification.auth.test;
 
-import org.esfinge.guardian.context.AuthorizationContext;
 import org.esfinge.guardian.exception.AuthorizationException;
 import org.junit.After;
 import org.junit.Before;
@@ -8,10 +7,12 @@ import org.junit.Test;
 
 import net.sf.esfinge.gamification.achievement.Achievement;
 import net.sf.esfinge.gamification.achievement.Reward;
-import net.sf.esfinge.gamification.auth.GuardedReward;
+import net.sf.esfinge.gamification.auth.Guarded;
+import net.sf.esfinge.gamification.auth.GuardedRewardImpl;
 import net.sf.esfinge.gamification.mechanics.Game;
 import net.sf.esfinge.gamification.mechanics.GameMemoryStorage;
 import net.sf.esfinge.gamification.proxy.GameInvoker;
+import net.sf.esfinge.gamification.proxy.GameProxy;
 import net.sf.esfinge.gamification.user.UserStorage;
 
 public class AuthorizationTestReward {
@@ -19,7 +20,7 @@ public class AuthorizationTestReward {
 	private Game game;
 	private String user = "user";
 	private Achievement gold, silver;
-	private GuardedReward guarded;
+	private Guarded guarded;
 
 	@Before
 	public void setUp() {
@@ -29,7 +30,7 @@ public class AuthorizationTestReward {
 		gold = new Reward("gold");
 		silver = new Reward("silver");
 		GameInvoker.getInstance().setGame(game);
-		guarded = AuthorizationContext.guardObject(new GuardedReward());
+		guarded = GameProxy.createProxy(new GuardedRewardImpl());
 
 	}
 

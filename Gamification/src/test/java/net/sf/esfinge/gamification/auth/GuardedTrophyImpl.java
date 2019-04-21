@@ -3,7 +3,7 @@ package net.sf.esfinge.gamification.auth;
 import net.sf.esfinge.gamification.annotation.auth.trophy.AllowTrophy;
 import net.sf.esfinge.gamification.annotation.auth.trophy.DenyTrophy;
 
-public class GuardedTrophy {
+public class GuardedTrophyImpl implements Guarded {
 
 	@AllowTrophy(achievementName = "silver")
 	public void changeProfilePhoto() {

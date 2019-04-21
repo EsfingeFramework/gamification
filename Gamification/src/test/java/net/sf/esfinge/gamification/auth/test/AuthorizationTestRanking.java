@@ -1,6 +1,5 @@
 package net.sf.esfinge.gamification.auth.test;
 
-import org.esfinge.guardian.context.AuthorizationContext;
 import org.esfinge.guardian.exception.AuthorizationException;
 import org.junit.After;
 import org.junit.Before;
@@ -9,9 +8,11 @@ import org.junit.Test;
 import net.sf.esfinge.gamification.achievement.Achievement;
 import net.sf.esfinge.gamification.achievement.Ranking;
 import net.sf.esfinge.gamification.auth.GuardedRanking;
+import net.sf.esfinge.gamification.auth.GuardedRankingImpl;
 import net.sf.esfinge.gamification.mechanics.Game;
 import net.sf.esfinge.gamification.mechanics.GameMemoryStorage;
 import net.sf.esfinge.gamification.proxy.GameInvoker;
+import net.sf.esfinge.gamification.proxy.GameProxy;
 import net.sf.esfinge.gamification.user.UserStorage;
 
 public class AuthorizationTestRanking {
@@ -30,7 +31,7 @@ public class AuthorizationTestRanking {
 		advanced = new Ranking("experience", "advanced");
 		expert = new Ranking("experience", "expert");
 		GameInvoker.getInstance().setGame(game);
-		guarded = AuthorizationContext.guardObject(new GuardedRanking());
+		guarded = GameProxy.createProxy(new GuardedRankingImpl());
 
 	}
 
