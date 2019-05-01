@@ -20,11 +20,11 @@ public class DenyRewardAuthorizer extends AuthorizationProcessor implements Auth
 		if (Objects.nonNull(reward) && !reward.isUsed()
 				&& reward.getName().equals(securityAnnotation.achievementName())) {
 			Logger.getLogger(this.getClass().getName()).log(Level.WARNING,
-					"Unauthorized accesss:" + " Required achievement: Reward unavailable");
+					"Unauthorized accesss: Denied achievement: Reward available");
 			return false;
 		}
 		Logger.getLogger(this.getClass().getName()).log(Level.INFO,
-				"Authorized accesss:" + " Required achievement: Reward unavailable");
+				"Authorized accesss: Required achievement: Reward unavailable");
 		return true;
 	}
 

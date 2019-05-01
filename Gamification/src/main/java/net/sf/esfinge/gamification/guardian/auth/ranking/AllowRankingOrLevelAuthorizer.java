@@ -27,7 +27,7 @@ public class AllowRankingOrLevelAuthorizer extends AuthorizationProcessor implem
 
 		}
 		Logger.getLogger(this.getClass().getName()).log(Level.WARNING,
-				"Unauthorized accesss: Required achievement: Ranking " + securityAnnotation.achievementName()
+				"Unauthorized accesss: Denied achievement: Ranking " + securityAnnotation.achievementName()
 						+ " or Level " + securityAnnotation.level());
 		return false;
 	}

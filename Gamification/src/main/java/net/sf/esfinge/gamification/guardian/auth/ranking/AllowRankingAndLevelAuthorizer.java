@@ -26,7 +26,7 @@ public class AllowRankingAndLevelAuthorizer extends AuthorizationProcessor imple
 			return true;
 		}
 		Logger.getLogger(this.getClass().getName()).log(Level.WARNING,
-				"Authorized accesss: Denied achievement: Ranking " + securityAnnotation.achievementName()
+				"Unauthorized accesss: Denied achievement: Ranking " + securityAnnotation.achievementName()
 						+ " and Level " + securityAnnotation.level());
 		return false;
 

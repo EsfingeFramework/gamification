@@ -20,11 +20,11 @@ public class AllowRewardAuthorizer extends AuthorizationProcessor implements Aut
 		if (Objects.nonNull(reward) && !reward.isUsed()
 				&& reward.getName().equals(securityAnnotation.achievementName())) {
 			Logger.getLogger(this.getClass().getName()).log(Level.INFO,
-					"Authorized accesss:" + " Required achievement: Reward available");
+					"Authorized accesss: Required achievement: Reward available");
 			return true;
 		}
 		Logger.getLogger(this.getClass().getName()).log(Level.WARNING,
-				"Unauthorized accesss:" + " Required achievement: Reward available");
+				"Unauthorized accesss:" + " Denied achievement: Reward unavailable");
 		return false;
 	}
 

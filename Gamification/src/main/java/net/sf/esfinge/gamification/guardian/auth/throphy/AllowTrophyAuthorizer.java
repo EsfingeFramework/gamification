@@ -25,7 +25,7 @@ public class AllowTrophyAuthorizer extends AuthorizationProcessor implements Aut
 		}
 
 		Logger.getLogger(this.getClass().getName()).log(Level.WARNING,
-				"Unauthorized accesss: Required achievement: Trophy " + securityAnnotation.achievementName());
+				"Unauthorized accesss: Denied achievement: Trophy " + securityAnnotation.achievementName());
 		return false;
 	}
 
