@@ -5,7 +5,7 @@
 
 	<groupId>net.sf.esfinge</groupId>
 	<artifactId>gamification</artifactId>
-	<version>1.2.6</version>
+	<version>1.2.8</version>
 	<packaging>jar</packaging>
 
 	<name>Esfinge Gamification</name>
@@ -47,7 +47,7 @@
 		<connection>scm:git:git://github.com/EsfingeFramework/gamification.git</connection>
 		<developerConnection>scm:git:ssh://github.com:EsfingeFramework/gamification.git</developerConnection>
 		<url>http://github.com/EsfingeFramework/gamification/tree/master</url>
-		<tag>gamification-1.2.6</tag>
+		<tag>gamification-1.2.8</tag>
 	</scm>
 
 	<properties>
@@ -201,7 +201,7 @@
 		</dependency>
 		<dependency>
 			<groupId>net.sf.esfinge</groupId>
-			<artifactId>RBAC</artifactId>
+			<artifactId>guardian-core</artifactId>
 			<version>1.2.3</version>
 		</dependency>
 
