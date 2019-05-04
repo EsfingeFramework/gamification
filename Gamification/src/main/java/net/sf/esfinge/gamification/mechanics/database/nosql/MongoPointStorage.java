@@ -59,7 +59,7 @@ public class MongoPointStorage implements Storage {
 		for (Document result : results) {
 			Document achievement = result.get("achievement", Document.class);
 			Point p = new Point(achievement.getInteger("quantity"), achievement.getString("name"));
-			achievements.put(p.getName(), p);
+			achievements.put(result.getString("user"), p);
 		}
 
 		return achievements;
@@ -89,7 +89,7 @@ public class MongoPointStorage implements Storage {
 		for (Document result : results) {
 			Document achievement = result.get("achievement", Document.class);
 			Point p = new Point(achievement.getInteger("quantity"), achievement.getString("name"));
-			achievements.put(p.getName(), p);
+			achievements.put(result.getString("user"), p);
 		}
 
 		return achievements;

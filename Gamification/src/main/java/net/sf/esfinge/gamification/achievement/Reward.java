@@ -5,6 +5,9 @@ public class Reward implements Achievement{
 	private String name;
 	private boolean used;
 	
+	public Reward() {
+	}
+	
 	public Reward(String name) {
 		this.name = name;
 		this.used = false;

@@ -5,7 +5,7 @@ import net.sf.esfinge.gamification.annotation.auth.points.AllowPointLessOrEquals
 import net.sf.esfinge.gamification.annotation.auth.points.DenyPointGreaterThan;
 import net.sf.esfinge.gamification.annotation.auth.points.DenyPointLessOrEqualsThan;
 
-public class GuardedPoints {
+public class GuardedPointsImpl implements Guarded {
 
 	@AllowPointGreaterThan(quantity = 10, achievementName = "gold")
 	public void changeProfilePhoto() {

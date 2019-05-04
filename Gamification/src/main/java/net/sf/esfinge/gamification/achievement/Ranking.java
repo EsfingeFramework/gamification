@@ -5,6 +5,9 @@ public class Ranking implements Achievement{
 	private String name;
 	private String level;
 	
+	public Ranking() {
+	}
+	
 	public Ranking(String name, String level) {
 		super();
 		this.name = name;

@@ -6,6 +6,9 @@ public class Point implements Achievement{
 	private Integer quantity;
 	private String name;
 
+	public Point() {
+	}
+	
 	public Point(Integer quantity, String name) {
 		super();
 		this.quantity = quantity;
